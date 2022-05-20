@@ -17,10 +17,10 @@ const routes: VexRoutes = [
       //   path: '',
       //   loadChildren: () => import('./pages/dashboards/dashboard-analytics/dashboard-analytics.module').then(m => m.DashboardAnalyticsModule),
       // },
-      // {
-      //   path: 'whatsapp',
-      //   loadChildren: () => import('./modules/whatsapp/whatsapp.module').then(m => m.WhatsappModule),
-      // },
+      {
+        path: 'whatsapp',
+        loadChildren: () => import('./modules/whatsapp/whatsapp.module').then(m => m.WhatsappModule),
+      },
       // {
       //   path: '**',
       //   loadChildren: () => import('./pages/pages/errors/error-404/error-404.module').then(m => m.Error404Module)
