@@ -23,6 +23,10 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatChipsModule} from '@angular/material/chips';
 import { GroupCreateUpdateComponent } from './groups-table/group-create-update/group-create-update.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
 
 
 @NgModule({
@@ -56,7 +60,20 @@ import { GroupCreateUpdateComponent } from './groups-table/group-create-update/g
     ContainerModule,
     MatSelectModule,
     MatButtonToggleModule,
-    MatChipsModule
+    MatChipsModule,
+    MatDialogModule,
+    MatDividerModule,
+    ReactiveFormsModule,
+    FlexLayoutModule,
+    MatDialogModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatMenuModule,
+    IconModule,
+    MatDividerModule
   ]
 })
 export class WhatsappModule { }
