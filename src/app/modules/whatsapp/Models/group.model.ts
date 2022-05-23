@@ -1,13 +1,13 @@
 import { General } from "./general.model";
 
-export class Group extends General {
+export class Group {
     id: number;
     name: string;
     description: string;
-    tags: string[];
+    tags: [];
 
     constructor(group) {
-        super(group);
+        //super(group);
         this.id = group.id;
         this.name = group.name;
         this.description = group.description;

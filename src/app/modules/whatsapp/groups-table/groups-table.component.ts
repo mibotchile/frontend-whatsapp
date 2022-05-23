@@ -85,6 +85,8 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
       this.subject$.next(groups);
     });
 
+    this.dataSource = new MatTableDataSource();
+
     this.data$.pipe(
       filter<Group[]>(Boolean)
     ).subscribe(groups =>{
