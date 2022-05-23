@@ -16,7 +16,7 @@
         <mat-icon [icIcon]="icFilterList"></mat-icon>
     </button>
 
-    <button (click)="createGroup()" class="ml-4" color="primary" fxFlex="none" mat-mini-fab matTooltip="Agregar Grupo"
+    <button (click)="createGroup1()" class="ml-4" color="primary" fxFlex="none" mat-mini-fab matTooltip="Agregar Grupo"
         type="button">
         <mat-icon [icIcon]="icAdd"></mat-icon>
     </button>
@@ -79,12 +79,12 @@
 <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0"></mat-paginator>
 
 <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below">
-    <ng-template let-customer="group" matMenuContent>
-        <button mat-menu-item>
+    <ng-template let-group="group" matMenuContent>
+        <button (click)="updateGroup(group)" mat-menu-item>
             <mat-icon [icIcon]="icEdit"></mat-icon>
             <span>Modificar</span>
         </button>
-        <button mat-menu-item>
+        <button (click)="deleteGroup(group)" mat-menu-item>
             <mat-icon [icIcon]="icDelete"></mat-icon>
             <span>Eliminar</span>
         </button>

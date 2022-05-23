@@ -177,7 +177,8 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
     });
   }
 
-  deleteCustomer(group: Group) {
+  deleteGroup(group: Group) {
+    debugger
     /**
      * Here we are updating our local array.
      * You would probably make an HTTP request here.

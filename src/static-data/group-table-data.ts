@@ -27,6 +27,12 @@ export const groupTableLabels = [
 
 export const groupTableData = [
     {
+        id: 0,
+        name: 'Grupo 0',
+        description: 'Descripción 0',
+        tags: [groupTableLabels[0],groupTableLabels[1],groupTableLabels[2]]
+    },
+    {
         id: 1,
         name: 'Grupo 1',
         description: 'Descripción 1',
