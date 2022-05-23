@@ -42,7 +42,7 @@ export const groupTableData = [
         id: 3,
         name: 'Grupo 3',
         description: 'Descripción 3',
-        tags: [groupTableLabels[0],groupTableLabels[1]]
+        tags: [groupTableLabels[0],groupTableLabels[1],groupTableLabels[2]]
     },
     {
         id: 4,
@@ -54,7 +54,7 @@ export const groupTableData = [
         id: 5,
         name: 'Grupo 5',
         description: 'Descripción 5',
-        tags: [groupTableLabels[0],groupTableLabels[1]]
+        tags: [groupTableLabels[0],groupTableLabels[1],groupTableLabels[2]]
     },
     {
         id: 6,
@@ -72,13 +72,13 @@ export const groupTableData = [
         id: 8,
         name: 'Grupo 8',
         description: 'Descripción 8',
-        tags: [groupTableLabels[0],groupTableLabels[1]]
+        tags: [groupTableLabels[0],groupTableLabels[1],groupTableLabels[2]]
     },
     {
         id: 9,
         name: 'Grupo 9',
         description: 'Descripción 9',
-        tags: [groupTableLabels[0],groupTableLabels[1]]
+        tags: [groupTableLabels[0],groupTableLabels[1],groupTableLabels[2]]
     },
     {
         id: 10,
@@ -90,13 +90,13 @@ export const groupTableData = [
         id: 11,
         name: 'Grupo 11',
         description: 'Descripción 11',
-        tags: [groupTableLabels[0],groupTableLabels[1]]
+        tags: [groupTableLabels[0],groupTableLabels[1],groupTableLabels[2]]
     },
     {
         id: 12,
         name: 'Grupo 12',
         description: 'Descripción 12',
-        tags: [groupTableLabels[0],groupTableLabels[1]]
+        tags: [groupTableLabels[0],groupTableLabels[1],groupTableLabels[2]]
     },
     {
         id: 13,
@@ -114,7 +114,7 @@ export const groupTableData = [
         id: 15,
         name: 'Grupo 15',
         description: 'Descripción 15',
-        tags: [groupTableLabels[0],groupTableLabels[1]]
+        tags: [groupTableLabels[0],groupTableLabels[1],groupTableLabels[2]]
     },
     {
         id: 16,
@@ -126,7 +126,7 @@ export const groupTableData = [
         id: 17,
         name: 'Grupo 17',
         description: 'Descripción 17',
-        tags: [groupTableLabels[0],groupTableLabels[1]]
+        tags: [groupTableLabels[0],groupTableLabels[1],groupTableLabels[2]]
     },
     {
         id: 18,
@@ -138,7 +138,7 @@ export const groupTableData = [
         id: 19,
         name: 'Grupo 19',
         description: 'Descripción 19',
-        tags: [groupTableLabels[0],groupTableLabels[1]]
+        tags: [groupTableLabels[0],groupTableLabels[1],groupTableLabels[2]]
     },
     {
         id: 20,
@@ -156,7 +156,7 @@ export const groupTableData = [
         id: 22,
         name: 'Grupo 22',
         description: 'Descripción 22',
-        tags: [groupTableLabels[0],groupTableLabels[1]]
+        tags: [groupTableLabels[0],groupTableLabels[1],groupTableLabels[2]]
     },
     {
         id: 23,
@@ -174,7 +174,7 @@ export const groupTableData = [
         id: 25,
         name: 'Grupo 25',
         description: 'Descripción 25',
-        tags: [groupTableLabels[0],groupTableLabels[1]]
+        tags: [groupTableLabels[0],groupTableLabels[1],groupTableLabels[2]]
     },
     {
         id: 26,
@@ -192,7 +192,7 @@ export const groupTableData = [
         id: 28,
         name: 'Grupo 28',
         description: 'Descripción 28',
-        tags: [groupTableLabels[0],groupTableLabels[1]]
+        tags: [groupTableLabels[0],groupTableLabels[1],groupTableLabels[2]]
     },
     {
         id: 29,

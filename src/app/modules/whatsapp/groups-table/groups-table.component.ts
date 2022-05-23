@@ -142,6 +142,51 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
     });
   }
 
+  createGroup1() {
+    this.dialog.open(GroupCreateUpdateComponent).afterClosed().subscribe((group: Group) => {
+      /**
+       * Customer is the updated customer (if the user pressed Save - otherwise it's null)
+       */
+      if (group) {
+        /**
+         * Here we are updating our local array.
+         * You would probably make an HTTP request here.
+         */
+        this.groups.unshift(new Group(group));
+        this.subject$.next(this.groups);
+      }
+    });
+  }
+
+  updateGroup(group: Group) {
+    this.dialog.open(GroupCreateUpdateComponent, {
+      data: group
+    }).afterClosed().subscribe(updatedGroup => {
+      /**
+       * Customer is the updated customer (if the user pressed Save - otherwise it's null)
+       */
+      if (updatedGroup) {
+        /**
+         * Here we are updating our local array.
+         * You would probably make an HTTP request here.
+         */
+        const index = this.groups.findIndex((existingCustomer) => existingCustomer.id === updatedGroup.id);
+        this.groups[index] = new Group(updatedGroup);
+        this.subject$.next(this.groups);
+      }
+    });
+  }
+
+  deleteCustomer(group: Group) {
+    /**
+     * Here we are updating our local array.
+     * You would probably make an HTTP request here.
+     */
+    this.groups.splice(this.groups.findIndex((existingGroup) => existingGroup.id === group.id), 1);
+    //this.selection.deselect(customer);
+    this.subject$.next(this.groups);
+  }
+
   onLabelChange(change: MatSelectChange, row: Group) {
     const index = this.groups.findIndex(c => c === row);
     this.groups[index].tags = change.value;
