@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import icSearch from '@iconify/icons-ic/twotone-search';
 import icFilterList from '@iconify/icons-ic/twotone-filter-list';
 import icAdd from '@iconify/icons-ic/twotone-add';
@@ -8,55 +8,53 @@ import icDelete from '@iconify/icons-ic/twotone-delete';
 import icMoreHoriz from '@iconify/icons-ic/twotone-more-horiz';
 import { GroupCreateUpdateComponent } from './group-create-update/group-create-update.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Group } from '../Models/group.model';
+import { Group } from '../models/group.model';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, of, ReplaySubject, scheduled } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { map, startWith } from 'rxjs/operators';
+import { filter, map, startWith } from 'rxjs/operators';
 import { MatChipInputEvent } from '@angular/material/chips';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import { fadeInUp400ms } from 'src/@vex/animations/fade-in-up.animation';
+import { stagger40ms } from 'src/@vex/animations/stagger.animation';
+import { TableColumn } from 'src/@vex/interfaces/table-column.interface';
+import { groupTableData, groupTableLabels } from 'src/static-data/group-table-data';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { MatSelectChange } from '@angular/material/select';
 
-export interface Groupi {
-  name: string;
-  description: string;
-  tags: string;
-  actions: any;
-}
-
-const GROUP_DATA: Groupi[] = [
-  {name: 'Grupo 1', description: 'Grupo 1', tags: 'G1', actions: ''},
-  {name: 'Grupo 2', description: 'Grupo 2', tags: 'G1', actions: ''},
-  {name: 'Grupo 3', description: 'Grupo 3', tags: 'G1', actions: ''},
-  {name: 'Grupo 4', description: 'Grupo 4', tags: 'G1', actions: ''},
-  {name: 'Grupo 5', description: 'Grupo 5', tags: 'G1', actions: ''},
-  {name: 'Grupo 6', description: 'Grupo 6', tags: 'G1', actions: ''},
-  {name: 'Grupo 7', description: 'Grupo 7', tags: 'G1', actions: ''},
-  {name: 'Grupo 8', description: 'Grupo 8', tags: 'G1', actions: ''},
-  {name: 'Grupo 9', description: 'Grupo 9', tags: 'G1', actions: ''},
-  {name: 'Grupo 10', description: 'Grupo 10', tags: 'G1', actions: ''},
-];
-
-
+@UntilDestroy()
 @Component({
   selector: 'frontend-whatsapp-groups-table',
   templateUrl: './groups-table.component.html',
   styleUrls: ['./groups-table.component.scss'],
+  animations: [
+    fadeInUp400ms,
+    stagger40ms
+  ],
 })
-export class GroupsTableComponent implements OnInit {
+export class GroupsTableComponent implements OnInit, AfterViewInit {
 
-  animal: string;
-  name: string;
+  subject$: ReplaySubject<Group[]> = new ReplaySubject<Group[]>(1);
+  data$: Observable<Group[]> = this.subject$.asObservable();
+  groups: Group[];
 
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  fruitCtrl = new FormControl();
-  filteredFruits: Observable<string[]>;
-  fruits: string[] = ['Lemon'];
-  allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
+  @Input()
+  columns: TableColumn<Group>[] = [
+    { label: 'Nombre', property: 'name', type: 'text', visible: true },
+    { label: 'Descripción', property: 'description', type: 'text', visible: true },
+    { label: 'Etiquetas', property: 'labels', type: 'button', visible: true },
+    { label: 'Acciones', property: 'actions', type: 'button', visible: true }
+  ];
 
-  @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
+  pageSize = 10;
+  pageSizeOptions: number[] = [5, 10, 20, 50];
+  dataSource: MatTableDataSource<Group> | null;
+  searchCtrl = new FormControl();
 
-
-  //subject$: ReplaySubject<Group[]> = new ReplaySubject<Group[]>(1);
+  labels = groupTableLabels;
 
   icSearch = icSearch;
   icFilterList = icFilterList;
@@ -66,22 +64,56 @@ export class GroupsTableComponent implements OnInit {
   icDelete = icDelete;
   icCancel = icCancel;
 
-  displayedColumns: string[] = ['name', 'description', 'tags','actions'];
-  dataSource = GROUP_DATA;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  groups: Group[];
 
   constructor(private dialog: MatDialog) {
-    this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
-      startWith(null),
-      map((fruit: string | null) => (fruit ? this._filter(fruit) : this.allFruits.slice())),
-    );
+
+   }
+
+   get visibleColumns() {
+    return this.columns.filter(column => column.visible).map(column => column.property);
+  }
+
+   getData() {
+     return of(groupTableData.map(group => new Group(group)));
    }
 
   ngOnInit(): void {
+    this.getData().subscribe(groups => {
+      this.subject$.next(groups);
+    });
+
+    this.data$.pipe(
+      filter<Group[]>(Boolean)
+    ).subscribe(groups =>{
+      this.groups = groups;
+      this.dataSource.data = groups;
+    });
+
+    this.searchCtrl.valueChanges.pipe(
+      untilDestroyed(this)
+    ).subscribe(value => this.onFilterChange(value));
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
   
+  onFilterChange(value: string) {
+    if (!this.dataSource) {
+      return;
+    }
+    value = value.trim();
+    value = value.toLowerCase();
+    this.dataSource.filter = value;
+  }
+
+  trackByProperty<T>(index: number, column: TableColumn<T>) {
+    return column.property;
+  }
 
   createGroup() {
     // this.dialog.open(GroupCreateUpdateComponent).afterClosed().subscribe((group: Group) => {
@@ -99,47 +131,19 @@ export class GroupsTableComponent implements OnInit {
     // });
     const dialogRef = this.dialog.open(GroupCreateUpdateComponent, {
       width: '500px',
-      data: {name: this.name, animal: this.animal},
+      //data: {name: this.name, animal: this.animal},
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.animal = result;
+      //this.animal = result;
     });
   }
 
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
-    // Add our fruit
-    if (value) {
-      this.fruits.push(value);
-    }
-
-    // Clear the input value
-    //event.chipInput!.clear();
-
-    this.fruitCtrl.setValue(null);
-  }
-
-  remove(fruit: string): void {
-    const index = this.fruits.indexOf(fruit);
-
-    if (index >= 0) {
-      this.fruits.splice(index, 1);
-    }
-  }
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    this.fruits.push(event.option.viewValue);
-    this.fruitInput.nativeElement.value = '';
-    this.fruitCtrl.setValue(null);
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.allFruits.filter(fruit => fruit.toLowerCase().includes(filterValue));
+  onLabelChange(change: MatSelectChange, row: Group) {
+    const index = this.groups.findIndex(c => c === row);
+    this.groups[index].tags = change.value;
+    this.subject$.next(this.groups);
   }
   
 }
