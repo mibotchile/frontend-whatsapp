@@ -40,9 +40,9 @@
         <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header>Etiquetas</th>
         <td *matCellDef="let row" mat-cell>
             <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
-                <div *ngFor="let label of row.tags" [ngClass]="[label.textClass, label.bgClass]"
-                    class="rounded px-2 py-1 font-medium text-xs" fxFlex="none">
-                    {{ label.text }}
+                <div *ngFor="let label of row.tags"
+                    class="rounded px-2 py-1 font-medium text-xs tag" fxFlex="none">
+                    {{ label }}
                 </div>
                 <div (click)="labelSelect.open()" class="text-secondary bg-base text-hint cursor-pointer hover:bg-hover"
                     fxFlex="none" fxLayout="row" fxLayoutAlign="center center">
@@ -51,8 +51,8 @@
                 <mat-select #labelSelect="matSelect" (selectionChange)="onLabelChange($event, row)" [value]="row.tags"
                     class="invisible w-0 h-0 text-sm" fxFlex="0 1 0px" multiple>
                     <mat-option *ngFor="let label of labels" [value]="label">
-                        <div [ngClass]="label.previewClass"
-                            class="h-6 w-6 align-middle ltr:mr-2 rtl:ml-2 rounded inline-block"></div>
+                        <div 
+                            class="h-6 w-6 align-middle ltr:mr-2 rtl:ml-2 rounded inline-block" ></div>
                         <span>{{ label.text }}</span>
                     </mat-option>
                 </mat-select>

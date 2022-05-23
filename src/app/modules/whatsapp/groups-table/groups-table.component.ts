@@ -10,7 +10,7 @@ import { GroupCreateUpdateComponent } from './group-create-update/group-create-u
 import { MatDialog } from '@angular/material/dialog';
 import { Group } from '../models/group.model';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import { Observable, of, ReplaySubject, scheduled } from 'rxjs';
+import { Observable, of, ReplaySubject, scheduled, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { filter, map, startWith } from 'rxjs/operators';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -24,6 +24,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MatSelectChange } from '@angular/material/select';
+import { GroupService } from '../services/group.service';
 
 @UntilDestroy()
 @Component({
@@ -40,6 +41,10 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
   subject$: ReplaySubject<Group[]> = new ReplaySubject<Group[]>(1);
   data$: Observable<Group[]> = this.subject$.asObservable();
   groups: Group[];
+
+  groupTableData: Group[];
+
+  subscription: Subscription;
 
   @Input()
   columns: TableColumn<Group>[] = [
@@ -68,7 +73,8 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
 
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog,
+              private groupService: GroupService) {
 
    }
 
@@ -77,13 +83,25 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
   }
 
    getData() {
-     return of(groupTableData.map(group => new Group(group)));
+     this.subscription = new Subscription();
+     this.subscription = this.groupService.getGroups()
+     .subscribe((data: Group[])=>{
+       this.groupTableData = [];
+       for (let item of data) {
+         this.groupTableData.push(item);
+         this.dataSource.data = this.groupTableData;
+       }
+       console.log(this.groupTableData);
+     });
+     //return of(groupTableData.map(group => new Group(group)));
    }
 
   ngOnInit(): void {
-    this.getData().subscribe(groups => {
-      this.subject$.next(groups);
-    });
+    // this.getData().subscribe(groups => {
+    //   this.subject$.next(groups);
+    // });
+
+    this.getData();
 
     this.dataSource = new MatTableDataSource();
 
@@ -154,6 +172,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
          */
         this.groups.unshift(new Group(group));
         this.subject$.next(this.groups);
+        //this.groupService.insertGroup(group);
       }
     });
   }
