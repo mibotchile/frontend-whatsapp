@@ -44,11 +44,12 @@ import { GroupService } from "../services/group.service";
   animations: [fadeInUp400ms, stagger40ms],
 })
 export class GroupsTableComponent implements OnInit, AfterViewInit {
-  subject$: ReplaySubject<Group[]> = new ReplaySubject<Group[]>(1);
-  data$: Observable<Group[]> = this.subject$.asObservable();
+  // subject$: ReplaySubject<Group[]> = new ReplaySubject<Group[]>(1);
+  // data$: Observable<Group[]> = this.subject$.asObservable();
   groups: Group[];
 
   groupTableData: Group[];
+  deactivatedGroupTableData: Group[];
 
   subscription: Subscription;
 
@@ -93,16 +94,21 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
 
   getData() {
     this.subscription = new Subscription();
-    this.subscription = this.groupService
-      .getGroups()
-      .subscribe((data: any) => {
-        this.groupTableData = [];
-        for (let item of data.data) {
-          this.groupTableData.push(item);
-          this.dataSource.data = this.groupTableData;
+    this.subscription = this.groupService.getGroups().subscribe((data: any) => {
+      this.groupTableData = [];
+      this.deactivatedGroupTableData = [];
+      for (let item of data.data) {
+        if (item.status === 0) {
+          this.deactivatedGroupTableData.push(item);
         }
-        console.log(this.groupTableData);
-      });
+        else
+        {
+          this.groupTableData.push(item);
+        }
+        this.dataSource.data = this.groupTableData;
+      }
+      console.log(this.groupTableData);
+    });
     //return of(groupTableData.map(group => new Group(group)));
   }
 
@@ -115,10 +121,10 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
 
     this.dataSource = new MatTableDataSource();
 
-    this.data$.pipe(filter<Group[]>(Boolean)).subscribe((groups) => {
-      this.groups = groups;
-      this.dataSource.data = groups;
-    });
+    // this.data$.pipe(filter<Group[]>(Boolean)).subscribe((groups) => {
+    //   this.groups = groups;
+    //   this.dataSource.data = groups;
+    // });
 
     this.searchCtrl.valueChanges
       .pipe(untilDestroyed(this))
@@ -185,21 +191,21 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
           // this.subject$.next(this.groups);
 
           this.subscription = new Subscription();
-          this.subscription = this.groupService
-            .insertGroup(group)
-            .subscribe(() => {
+          this.subscription = this.groupService.insertGroup(group).subscribe(
+            () => {
               console.log("Success");
               this.getData();
             },
-            (error)=>{
+            (error) => {
               console.log(`Error: ${error}`);
-            });
+            }
+          );
         }
       });
   }
 
   updateGroup(group: Group) {
-    console.log(group)
+    console.log(group);
     this.dialog
       .open(GroupCreateUpdateComponent, {
         data: group,
@@ -222,33 +228,36 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
           this.subscription = new Subscription();
           this.subscription = this.groupService
             .updateGroup(updatedGroup)
-            .subscribe(() => {
-              console.log("Success");
-              this.getData();
-            },
-            (error)=>{
-              console.log(`Error: ${error}`);
-            });
+            .subscribe(
+              () => {
+                console.log("Success");
+                this.getData();
+              },
+              (error) => {
+                console.log(`Error: ${error}`);
+              }
+            );
         }
       });
   }
 
   deleteGroup(group: Group) {
-    /**
-     * Here we are updating our local array.
-     * You would probably make an HTTP request here.
-     */
-    this.groups.splice(
-      this.groups.findIndex((existingGroup) => existingGroup.id === group.id),
-      1
+    console.log(group)
+    this.subscription = new Subscription();
+    this.subscription = this.groupService.deleteGroup(group).subscribe(
+      () => {
+        console.log("Success");
+        this.getData();
+      },
+      (error) => {
+        console.log(`Error: ${error}`);
+      }
     );
-    //this.selection.deselect(customer);
-    this.subject$.next(this.groups);
   }
 
   onLabelChange(change: MatSelectChange, row: Group) {
     const index = this.groups.findIndex((c) => c === row);
     this.groups[index].tags = change.value;
-    this.subject$.next(this.groups);
+    //this.subject$.next(this.groups);
   }
 }

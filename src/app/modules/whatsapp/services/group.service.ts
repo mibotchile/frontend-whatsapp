@@ -19,7 +19,7 @@ export class GroupService {
 
   insertGroup(value: Group){
 
-    value.tags = [];
+    value.tags = ['Create','Create'];
     let headers = new HttpHeaders();
     headers = headers.append('mibot_session','{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}');
     // const param: string = JSON.stringify(value);
@@ -45,7 +45,11 @@ export class GroupService {
     (`${environment.url_api}group/${id}`, param, {headers: headers});
   }
 
-  deleteGroup(){
+  deleteGroup(value: Group){
+    let headers = new HttpHeaders();
+    headers = headers.append('mibot_session','{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}');
 
+    return this.http.delete
+    (`${environment.url_api}group/${value.id}`, {headers: headers});
   }
 }
