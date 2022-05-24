@@ -19,16 +19,30 @@ export class GroupService {
 
   insertGroup(value: Group){
 
-    //value.tags = [];
+    value.tags = [];
     let headers = new HttpHeaders();
     headers = headers.append('mibot_session','{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}');
-    const param: string = JSON.stringify(value);
+    // const param: string = JSON.stringify(value);
+    let param = new HttpParams({fromObject: {'tags':value.tags}});
+    param = param.append('name',value.name);
+    param = param.append('description',value.description);
+    //param = param.append('tags',value.tags.toString());
     return this.http.post
     (`${environment.url_api}group`, param, {headers: headers});
   }
 
-  updateGroup(){
-
+  updateGroup(value: Group){
+    value.tags = ['update1','update2'];
+    let headers = new HttpHeaders();
+    headers = headers.append('mibot_session','{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}');
+    // const param: string = JSON.stringify(value);
+    let param = new HttpParams({fromObject: {'tags':value.tags}});
+    let id = value.id.toString();
+    param = param.append('name',value.name);
+    param = param.append('description',value.description);
+    //param = param.append('tags',value.tags.toString());
+    return this.http.put
+    (`${environment.url_api}group/${id}`, param, {headers: headers});
   }
 
   deleteGroup(){

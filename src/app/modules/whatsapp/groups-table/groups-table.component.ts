@@ -189,6 +189,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
             .insertGroup(group)
             .subscribe(() => {
               console.log("Success");
+              this.getData();
             },
             (error)=>{
               console.log(`Error: ${error}`);
@@ -198,6 +199,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
   }
 
   updateGroup(group: Group) {
+    console.log(group)
     this.dialog
       .open(GroupCreateUpdateComponent, {
         data: group,
@@ -212,17 +214,26 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
            * Here we are updating our local array.
            * You would probably make an HTTP request here.
            */
-          const index = this.groups.findIndex(
-            (existingCustomer) => existingCustomer.id === updatedGroup.id
-          );
-          this.groups[index] = new Group(updatedGroup);
-          this.subject$.next(this.groups);
+          // const index = this.groups.findIndex(
+          //   (existingGroup) => existingGroup.id === updatedGroup.id
+          // );
+          // this.groups[index] = new Group(updatedGroup);
+          // this.subject$.next(this.groups);
+          this.subscription = new Subscription();
+          this.subscription = this.groupService
+            .updateGroup(updatedGroup)
+            .subscribe(() => {
+              console.log("Success");
+              this.getData();
+            },
+            (error)=>{
+              console.log(`Error: ${error}`);
+            });
         }
       });
   }
 
   deleteGroup(group: Group) {
-    debugger;
     /**
      * Here we are updating our local array.
      * You would probably make an HTTP request here.

@@ -37,8 +37,7 @@ export class GroupCreateUpdateComponent implements OnInit {
 
     this.form = this.fb.group({
       name: this.defaults.name,
-      description: this.defaults.description,
-      tags: this.defaults.tags
+      description: this.defaults.description
     });
 
   }
