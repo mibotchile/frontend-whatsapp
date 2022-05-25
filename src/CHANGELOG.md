@@ -3,6 +3,32 @@
 
 # Changelog
 
+## 13.0.0 (2021-11-22)
+
+- Upgrade to Angular ^13.0
+- Upgrade all dependencies to latest compatible versions
+
+## 12.0.0 (2021-06-21)
+
+- Upgrade to Angular ^12.0
+- Upgrade all dependencies to latest compatible versions
+- Adjust SCSS for @angular/material changes
+
+## 11.1.0 (2021-03-12)
+
+- Upgrade to Angular ^11.2
+- Upgrade all dependencies to latest compatible versions
+- Simplify TailwindCSS setup
+
+## 11.0.0 (2020-11-12)
+
+- Upgrade to Angular 11+
+- Upgrade all dependencies to latest compatible versions
+
+## 10.0.2 (2020-10-01)
+
+- Upgrade all dependencies to latest versions
+
 ## 10.0.0 (2020-07-06)
 
 ### Features

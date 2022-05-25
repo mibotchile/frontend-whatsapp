@@ -5,11 +5,6 @@ export interface ColorVariable {
 }
 
 export const colorVariables: Record<string, ColorVariable> = {
-  workspace: {
-    light: 'rgb(42, 209, 165, 0.1)',
-    default: 'rgb(42, 209, 165)',
-    contrast: 'rgb(255, 255, 255)'
-  },
   blue: {
     light: 'rgba(92, 119, 255, .1)',
     default: 'rgb(92, 119, 255)',

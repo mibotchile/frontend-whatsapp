@@ -15,56 +15,45 @@
       "prefix": "frontend-whatsapp",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/frontend-whatsapp",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets",
               "src/_redirects",
               "src/README.md",
-              "src/CHANGELOG.md"
+              "src/CHANGELOG.md",
+              "src/.htaccess"
             ],
             "styles": [
               "src/@vex/styles/tailwind.scss",
               "src/styles.scss"
             ],
             "scripts": [],
-            "customWebpackConfig": {
-              "path": "./webpack.config.js"
-            },
             "allowedCommonJsDependencies": [
               "simplebar",
               "highlight.js",
               "faker",
               "showdown",
-              "core-js/modules/es.string.match",
-              "core-js/modules/es.array.for-each",
-              "core-js/modules/es.string.replace",
-              "core-js/modules/es.regexp.exec",
-              "core-js/modules/es.function.name",
-              "core-js/modules/es.string.name",
-              "core-js/modules/es.array.reduce",
-              "core-js/modules/web.dom-collections.iterator",
-              "core-js/modules/es.string.iterator",
-              "core-js/modules/es.weak-map",
-              "core-js/modules/es.parse-int",
-              "core-js/modules/es.object.to-string",
-              "core-js/modules/es.object.assign",
-              "core-js/modules/es.array.iterator",
-              "core-js/modules/es.array.filter",
-              "core-js/modules/web.dom-collections.for-each",
+              "core-js",
               "dom-set",
               "dom-plane",
               "angular-calendar/date-adapters/date-fns",
               "calendar-utils/date-adapters/date-fns",
-              "@mattlewis92/dom-autoscroller"
-            ]
+              "@mattlewis92/dom-autoscroller",
+              "apexcharts"
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -77,9 +66,7 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -89,15 +76,12 @@
                   "maximumWarning": "3mb",
                   "maximumError": "5mb"
                 }
-              ],
-              "customWebpackConfig": {
-                "path": "./webpack.prod.config.js"
-              }
+              ]
             }
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "frontend-whatsapp:build"
           },
@@ -114,7 +98,7 @@
           }
         },
         "test": {
-          "builder": "@angular-builders/custom-webpack:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
@@ -130,19 +114,6 @@
             "scripts": []
           }
         },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        },
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
@@ -156,6 +127,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "frontend-whatsapp"
 }
