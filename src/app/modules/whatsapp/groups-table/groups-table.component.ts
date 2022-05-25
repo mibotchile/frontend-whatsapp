@@ -16,7 +16,7 @@ import icMoreHoriz from "@iconify/icons-ic/twotone-more-horiz";
 import { GroupCreateUpdateComponent } from "./group-create-update/group-create-update.component";
 import { MatDialog } from "@angular/material/dialog";
 import { Group } from "../models/group.model";
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import { COMMA, ENTER, G } from "@angular/cdk/keycodes";
 import { Observable, of, ReplaySubject, scheduled, Subscription } from "rxjs";
 import { FormControl } from "@angular/forms";
 import { filter, map, startWith } from "rxjs/operators";
@@ -60,7 +60,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
       label: "Descripción",
       property: "description",
       type: "text",
-      visible: true,
+      visible: true
     },
     { label: "Etiquetas", property: "labels", type: "button", visible: true },
     { label: "Acciones", property: "actions", type: "button", visible: true },
@@ -71,7 +71,9 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<Group> | null;
   searchCtrl = new FormControl();
 
-  labels = groupTableLabels;
+  tags: string[];
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  tagsCtrl = new FormControl();
 
   icSearch = icSearch;
   icFilterList = icFilterList;
@@ -259,5 +261,22 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
     const index = this.groups.findIndex((c) => c === row);
     this.groups[index].tags = change.value;
     //this.subject$.next(this.groups);
+  }
+
+  add(event: MatChipInputEvent,group: Group): void {
+    const value = (event.value || '').trim();
+
+    if (value) {
+      this.subscription = new Subscription();
+      this.subscription = this.groupService.updateGroup(group).subscribe(
+        () => {
+          console.log(group)
+          this.getData();
+        },
+        (error) => {
+          console.log(`Error: ${error}`);
+        }
+      );
+    }
   }
 }

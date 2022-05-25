@@ -3,7 +3,7 @@
         fxLayoutAlign="start center">
         <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
         <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
-            placeholder="Buscar..." type="search">
+            placeholder="Buscar por Nombre..." type="search">
     </div>
 
     <span fxFlex></span>
@@ -36,7 +36,7 @@
 
 
     <!-- Label Column -->
-    <ng-container matColumnDef="labels">
+    <!-- <ng-container matColumnDef="labels">
         <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header>Etiquetas</th>
         <td *matCellDef="let row" mat-cell>
             <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
@@ -56,7 +56,26 @@
                         <span>{{ label.text }}</span>
                     </mat-option>
                 </mat-select>
+                <input #labelSelect matInput type="text" class="inputTag">
             </div>
+        </td>
+    </ng-container> -->
+    <ng-container matColumnDef="labels">
+        <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header>Etiquetas</th>
+        <td *matCellDef="let row" mat-cell>
+            <mat-chip-list #chipList>
+                <mat-chip class="myChip" *ngFor="let tag of row.tags">{{ tag }}
+                    <button matChipRemove>
+                        <ic-icon [icon]="icCancel" size="18px"></ic-icon>
+                      </button>
+                </mat-chip>
+                <input placeholder="Nueva etiqueta..."
+                #fruiInput
+                [formControl]="tagsCtrl"
+                [matChipInputFor]="chipList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="add($event,row)">
+            </mat-chip-list>
         </td>
     </ng-container>
 
