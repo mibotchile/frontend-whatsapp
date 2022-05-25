@@ -1,0 +1,29 @@
+[
+    {
+      "name": "configuraciones",
+      "hasChildrens": false,
+      "childrens": [],
+      "hasTabs": true,
+      "tabs": [
+        {
+          "name": "usuarios"
+        },
+        {
+          "name": "grupos"
+        },
+        {
+          "name": "canales"
+        },
+        {
+          "name": "roles"
+        }
+      ]
+    },
+    {
+      "name": "conversaciones",
+      "hasChildrens": false,
+      "childrens": [],
+      "hasTabs": false,
+      "tabs": []
+    }
+  ]

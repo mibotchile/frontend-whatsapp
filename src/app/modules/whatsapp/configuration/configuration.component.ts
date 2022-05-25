@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import menu from '../../../../static-data/menu.json';
 
 @Component({
   selector: 'frontend-whatsapp-configuration',
@@ -7,9 +8,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConfigurationComponent implements OnInit {
 
-  constructor() { }
+  menu:any = menu;
+
+  constructor() { 
+  }
 
   ngOnInit(): void {
+    
+  }
+
+  menuVisibility(value: string){
+
+    for (const item of this.menu) {
+      for (const tab of item.tabs) {
+        if (tab.name === value) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
 }

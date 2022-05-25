@@ -25,10 +25,6 @@ import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
 import { TableColumn } from "src/@vex/interfaces/table-column.interface";
-import {
-  groupTableData,
-  groupTableLabels,
-} from "src/static-data/group-table-data";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";

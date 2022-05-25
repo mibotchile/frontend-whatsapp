@@ -12,6 +12,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { SplashScreenService } from '../@vex/services/splash-screen.service';
 import { Style, StyleService } from '../@vex/services/style.service';
 import { ConfigName } from '../@vex/interfaces/config-name.model';
+import menu from '../static-data/menu.json';
 
 @Component({
   selector: 'vex-root',
@@ -20,6 +21,31 @@ import { ConfigName } from '../@vex/interfaces/config-name.model';
 })
 export class AppComponent {
   title = 'vex';
+
+  menuVisibilityItems: any = {};
+  menu: any = menu;
+
+  items: any =  [
+    {
+      type: 'dropdown',
+      label: 'Whatsapp',
+      //route: '/',
+      icon: whatsapp,
+      //routerLinkActiveOptions: { exact: true },
+      children: [
+        {
+          type: 'link',
+          label: 'Conversaciones',
+          route: '/apps/chat'
+        },
+        {
+          type: 'link',
+          label: 'Configuración',
+          route: '/whatsapp/configuration'
+        },
+      ]
+    },
+  ];
 
   constructor(private configService: ConfigService,
               private styleService: StyleService,
@@ -86,27 +112,25 @@ export class AppComponent {
       filter(queryParamMap => queryParamMap.has('style'))
     ).subscribe(queryParamMap => this.styleService.setStyle(queryParamMap.get('style') as Style));
 
+    this.menuNavigation(this.menu);
+  }
 
-    this.navigationService.items = [
-      {
-        type: 'dropdown',
-        label: 'Whatsapp',
-        //route: '/',
-        icon: whatsapp,
-        //routerLinkActiveOptions: { exact: true },
-        children: [
-          {
-            type: 'link',
-            label: 'Conversaciones',
-            route: '/apps/chat'
-          },
-          {
-            type: 'link',
-            label: 'Configuración',
-            route: '/whatsapp/configuration'
-          },
-        ]
-      },
-    ];
+  menuNavigation(value: any) {
+    
+    for (const item of this.items[0].children) {
+      // for (const element of value) {
+        
+      //     this.menuVisibilityItems.push(
+      //       element.filter((i)=>{
+      //         i.name === item.label
+      //       })
+      //     );
+     
+      // }
+
+      console.log(item);
+    }
+
+    this.navigationService.items = this.items;
   }
 }

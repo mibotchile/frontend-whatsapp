@@ -19,19 +19,15 @@ export class GroupService {
 
   insertGroup(value: Group){
 
-    const tags = [];
+    //value.tags = ['']
     let headers = new HttpHeaders();
     headers = headers.append('mibot_session','{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}');
-    // const param: string = JSON.stringify(value);
-    //let param = new HttpParams({fromObject: {'tags': new Array()}});
+   
     let param = new HttpParams();
-    
     param = param.append('name',value.name);
     param = param.append('description',value.description);
-    for (const tag of tags) {
-      param = param.append('tags',tag);
-    }
     //param = param.append('tags',value.tags.toString());
+
     return this.http.post
     (`${environment.url_api}group`, param, {headers: headers});
   }

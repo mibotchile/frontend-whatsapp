@@ -14,18 +14,23 @@
     <vex-page-layout-content vexContainer>
       <div class="card">
         <mat-tab-group>
-          <mat-tab label="Usuarios">
+          <mat-tab label="Usuarios" *ngIf="menuVisibility('usuarios')">
             <div class="p-0">
               <!-- <vex-page-layout-demo></vex-page-layout-demo> -->
             </div>
           </mat-tab>
-          <mat-tab label="Grupos">
+          <mat-tab label="Grupos" *ngIf="menuVisibility('grupos')">
             <div class="p-0">
               <!-- <vex-page-layout-demo></vex-page-layout-demo> -->
               <frontend-whatsapp-groups-table></frontend-whatsapp-groups-table>
             </div>
           </mat-tab>
-          <mat-tab label="Canales">
+          <mat-tab label="Canales" *ngIf="menuVisibility('canales')">
+            <div class="p-0">
+              <!-- <vex-page-layout-demo></vex-page-layout-demo> -->
+            </div>
+          </mat-tab>
+          <mat-tab label="Roles" *ngIf="menuVisibility('roles')">
             <div class="p-0">
               <!-- <vex-page-layout-demo></vex-page-layout-demo> -->
             </div>
