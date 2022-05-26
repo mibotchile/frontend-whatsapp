@@ -20,7 +20,7 @@ import { COMMA, ENTER, G } from "@angular/cdk/keycodes";
 import { Observable, of, ReplaySubject, scheduled, Subscription } from "rxjs";
 import { FormControl } from "@angular/forms";
 import { filter, map, startWith } from "rxjs/operators";
-import { MatChipInputEvent } from "@angular/material/chips";
+import { MatChipInputEvent, MatChipList } from "@angular/material/chips";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
@@ -69,7 +69,6 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
 
   tags: string[];
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  tagsCtrl = new FormControl();
 
   icSearch = icSearch;
   icFilterList = icFilterList;
@@ -261,18 +260,39 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
 
   add(event: MatChipInputEvent,group: Group): void {
     const value = (event.value || '').trim();
-
     if (value) {
+      group.tags.push(value);
       this.subscription = new Subscription();
       this.subscription = this.groupService.updateGroup(group).subscribe(
         () => {
           console.log(group)
-          this.getData();
+          //this.getData();
         },
         (error) => {
           console.log(`Error: ${error}`);
         }
       );
     }
+    event.chipInput!.clear();
+  }
+
+  remove(tag: string, group:Group): void {
+
+    const index = group.tags.indexOf(tag);
+
+    if (index >= 0) {
+      group.tags.splice(index, 1);
+    }
+    
+    this.subscription = new Subscription();
+      this.subscription = this.groupService.updateGroup(group).subscribe(
+        () => {
+          console.log(group)
+          //this.getData();
+        },
+        (error) => {
+          console.log(`Error: ${error}`);
+        }
+      );
   }
 }
