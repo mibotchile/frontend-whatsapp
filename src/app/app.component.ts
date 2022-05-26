@@ -13,6 +13,7 @@ import { SplashScreenService } from '../@vex/services/splash-screen.service';
 import { Style, StyleService } from '../@vex/services/style.service';
 import { ConfigName } from '../@vex/interfaces/config-name.model';
 import menu from '../static-data/menu.json';
+import { isThisSecond } from 'date-fns';
 
 @Component({
   selector: 'vex-root',
@@ -23,8 +24,8 @@ export class AppComponent {
   title = 'vex';
 
   menuItems: any = {};
-  menuItemsAux: any = {};
   menu: any = menu;
+  newItems: any = {};
 
   items: any =  [
     {
@@ -118,13 +119,20 @@ export class AppComponent {
 
   menuNavigation() {
     
-    //this.menuItemsAux = this.items[0].children.map((item)=>item.label.toLowerCase());
-    this.menuItemsAux = this.menu.map((menuItem)=>menuItem.name);
-    this.menuItems = this.items.filter((item) => item.children.map((i)=>i.label.toLowerCase()).filter((j)=>this.menuItemsAux.includes(j)));
+    // this.menuItemsAux = this.items[0].children.map((item)=>item.label.toLowerCase());
+    // this.menuItems = this.menu.filter((menuItem)=>this.menuItemsAux.includes(menuItem.name));
     
-    console.log(this.menuItemsAux)
+    // console.log(this.menuItemsAux)
+    // console.log(this.menuItems)
+
+    //this.menuItems = this.items.filter((menuItem)=>menuItem.children.filter((childrenItem)=>childrenItem.label.toLowerCase() === 'configuraciones'))
+
+    this.menuItems = this.items[0].children.filter((childrenItem)=>this.menu.map((menuItem)=>menuItem.name).includes(childrenItem.label.toLowerCase()));
     console.log(this.menuItems)
 
-    this.navigationService.items = this.menuItems;
+    this.newItems = this.items;
+    this.newItems[0].children = this.menuItems;
+
+    this.navigationService.items = this.newItems;
   }
 }

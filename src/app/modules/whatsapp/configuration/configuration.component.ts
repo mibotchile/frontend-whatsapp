@@ -20,6 +20,9 @@ export class ConfigurationComponent implements OnInit {
   menuVisibility(value: string){
 
     for (const item of this.menu) {
+      if (!item.hasTabs) {
+        return false;
+      }
       for (const tab of item.tabs) {
         if (tab.name === value) {
           return true;
