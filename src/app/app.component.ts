@@ -22,7 +22,8 @@ import menu from '../static-data/menu.json';
 export class AppComponent {
   title = 'vex';
 
-  menuVisibilityItems: any = {};
+  menuItems: any = {};
+  menuItemsAux: any = {};
   menu: any = menu;
 
   items: any =  [
@@ -40,7 +41,7 @@ export class AppComponent {
         },
         {
           type: 'link',
-          label: 'Configuración',
+          label: 'Configuracion',
           route: '/whatsapp/configuration'
         },
       ]
@@ -112,25 +113,18 @@ export class AppComponent {
       filter(queryParamMap => queryParamMap.has('style'))
     ).subscribe(queryParamMap => this.styleService.setStyle(queryParamMap.get('style') as Style));
 
-    this.menuNavigation(this.menu);
+    this.menuNavigation();
   }
 
-  menuNavigation(value: any) {
+  menuNavigation() {
     
-    for (const item of this.items[0].children) {
-      // for (const element of value) {
-        
-      //     this.menuVisibilityItems.push(
-      //       element.filter((i)=>{
-      //         i.name === item.label
-      //       })
-      //     );
-     
-      // }
+    //this.menuItemsAux = this.items[0].children.map((item)=>item.label.toLowerCase());
+    this.menuItemsAux = this.menu.map((menuItem)=>menuItem.name);
+    this.menuItems = this.items.filter((item) => item.children.map((i)=>i.label.toLowerCase()).filter((j)=>this.menuItemsAux.includes(j)));
+    
+    console.log(this.menuItemsAux)
+    console.log(this.menuItems)
 
-      console.log(item);
-    }
-
-    this.navigationService.items = this.items;
+    this.navigationService.items = this.menuItems;
   }
 }
