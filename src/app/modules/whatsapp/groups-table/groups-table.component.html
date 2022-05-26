@@ -26,15 +26,7 @@
     <mat-icon [icIcon]="icSearch"></mat-icon>
   </button>
 
-  <button
-    class="ml-4"
-    fxFlex="none"
-    mat-icon-button
-    matTooltip="Filter Columns"
-    type="button"
-  >
-    <mat-icon [icIcon]="icFilterList"></mat-icon>
-  </button>
+  <mat-slide-toggle (toggleChange)="showData()" [(ngModel)]="isChecked" color="primary"></mat-slide-toggle>
 
   <button
     (click)="createGroup1()"

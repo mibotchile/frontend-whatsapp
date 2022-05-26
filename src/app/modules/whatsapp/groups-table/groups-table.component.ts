@@ -47,6 +47,8 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
   groupTableData: Group[];
   deactivatedGroupTableData: Group[];
 
+  isChecked = true;
+
   subscription: Subscription;
 
   @Input()
@@ -102,8 +104,15 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
         {
           this.groupTableData.push(item);
         }
+        
+      }
+      if (this.isChecked) {
         this.dataSource.data = this.groupTableData;
       }
+      else{
+        this.dataSource.data = this.deactivatedGroupTableData;
+      }
+      //this.dataSource.data = this.groupTableData;
       console.log(this.groupTableData);
     });
     //return of(groupTableData.map(group => new Group(group)));
@@ -294,5 +303,9 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
           console.log(`Error: ${error}`);
         }
       );
+  }
+
+  showData(){
+    this.getData();
   }
 }

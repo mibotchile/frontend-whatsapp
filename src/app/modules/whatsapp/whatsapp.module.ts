@@ -27,6 +27,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [ConfigurationComponent, GroupsTableComponent, GroupCreateUpdateComponent],
@@ -72,7 +73,8 @@ import { MatRadioModule } from '@angular/material/radio';
     MatSelectModule,
     MatMenuModule,
     IconModule,
-    MatDividerModule
+    MatDividerModule,
+    MatSlideToggleModule
   ]
 })
 export class WhatsappModule { }
