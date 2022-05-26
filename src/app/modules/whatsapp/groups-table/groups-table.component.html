@@ -1,42 +1,78 @@
-<div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
-    <div class="bg-card rounded-full border px-4" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row"
-        fxLayoutAlign="start center">
-        <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
-        <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
-            placeholder="Buscar por Nombre..." type="search">
-    </div>
+<div
+  class="bg-app-bar px-6 h-16 border-b sticky left-0"
+  fxLayout="row"
+  fxLayoutAlign="start center"
+>
+  <div
+    class="bg-card rounded-full border px-4"
+    fxFlex="400px"
+    fxFlex.lt-md="auto"
+    fxHide.xs
+    fxLayout="row"
+    fxLayoutAlign="start center"
+  >
+    <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
+    <input
+      [formControl]="searchCtrl"
+      class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+      placeholder="Buscar por Nombre..."
+      type="search"
+    />
+  </div>
 
-    <span fxFlex></span>
+  <span fxFlex></span>
 
-    <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
-        <mat-icon [icIcon]="icSearch"></mat-icon>
-    </button>
+  <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+    <mat-icon [icIcon]="icSearch"></mat-icon>
+  </button>
 
-    <button class="ml-4" fxFlex="none" mat-icon-button matTooltip="Filter Columns" type="button">
-        <mat-icon [icIcon]="icFilterList"></mat-icon>
-    </button>
+  <button
+    class="ml-4"
+    fxFlex="none"
+    mat-icon-button
+    matTooltip="Filter Columns"
+    type="button"
+  >
+    <mat-icon [icIcon]="icFilterList"></mat-icon>
+  </button>
 
-    <button (click)="createGroup1()" class="ml-4" color="primary" fxFlex="none" mat-mini-fab matTooltip="Agregar Grupo"
-        type="button">
-        <mat-icon [icIcon]="icAdd"></mat-icon>
-    </button>
-
+  <button
+    (click)="createGroup1()"
+    class="ml-4"
+    color="primary"
+    fxFlex="none"
+    mat-mini-fab
+    matTooltip="Agregar Grupo"
+    type="button"
+  >
+    <mat-icon [icIcon]="icAdd"></mat-icon>
+  </button>
 </div>
 
-<table @stagger [dataSource]="dataSource" class="mat-elevation-z8 w-full" mat-table matSort>
-
-    <!-- Text Columns -->
-    <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
-        <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
-            <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
-            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row[column.property] }}</td>
-        </ng-container>
+<table
+  @stagger
+  [dataSource]="dataSource"
+  class="mat-elevation-z8 w-full"
+  mat-table
+  matSort
+>
+  <!-- Text Columns -->
+  <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+    <ng-container
+      *ngIf="column.type === 'text'"
+      [matColumnDef]="column.property"
+    >
+      <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header>
+        {{ column.label }}
+      </th>
+      <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+        {{ row[column.property] }}
+      </td>
     </ng-container>
+  </ng-container>
 
-
-
-    <!-- Label Column -->
-    <!-- <ng-container matColumnDef="labels">
+  <!-- Label Column -->
+  <!-- <ng-container matColumnDef="labels">
         <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header>Etiquetas</th>
         <td *matCellDef="let row" mat-cell>
             <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
@@ -60,52 +96,68 @@
             </div>
         </td>
     </ng-container> -->
-    <ng-container matColumnDef="labels">
-        <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header>Etiquetas</th>
-        <td *matCellDef="let row" mat-cell>
-            <mat-chip-list #chipList>
-                <mat-chip class="myChip" *ngFor="let tag of row.tags">{{ tag }}
-                    <button matChipRemove>
-                        <ic-icon [icon]="icCancel" size="18px"></ic-icon>
-                      </button>
-                </mat-chip>
-                <input placeholder="Nueva etiqueta..."
-                #fruiInput
-                [formControl]="tagsCtrl"
-                [matChipInputFor]="chipList"
-                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                (matChipInputTokenEnd)="add($event,row)">
-            </mat-chip-list>
-        </td>
-    </ng-container>
+  <ng-container matColumnDef="labels">
+    <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header>
+      Etiquetas
+    </th>
+    <td *matCellDef="let row" mat-cell>
+      <mat-chip-list #chipList>
+        <mat-chip class="myChip" *ngFor="let tag of row.tags" (removed)="remove(tag, row)"
+          >{{ tag }}
+          <button matChipRemove>
+            <ic-icon [icon]="icCancel" size="18px"></ic-icon>
+          </button>
+        </mat-chip>
+        <input
+            placeholder="Nueva etiqueta..."
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="add($event, row)"
+          />
+      </mat-chip-list>
+    </td>
+  </ng-container>
 
-    <!-- Action Column -->
-    <ng-container matColumnDef="actions">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header></th>
-        <td *matCellDef="let row" class="w-10 text-secondary" mat-cell>
-            <button (click)="$event.stopPropagation()" [matMenuTriggerData]="{ group: row }"
-                [matMenuTriggerFor]="actionsMenu" mat-icon-button type="button">
-                <mat-icon [icIcon]="icMoreHoriz"></mat-icon>
-            </button>
-        </td>
-    </ng-container>
+  <!-- Action Column -->
+  <ng-container matColumnDef="actions">
+    <th *matHeaderCellDef mat-header-cell mat-sort-header></th>
+    <td *matCellDef="let row" class="w-10 text-secondary" mat-cell>
+      <button
+        (click)="$event.stopPropagation()"
+        [matMenuTriggerData]="{ group: row }"
+        [matMenuTriggerFor]="actionsMenu"
+        mat-icon-button
+        type="button"
+      >
+        <mat-icon [icIcon]="icMoreHoriz"></mat-icon>
+      </button>
+    </td>
+  </ng-container>
 
-    <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: visibleColumns;" @fadeInUp
-        class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+  <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+  <tr
+    *matRowDef="let row; columns: visibleColumns"
+    @fadeInUp
+    class="hover:bg-hover trans-ease-out cursor-pointer"
+    mat-row
+  ></tr>
 </table>
 
-<mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0"></mat-paginator>
+<mat-paginator
+  [pageSizeOptions]="pageSizeOptions"
+  [pageSize]="pageSize"
+  class="sticky left-0"
+></mat-paginator>
 
 <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below">
-    <ng-template let-group="group" matMenuContent>
-        <button (click)="updateGroup(group)" mat-menu-item>
-            <mat-icon [icIcon]="icEdit"></mat-icon>
-            <span>Modificar</span>
-        </button>
-        <button (click)="deleteGroup(group)" mat-menu-item>
-            <mat-icon [icIcon]="icDelete"></mat-icon>
-            <span>Eliminar</span>
-        </button>
-    </ng-template>
+  <ng-template let-group="group" matMenuContent>
+    <button (click)="updateGroup(group)" mat-menu-item>
+      <mat-icon [icIcon]="icEdit"></mat-icon>
+      <span>Modificar</span>
+    </button>
+    <button (click)="deleteGroup(group)" mat-menu-item>
+      <mat-icon [icIcon]="icDelete"></mat-icon>
+      <span>Eliminar</span>
+    </button>
+  </ng-template>
 </mat-menu>

@@ -13,7 +13,6 @@ import { SplashScreenService } from '../@vex/services/splash-screen.service';
 import { Style, StyleService } from '../@vex/services/style.service';
 import { ConfigName } from '../@vex/interfaces/config-name.model';
 import menu from '../static-data/menu.json';
-import { isThisSecond } from 'date-fns';
 
 @Component({
   selector: 'vex-root',
