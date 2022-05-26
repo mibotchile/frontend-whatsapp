@@ -13,7 +13,7 @@
 
 * [Angular 13](https://angular.io/)
 * [Angular Material](https://material.angular.io/)
-* [VEX 13 Template]((https://vex.visurel.com/)
+* [VEX 13 Template](https://vex.visurel.com/)
   
 <p align="right">(<a href="#top">back to top</a>)</p>
 
