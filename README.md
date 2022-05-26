@@ -7,12 +7,15 @@
 
   <h3 align="center">OnbotGo - WhatsApp FrontEnd</h3>
 </div>
+
+
 ### Built With
 
 * [Angular 13](https://angular.io/)
 * [Angular Material](https://material.angular.io/)
 * [VEX 13 Template]((https://vex.visurel.com/)
   
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 ## Getting Started
