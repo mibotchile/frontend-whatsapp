@@ -29,11 +29,12 @@
   <mat-slide-toggle (toggleChange)="showData()" [(ngModel)]="isChecked" color="primary"></mat-slide-toggle>
 
   <button
+    (click)="createRole()"
     class="ml-4"
     color="primary"
     fxFlex="none"
     mat-mini-fab
-    matTooltip="Agregar Grupo"
+    matTooltip="Agregar Rol"
     type="button"
   >
     <mat-icon [icIcon]="icAdd"></mat-icon>
