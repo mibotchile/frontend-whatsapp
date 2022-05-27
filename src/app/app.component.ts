@@ -118,16 +118,7 @@ export class AppComponent {
 
   menuNavigation() {
     
-    // this.menuItemsAux = this.items[0].children.map((item)=>item.label.toLowerCase());
-    // this.menuItems = this.menu.filter((menuItem)=>this.menuItemsAux.includes(menuItem.name));
-    
-    // console.log(this.menuItemsAux)
-    // console.log(this.menuItems)
-
-    //this.menuItems = this.items.filter((menuItem)=>menuItem.children.filter((childrenItem)=>childrenItem.label.toLowerCase() === 'configuraciones'))
-
     this.menuItems = this.items[0].children.filter((childrenItem)=>this.menu.map((menuItem)=>menuItem.name).includes(childrenItem.label.toLowerCase()));
-    console.log(this.menuItems)
 
     this.newItems = this.items;
     this.newItems[0].children = this.menuItems;
