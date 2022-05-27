@@ -33,6 +33,14 @@
     </mat-form-field>
   </mat-dialog-content>
 
+  <mat-divider class="-mx-6 text-border"></mat-divider>
+
+  <div @fadeInUp class="card overflow-hidden">
+    <mat-horizontal-stepper  [linear]="true">
+
+    </mat-horizontal-stepper>
+  </div>
+
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close type="button">CANCELAR</button>
     <button *ngIf="isCreateMode()" color="primary" mat-button type="submit">

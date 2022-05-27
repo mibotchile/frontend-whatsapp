@@ -15,7 +15,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
-
+import {MatStepperModule} from '@angular/material/stepper';
 
 @NgModule({
   declarations: [
@@ -37,7 +37,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatDialogModule,
     MatInputModule,
     MatPaginatorModule,
-    MatMenuModule
+    MatMenuModule,
+    MatStepperModule
   ],
   exports: [
     RolesTableComponent
