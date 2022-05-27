@@ -13,6 +13,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatMenuModule } from '@angular/material/menu';
+
 
 @NgModule({
   declarations: [
@@ -32,7 +35,9 @@ import { MatInputModule } from '@angular/material/input';
     MatDividerModule,
     MatFormFieldModule,
     MatDialogModule,
-    MatInputModule
+    MatInputModule,
+    MatPaginatorModule,
+    MatMenuModule
   ],
   exports: [
     RolesTableComponent

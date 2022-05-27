@@ -1,7 +1,10 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import icSearch from "@iconify/icons-ic/twotone-search";
 import icAdd from "@iconify/icons-ic/twotone-add";
+import icMoreHoriz from "@iconify/icons-ic/twotone-more-horiz";
+import icDelete from "@iconify/icons-ic/twotone-delete";
+import icEdit from "@iconify/icons-ic/twotone-edit";
 import { TableColumn } from "src/@vex/interfaces/table-column.interface";
 import { Role } from "../../models/role.model";
 import { MatTableDataSource } from "@angular/material/table";
@@ -11,6 +14,8 @@ import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
 import { MatDialog } from "@angular/material/dialog";
 import { RoleCreateUpdateComponent } from "./role-create-update/role-create-update.component";
+import { MatSort } from "@angular/material/sort";
+import { MatPaginator } from "@angular/material/paginator";
 
 @Component({
   selector: "frontend-whatsapp-roles-table",
@@ -18,11 +23,17 @@ import { RoleCreateUpdateComponent } from "./role-create-update/role-create-upda
   styleUrls: ["./roles-table.component.scss"],
   animations: [fadeInUp400ms, stagger40ms],
 })
-export class RolesTableComponent implements OnInit , OnDestroy {
+export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
   //Icons
   icSearch = icSearch;
   icAdd = icAdd;
+  icMoreHoriz = icMoreHoriz;
+  icDelete = icDelete;
+  icEdit = icEdit;
   //Icons end
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   isChecked = true;
 
@@ -31,6 +42,8 @@ export class RolesTableComponent implements OnInit , OnDestroy {
   roleTableData: Role[];
   deactivatedRoleTableData: Role[];
 
+  pageSize = 10;
+  pageSizeOptions: number[] = [5, 10, 20, 50];
   searchCtrl = new FormControl();
   dataSource: MatTableDataSource<Role> | null;
 
@@ -44,7 +57,7 @@ export class RolesTableComponent implements OnInit , OnDestroy {
     },
     // ,
     // { label: "Etiquetas", property: "labels", type: "button", visible: true },
-    // { label: "Acciones", property: "actions", type: "button", visible: true },
+    { label: "Acciones", property: "actions", type: "button", visible: true },
   ];
 
   get visibleColumns() {
@@ -54,6 +67,10 @@ export class RolesTableComponent implements OnInit , OnDestroy {
   }
 
   constructor(private dialog: MatDialog,private roleService: RoleService) {}
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
   
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -113,6 +130,45 @@ export class RolesTableComponent implements OnInit , OnDestroy {
           );
         }
       });
+  }
+
+  updateRole(role: Role) {
+    this.dialog
+      .open(RoleCreateUpdateComponent, {
+        data: role,
+      })
+      .afterClosed()
+      .subscribe((updatedRole) => {
+
+        if (updatedRole) {
+
+          this.subscription = new Subscription();
+          this.subscription = this.roleService
+            .updateRole(updatedRole)
+            .subscribe(
+              () => {
+                console.log("Success");
+                this.getData();
+              },
+              (error) => {
+                console.log(`Error: ${error}`);
+              }
+            );
+        }
+      });
+  }
+
+  deleteRole(role: Role) {
+    this.subscription = new Subscription();
+    this.subscription = this.roleService.deleteRole(role).subscribe(
+      () => {
+        console.log("Success");
+        this.getData();
+      },
+      (error) => {
+        console.log(`Error: ${error}`);
+      }
+    );
   }
 
   trackByProperty<T>(index: number, column: TableColumn<T>) {

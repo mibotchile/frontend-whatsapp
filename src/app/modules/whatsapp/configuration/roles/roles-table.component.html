@@ -57,6 +57,22 @@
     </ng-container>
   </ng-container>
 
+  <!-- Action Column -->
+  <ng-container matColumnDef="actions">
+    <th *matHeaderCellDef mat-header-cell mat-sort-header></th>
+    <td *matCellDef="let row" class="w-10 text-secondary" mat-cell>
+      <button
+        (click)="$event.stopPropagation()"
+        [matMenuTriggerData]="{ role: row }"
+        [matMenuTriggerFor]="actionsMenu"
+        mat-icon-button
+        type="button"
+      >
+        <mat-icon [icIcon]="icMoreHoriz"></mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
   <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
   <tr
     *matRowDef="let row; columns: visibleColumns"
@@ -65,3 +81,22 @@
     mat-row
   ></tr>
 </table>
+
+<mat-paginator
+  [pageSizeOptions]="pageSizeOptions"
+  [pageSize]="pageSize"
+  class="sticky left-0"
+></mat-paginator>
+
+<mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below">
+  <ng-template let-role="role" matMenuContent>
+    <button (click)="updateRole(role)" mat-menu-item>
+      <mat-icon [icIcon]="icEdit"></mat-icon>
+      <span>Modificar</span>
+    </button>
+    <button (click)="deleteRole(role)" mat-menu-item>
+      <mat-icon [icIcon]="icDelete"></mat-icon>
+      <span>Eliminar</span>
+    </button>
+  </ng-template>
+</mat-menu>
