@@ -28,11 +28,13 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { RolesModule } from './configuration/roles/roles.module';
 
 @NgModule({
   declarations: [ConfigurationComponent, GroupsTableComponent, GroupCreateUpdateComponent],
   imports: [
     CommonModule,
+    RolesModule,
     WhatsappRoutingModule,
     SecondaryToolbarModule,
     PageLayoutModule,
