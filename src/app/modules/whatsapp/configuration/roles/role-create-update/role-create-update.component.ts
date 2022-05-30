@@ -5,13 +5,73 @@ import icClose from '@iconify/icons-ic/twotone-close';
 import icSecurity from '@iconify/icons-ic/security';
 import { Role } from "../../../models/role.model";
 
-
 @Component({
   selector: "frontend-whatsapp-role-create-update",
   templateUrl: "./role-create-update.component.html",
   styleUrls: ["./role-create-update.component.scss"],
 })
 export class RoleCreateUpdateComponent implements OnInit {
+
+  nodes = [
+    {
+      id: 1,
+      name: 'Conversaciones',
+      children: [
+        { id: 2, name: 'Crear' },
+        { id: 3, name: 'Leer' },
+        { id: 4, name: 'Actualizar' },
+        { id: 5, name: 'Eliminar' }
+      ]
+    },
+    {
+      id: 6,
+      name: 'Configuración',
+      children: [
+        { id: 7, 
+          name: 'Usuarios',
+          children: [
+            { id: 8, name: 'Crear' },
+            { id: 9, name: 'Leer' },
+            { id: 10, name: 'Actualizar' },
+            { id: 11, name: 'Eliminar' }
+          ] 
+        },
+        {
+          id: 12, 
+          name: 'Grupos',
+          children: [
+            { id: 13, name: 'Crear' },
+            { id: 14, name: 'Leer' },
+            { id: 15, name: 'Actualizar' },
+            { id: 16, name: 'Eliminar' }
+          ] 
+        },
+        {
+          id: 17, 
+          name: 'Canales',
+          children: [
+            { id: 18, name: 'Crear' },
+            { id: 19, name: 'Leer' },
+            { id: 20, name: 'Actualizar' },
+            { id: 21, name: 'Eliminar' }
+          ] 
+        },
+        {
+          id: 22, 
+          name: 'Roles',
+          children: [
+            { id: 23, name: 'Crear' },
+            { id: 24, name: 'Leer' },
+            { id: 25, name: 'Actualizar' },
+            { id: 26, name: 'Eliminar' }
+          ] 
+        }
+      ]
+    }
+  ];
+  options = {
+    useCheckbox: true
+  };
   
   icClose = icClose;
   icSecurity = icSecurity;

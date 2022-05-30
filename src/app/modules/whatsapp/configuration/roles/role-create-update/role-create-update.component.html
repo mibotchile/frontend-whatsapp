@@ -20,35 +20,28 @@
   <mat-divider class="-mx-6 text-border"></mat-divider>
 
   <mat-dialog-content fxLayout="row" class="flex-auto">
-    <mat-dialog-content fxLayout="column">
-      <mat-form-field class="mt-6 flex-auto">
+    <div fxLayout="column" fxFlex="50">
+      <mat-form-field class="mt-6">
         <mat-label>Nombre</mat-label>
         <input cdkFocusInitial formControlName="name" matInput />
 
         <mat-icon [icIcon]="icSecurity" class="mr-3" matPrefix></mat-icon>
       </mat-form-field>
 
-      <mat-form-field class="flex-auto">
+      <mat-form-field>
         <mat-label>Descripción</mat-label>
         <textarea formControlName="description" matInput></textarea>
       </mat-form-field>
-    </mat-dialog-content>
 
-    <!-- <mat-divider class="-mx-6 text-border" [vertical]="true"></mat-divider> -->
+      <mat-slide-toggle color="primary">Estado</mat-slide-toggle>
+    </div>
 
-    <mat-dialog-content fxLayout="column">
-      <mat-form-field class="mt-6 flex-auto">
-        <mat-label>Nombre</mat-label>
-        <input cdkFocusInitial formControlName="name" matInput />
+    <mat-divider class="ml-6 text-border" [vertical]="true"></mat-divider>
 
-        <mat-icon [icIcon]="icSecurity" class="mr-3" matPrefix></mat-icon>
-      </mat-form-field>
-
-      <mat-form-field class="flex-auto">
-        <mat-label>Descripción</mat-label>
-        <textarea formControlName="description" matInput></textarea>
-      </mat-form-field>
-    </mat-dialog-content>
+    <div fxLayout="column" class="ml-6" fxFlex="50">
+      <h3 class="mt-3">Configuración</h3>
+      <tree-root [nodes]="nodes" [options]="options"></tree-root>
+    </div>
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">

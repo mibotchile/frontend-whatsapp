@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatStepperModule} from '@angular/material/stepper';
+import { TreeModule } from '@circlon/angular-tree-component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import {MatStepperModule} from '@angular/material/stepper';
     MatInputModule,
     MatPaginatorModule,
     MatMenuModule,
-    MatStepperModule
+    MatStepperModule,
+    TreeModule
   ],
   exports: [
     RolesTableComponent
