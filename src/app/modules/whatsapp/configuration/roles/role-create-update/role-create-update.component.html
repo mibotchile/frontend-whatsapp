@@ -19,27 +19,37 @@
 
   <mat-divider class="-mx-6 text-border"></mat-divider>
 
-  <mat-dialog-content fxLayout="column">
-    <mat-form-field class="mt-6 flex-auto">
-      <mat-label>Nombre</mat-label>
-      <input cdkFocusInitial formControlName="name" matInput />
+  <mat-dialog-content fxLayout="row" class="flex-auto">
+    <mat-dialog-content fxLayout="column">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Nombre</mat-label>
+        <input cdkFocusInitial formControlName="name" matInput />
 
-      <mat-icon [icIcon]="icSecurity" class="mr-3" matPrefix></mat-icon>
-    </mat-form-field>
+        <mat-icon [icIcon]="icSecurity" class="mr-3" matPrefix></mat-icon>
+      </mat-form-field>
 
-    <mat-form-field class="flex-auto">
-      <mat-label>Descripción</mat-label>
-      <textarea formControlName="description" matInput></textarea>
-    </mat-form-field>
+      <mat-form-field class="flex-auto">
+        <mat-label>Descripción</mat-label>
+        <textarea formControlName="description" matInput></textarea>
+      </mat-form-field>
+    </mat-dialog-content>
+
+    <!-- <mat-divider class="-mx-6 text-border" [vertical]="true"></mat-divider> -->
+
+    <mat-dialog-content fxLayout="column">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Nombre</mat-label>
+        <input cdkFocusInitial formControlName="name" matInput />
+
+        <mat-icon [icIcon]="icSecurity" class="mr-3" matPrefix></mat-icon>
+      </mat-form-field>
+
+      <mat-form-field class="flex-auto">
+        <mat-label>Descripción</mat-label>
+        <textarea formControlName="description" matInput></textarea>
+      </mat-form-field>
+    </mat-dialog-content>
   </mat-dialog-content>
-
-  <mat-divider class="-mx-6 text-border"></mat-divider>
-
-  <div @fadeInUp class="card overflow-hidden">
-    <mat-horizontal-stepper  [linear]="true">
-
-    </mat-horizontal-stepper>
-  </div>
 
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close type="button">CANCELAR</button>
