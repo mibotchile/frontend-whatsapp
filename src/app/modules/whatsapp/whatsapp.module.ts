@@ -29,12 +29,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { RolesModule } from './configuration/roles/roles.module';
+import { UsersModule } from './configuration/users/users.module';
 
 @NgModule({
   declarations: [ConfigurationComponent, GroupsTableComponent, GroupCreateUpdateComponent],
   imports: [
     CommonModule,
     RolesModule,
+    UsersModule,
     WhatsappRoutingModule,
     SecondaryToolbarModule,
     PageLayoutModule,
