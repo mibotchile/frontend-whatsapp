@@ -17,11 +17,15 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatStepperModule} from '@angular/material/stepper';
 import { TreeModule } from '@circlon/angular-tree-component';
+import { RoleSelectorComponent } from './role-selector/role-selector.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
   declarations: [
     RolesTableComponent,
-    RoleCreateUpdateComponent
+    RoleCreateUpdateComponent,
+    RoleSelectorComponent
   ],
   imports: [
     CommonModule,
@@ -40,7 +44,9 @@ import { TreeModule } from '@circlon/angular-tree-component';
     MatPaginatorModule,
     MatMenuModule,
     MatStepperModule,
-    TreeModule
+    TreeModule,
+    MatCheckboxModule,
+    MatListModule
   ],
   exports: [
     RolesTableComponent

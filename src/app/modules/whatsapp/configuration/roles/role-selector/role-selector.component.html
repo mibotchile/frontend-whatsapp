@@ -1,0 +1,14 @@
+<div>
+  <span>
+    <button (click)="actionList()" mat-icon-button type="button">
+        <mat-icon *ngIf="!isExpanded">chevron_right</mat-icon>
+        <mat-icon *ngIf="isExpanded">expand_more</mat-icon>
+    </button>
+    <mat-checkbox> Texto 1 </mat-checkbox>
+  </span>
+  <span>
+    <ul>
+      <mat-checkbox> Texto 2 </mat-checkbox>
+    </ul>
+  </span>
+</div>
