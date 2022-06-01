@@ -1,27 +1,35 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import icSearch from "@iconify/icons-ic/twotone-search";
 import icAdd from "@iconify/icons-ic/twotone-add";
 import icMoreHoriz from "@iconify/icons-ic/twotone-more-horiz";
 import icDelete from "@iconify/icons-ic/twotone-delete";
 import icEdit from "@iconify/icons-ic/twotone-edit";
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { Subscription } from 'rxjs';
-import { User } from '../../Models/user.model';
-import { FormControl } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
-import { TableColumn } from 'src/@vex/interfaces/table-column.interface';
-import { MatDialog } from '@angular/material/dialog';
-import { UserService } from '../../services/user.service';
-import { UserCreateUpdateComponent } from './user-create-update/user-create-update.component';
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { Subscription } from "rxjs";
+import { User } from "../../Models/user.model";
+import { FormControl } from "@angular/forms";
+import { MatTableDataSource } from "@angular/material/table";
+import { TableColumn } from "src/@vex/interfaces/table-column.interface";
+import { MatDialog } from "@angular/material/dialog";
+import { UserService } from "../../services/user.service";
+import { UserCreateUpdateComponent } from "./user-create-update/user-create-update.component";
+import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
+import { stagger40ms } from "src/@vex/animations/stagger.animation";
 
 @Component({
-  selector: 'frontend-whatsapp-users-table',
-  templateUrl: './users-table.component.html',
-  styleUrls: ['./users-table.component.scss']
+  selector: "frontend-whatsapp-users-table",
+  templateUrl: "./users-table.component.html",
+  styleUrls: ["./users-table.component.scss"],
+  animations: [fadeInUp400ms, stagger40ms],
 })
-export class UsersTableComponent implements OnInit , OnDestroy , AfterViewInit{
-
+export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
   //Icons
   icSearch = icSearch;
   icAdd = icAdd;
@@ -36,6 +44,7 @@ export class UsersTableComponent implements OnInit , OnDestroy , AfterViewInit{
   isChecked = true;
 
   subscription: Subscription;
+  roleName: string;
 
   userTableData: User[];
   deactivatedUserTableData: User[];
@@ -53,8 +62,8 @@ export class UsersTableComponent implements OnInit , OnDestroy , AfterViewInit{
       type: "text",
       visible: true,
     },
-    // { label: "Grupos", property: "groupLabels", type: "button", visible: true },
-    // { label: "Rol", property: "rolLabels", type: "button", visible: true },
+    { label: "Grupos", property: "groups_id", type: "button", visible: true },
+    { label: "Rol", property: "role_id", type: "text", visible: true },
     { label: "Acciones", property: "actions", type: "button", visible: true },
   ];
 
@@ -64,7 +73,7 @@ export class UsersTableComponent implements OnInit , OnDestroy , AfterViewInit{
       .map((column) => column.property);
   }
 
-  constructor(private dialog: MatDialog,private userService: UserService) { }
+  constructor(private dialog: MatDialog, private userService: UserService) {}
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -77,24 +86,25 @@ export class UsersTableComponent implements OnInit , OnDestroy , AfterViewInit{
   }
 
   getData() {
+    this.getRoleNameById(1);
+    console.log(this.roleName);
+
     this.subscription = new Subscription();
     this.subscription = this.userService.getUsers().subscribe((data: any) => {
-      this.userTableData = [];
-      this.deactivatedUserTableData = [];
-      for (let item of data.data) {
-        console.log(item);
-        if (item.status === 0) {
-          this.deactivatedUserTableData.push(item);
-        } else {
-          this.userTableData.push(item);
-        }
-      }
-      if (this.isChecked) {
-        this.dataSource.data = this.userTableData;
-      } else {
-        this.dataSource.data = this.deactivatedUserTableData;
-      }
+      this.userTableData = data.data.filter((n) => n.status === 1);
+      this.deactivatedUserTableData = data.data.filter((n) => n.status === 0);
+      this.isChecked
+        ? (this.dataSource.data = this.userTableData)
+        : (this.dataSource.data = this.deactivatedUserTableData);
       console.log(this.userTableData);
+    });
+  }
+
+  getRoleNameById(id: number) {
+    this.subscription = new Subscription();
+    this.subscription = this.userService.getUserById(id).subscribe((data) => {
+      
+      return data.data.role.name;
     });
   }
 
@@ -107,9 +117,7 @@ export class UsersTableComponent implements OnInit , OnDestroy , AfterViewInit{
       .open(UserCreateUpdateComponent)
       .afterClosed()
       .subscribe((user: User) => {
-
         if (user) {
-
           this.subscription = new Subscription();
           this.subscription = this.userService.insertUser(user).subscribe(
             () => {
@@ -131,9 +139,7 @@ export class UsersTableComponent implements OnInit , OnDestroy , AfterViewInit{
       })
       .afterClosed()
       .subscribe((updatedUser) => {
-
         if (updatedUser) {
-
           this.subscription = new Subscription();
           this.subscription = this.userService
             .updateUser(updatedUser)
@@ -170,5 +176,4 @@ export class UsersTableComponent implements OnInit , OnDestroy , AfterViewInit{
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
 }

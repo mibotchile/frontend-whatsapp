@@ -1,5 +1,5 @@
 <div>
-  <span>
+  <!-- <span>
     <button (click)="actionList()" mat-icon-button type="button">
         <mat-icon *ngIf="!isExpanded">chevron_right</mat-icon>
         <mat-icon *ngIf="isExpanded">expand_more</mat-icon>
@@ -10,5 +10,30 @@
     <ul>
       <mat-checkbox> Texto 2 </mat-checkbox>
     </ul>
-  </span>
+  </span> -->
+  <ul>
+    <li *ngFor="let item of data;let i = index">
+      <button (click)="toggle[i]=!toggle[i]" mat-icon-button type="button">
+        <mat-icon *ngIf="toggle[i]">chevron_right</mat-icon>
+        <mat-icon *ngIf="!toggle[i]">expand_more</mat-icon>
+      </button>
+      <mat-checkbox>
+        {{ item.name }}
+      </mat-checkbox>
+      <ul class="tabs">
+        <li *ngFor="let itemTab of item.tabs">
+          <div class="tabContainer">
+            <mat-checkbox>
+              {{ itemTab.name }}
+            </mat-checkbox>
+            <div class="labelParent">
+              <div class="label" *ngFor="let label of itemTab.permissions">
+                {{ label }}
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </li>
+  </ul>
 </div>

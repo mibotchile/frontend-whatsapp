@@ -17,6 +17,17 @@ export class GroupService {
     (`${environment.url_api}group/`, {headers: headers} );
   }
 
+  getGroupById(id: number) {
+    let headers = new HttpHeaders();
+    headers = headers.append(
+      "mibot_session",
+      '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
+    );
+    return this.http.get<Group>(`${environment.url_api}group/${id}`, {
+      headers: headers,
+    });
+  }
+
   insertGroup(value: Group){
 
     //value.tags = ['']

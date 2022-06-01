@@ -18,6 +18,17 @@ export class UserService {
     (`${environment.url_api}user/`,{headers: headers});
   }
 
+  getUserById(id: number) {
+    let headers = new HttpHeaders();
+    headers = headers.append(
+      "mibot_session",
+      '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
+    );
+    return this.http.get<any>(`${environment.url_api}user/${id}`, {
+      headers: headers,
+    });
+  }
+
   insertUser(value: User){
     let headers = new HttpHeaders();
     headers = headers.append('mibot_session','{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}');
