@@ -16,6 +16,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
 import { UserCreateUpdateComponent } from './user-create-update/user-create-update.component';
 import { MatChipsModule } from '@angular/material/chips';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { MatChipsModule } from '@angular/material/chips';
     MatInputModule,
     MatPaginatorModule,
     MatMenuModule,
-    MatChipsModule
+    MatChipsModule,
+    MatSelectModule
   ],
   exports: [
     UsersTableComponent

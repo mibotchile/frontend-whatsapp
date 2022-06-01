@@ -86,9 +86,6 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getData() {
-    this.getRoleNameById(1);
-    console.log(this.roleName);
-
     this.subscription = new Subscription();
     this.subscription = this.userService.getUsers().subscribe((data: any) => {
       this.userTableData = data.data.filter((n) => n.status === 1);
@@ -96,15 +93,18 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
       this.isChecked
         ? (this.dataSource.data = this.userTableData)
         : (this.dataSource.data = this.deactivatedUserTableData);
-      console.log(this.userTableData);
+      //console.log(this.userTableData);
     });
+    //console.log(this.userTableData);
   }
 
   getRoleNameById(id: number) {
     this.subscription = new Subscription();
     this.subscription = this.userService.getUserById(id).subscribe((data) => {
-      
-      return data.data.role.name;
+      this.roleName = "";
+      this.roleName =  data.data.role.name;
+      console.log(this.roleName)
+      return this.roleName;
     });
   }
 
