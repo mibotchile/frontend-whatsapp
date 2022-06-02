@@ -77,6 +77,14 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "dev": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ]
             }
           }
         },
@@ -88,6 +96,9 @@
           "configurations": {
             "production": {
               "browserTarget": "frontend-whatsapp:build:production"
+            },
+            "dev": {
+              "browserTarget": "frontend-whatsapp:build:dev"
             }
           }
         },

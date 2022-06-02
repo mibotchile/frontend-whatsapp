@@ -27,6 +27,14 @@
   ```sh
   npm install -g @angular/cli
   ```
+### Enviroments
+
+```bash
+# Local = Credenciales de Valhalla (.env.development)
+# Dev = Credenciales de Valhalla  (.env.development)
+# Prod = Credenciales de WorkSpace  (.env.production)
+```
+
 ### Installation
 
 1. Install project dependencies
@@ -35,7 +43,10 @@
    ```
 2. Run the project
    ```sh
-   npm start
+   # Development mode
+   ng serve --configuration dev
+   # Production mode
+   ng serve --configuration production
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
