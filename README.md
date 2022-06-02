@@ -29,10 +29,10 @@
   ```
 ### Enviroments
 
-```bash
-# Local = Credenciales de Valhalla (.env.development)
-# Dev = Credenciales de Valhalla  (.env.development)
-# Prod = Credenciales de WorkSpace  (.env.production)
+```sh
+# Local = Credenciales de Valhalla (environment.ts)
+# Dev = Credenciales de Valhalla  (environment.dev.ts)
+# Prod = Credenciales de WorkSpace  (environment.prod.ts)
 ```
 
 ### Installation
