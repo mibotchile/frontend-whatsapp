@@ -23,11 +23,13 @@ import { UserCreateUpdateComponent } from "./user-create-update/user-create-upda
 import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
 import { RoleService } from "../../services/role.service";
+import { GroupService } from "../../services/group.service";
 
-export interface RoleId {
-  id: number;
-  name: string;
-}
+// export interface EntityId {
+//   id: number;
+//   name: string;
+// }
+
 
 @Component({
   selector: "frontend-whatsapp-users-table",
@@ -50,7 +52,6 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
   isChecked = true;
 
   subscription: Subscription;
-  roleIdData: RoleId[];
 
   userTableData: User[];
   deactivatedUserTableData: User[];
@@ -58,7 +59,7 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
   searchCtrl = new FormControl();
-  dataSource: MatTableDataSource<any> | null;
+  dataSource: MatTableDataSource<User> | null;
 
   columns: TableColumn<User>[] = [
     { label: "Nombre", property: "name", type: "text", visible: true },
@@ -79,7 +80,12 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
       .map((column) => column.property);
   }
 
-  constructor(private dialog: MatDialog, private userService: UserService, private roleService: RoleService) {}
+  constructor(
+    private dialog: MatDialog,
+    private userService: UserService,
+    private roleService: RoleService,
+    private groupService: GroupService
+  ) {}
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -88,7 +94,6 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.getData();
-    this.getRolesWithId();
     this.dataSource = new MatTableDataSource();
   }
 
@@ -103,18 +108,11 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  getRolesWithId() {
-    this.subscription = new Subscription();
-    this.subscription = this.roleService.getRoles().subscribe((data: any) => {
-      this.roleIdData = data.data.map(x => {
-        return <RoleId>
-        {
-          id: x.id,
-          name: x.name
-        }
-      });
-      console.log(this.roleIdData);
-    });
+  getGroupNameById(id: number){
+    // this.subscription = new Subscription();
+    // this.subscription = this.groupService.getGroupById(id).subscribe((response: any) => {
+      
+    // })
   }
 
   showData() {

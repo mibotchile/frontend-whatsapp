@@ -37,8 +37,7 @@ export class GroupCreateUpdateComponent implements OnInit {
 
     this.form = this.fb.group({
       name: this.defaults.name,
-      description: this.defaults.description,
-      tags: this.defaults.tags
+      description: this.defaults.description
     });
 
   }
@@ -60,6 +59,7 @@ export class GroupCreateUpdateComponent implements OnInit {
   updateGroup() {
     const group = this.form.value;
     group.id = this.defaults.id;
+    group.tags = this.defaults.tags;
 
     this.dialogRef.close(group);
   }

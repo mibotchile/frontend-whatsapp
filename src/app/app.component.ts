@@ -5,6 +5,7 @@ import { DOCUMENT } from '@angular/common';
 import { Platform } from '@angular/cdk/platform';
 import { NavigationService } from '../@vex/services/navigation.service';
 import whatsapp from '@iconify/icons-logos/whatsapp';
+import icHome from '@iconify/icons-ic/twotone-whatshot';
 import { LayoutService } from '../@vex/services/layout.service';
 import { ActivatedRoute } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
@@ -31,7 +32,7 @@ export class AppComponent {
       type: 'dropdown',
       label: 'Whatsapp',
       //route: '/',
-      icon: whatsapp,
+      icon: icHome,
       //routerLinkActiveOptions: { exact: true },
       children: [
         {
@@ -43,7 +44,7 @@ export class AppComponent {
           type: 'link',
           label: 'Configuracion',
           route: '/whatsapp/configuration'
-        },
+        }
       ]
     },
   ];
