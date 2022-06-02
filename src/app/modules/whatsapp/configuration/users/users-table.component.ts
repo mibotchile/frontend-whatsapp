@@ -13,7 +13,7 @@ import icEdit from "@iconify/icons-ic/twotone-edit";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { Subscription } from "rxjs";
-import { User } from "../../Models/user.model";
+import { User } from "../../models/user.model";
 import { FormControl } from "@angular/forms";
 import { MatTableDataSource } from "@angular/material/table";
 import { TableColumn } from "src/@vex/interfaces/table-column.interface";
@@ -22,6 +22,12 @@ import { UserService } from "../../services/user.service";
 import { UserCreateUpdateComponent } from "./user-create-update/user-create-update.component";
 import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
+import { RoleService } from "../../services/role.service";
+
+export interface RoleId {
+  id: number;
+  name: string;
+}
 
 @Component({
   selector: "frontend-whatsapp-users-table",
@@ -44,7 +50,7 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
   isChecked = true;
 
   subscription: Subscription;
-  roleName: string;
+  roleIdData: RoleId[];
 
   userTableData: User[];
   deactivatedUserTableData: User[];
@@ -52,7 +58,7 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
   searchCtrl = new FormControl();
-  dataSource: MatTableDataSource<User> | null;
+  dataSource: MatTableDataSource<any> | null;
 
   columns: TableColumn<User>[] = [
     { label: "Nombre", property: "name", type: "text", visible: true },
@@ -73,7 +79,7 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
       .map((column) => column.property);
   }
 
-  constructor(private dialog: MatDialog, private userService: UserService) {}
+  constructor(private dialog: MatDialog, private userService: UserService, private roleService: RoleService) {}
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -82,6 +88,7 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.getData();
+    this.getRolesWithId();
     this.dataSource = new MatTableDataSource();
   }
 
@@ -93,18 +100,20 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
       this.isChecked
         ? (this.dataSource.data = this.userTableData)
         : (this.dataSource.data = this.deactivatedUserTableData);
-      //console.log(this.userTableData);
     });
-    //console.log(this.userTableData);
   }
 
-  getRoleNameById(id: number) {
+  getRolesWithId() {
     this.subscription = new Subscription();
-    this.subscription = this.userService.getUserById(id).subscribe((data) => {
-      this.roleName = "";
-      this.roleName =  data.data.role.name;
-      console.log(this.roleName)
-      return this.roleName;
+    this.subscription = this.roleService.getRoles().subscribe((data: any) => {
+      this.roleIdData = data.data.map(x => {
+        return <RoleId>
+        {
+          id: x.id,
+          name: x.name
+        }
+      });
+      console.log(this.roleIdData);
     });
   }
 

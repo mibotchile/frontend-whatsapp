@@ -3,7 +3,7 @@ import icClose from '@iconify/icons-ic/twotone-close';
 import icPeople from '@iconify/icons-ic/people';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { User } from '../../../Models/user.model';
+import { User } from '../../../models/user.model';
 import { GroupService } from '../../../services/group.service';
 import { Subscription } from 'rxjs';
 import { RoleService } from '../../../services/role.service';
