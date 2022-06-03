@@ -57,13 +57,13 @@
     </ng-container>
   </ng-container>
 
-  <ng-container matColumnDef="groups_id">
+  <ng-container matColumnDef="groupNames">
     <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header>
       Grupos
     </th>
     <td *matCellDef="let row" mat-cell>
       <mat-chip-list>
-        <mat-chip class="myChip" *ngFor="let group of row.groups_id"
+        <mat-chip class="myChip" *ngFor="let group of row.groupNames"
           >{{ group }}
         </mat-chip>
       </mat-chip-list>

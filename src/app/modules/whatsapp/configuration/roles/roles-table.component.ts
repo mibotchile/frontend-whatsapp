@@ -102,7 +102,7 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
       } else {
         this.dataSource.data = this.deactivatedRoleTableData;
       }
-      console.log(this.roleTableData);
+      console.log(this.dataSource.data);
     });
   }
 
