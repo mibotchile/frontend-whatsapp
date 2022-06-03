@@ -9,8 +9,15 @@ import { Selector } from "./selector";
 export class RoleSelectorComponent implements OnInit {
   toggle = {};
   tags: string[];
+  permissionsToSend: Selector[];
 
-  data: Selector[] = [
+  enableDisablePermission(label, itemName, tabName) : string[]{
+    let permissions = [];
+    permissions.push(label);
+    return
+  }
+
+  allLinks: Selector[] = [
     {
       name: "Conversaciones",
       tabs: [],
@@ -56,6 +63,8 @@ export class RoleSelectorComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.permissionsToSend = [];
+  }
 
 }

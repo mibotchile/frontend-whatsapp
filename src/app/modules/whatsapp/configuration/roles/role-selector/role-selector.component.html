@@ -1,17 +1,31 @@
 <div>
-  <!-- <span>
-    <button (click)="actionList()" mat-icon-button type="button">
-        <mat-icon *ngIf="!isExpanded">chevron_right</mat-icon>
-        <mat-icon *ngIf="isExpanded">expand_more</mat-icon>
-    </button>
-    <mat-checkbox> Texto 1 </mat-checkbox>
-  </span>
-  <span>
-    <ul>
-      <mat-checkbox> Texto 2 </mat-checkbox>
-    </ul>
-  </span> -->
   <ul>
+    <li *ngFor="let item of allLinks;let i = index">
+      <button (click)="toggle[i]=!toggle[i]" mat-icon-button type="button">
+        <mat-icon *ngIf="toggle[i]">chevron_right</mat-icon>
+        <mat-icon *ngIf="!toggle[i]">expand_more</mat-icon>
+      </button>
+      <mat-checkbox color="primary">
+        {{ item.name }}
+      </mat-checkbox>
+      <ul *ngIf="item.hasTabs" class="tabs">
+        <li *ngFor="let itemTab of item.tabs">
+          <div class="tabContainer">
+            <mat-checkbox color="primary">
+              {{ itemTab.name }}
+            </mat-checkbox>
+            <div class="labelParent">
+              <div class="label" *ngFor="let label of itemTab.permissions">
+                <button (click)="enableDisablePermission(label,item.name,itemTab.name)">{{ label }}</button>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <!-- <ul>
     <li *ngFor="let item of data;let i = index">
       <button (click)="toggle[i]=!toggle[i]" mat-icon-button type="button">
         <mat-icon *ngIf="toggle[i]">chevron_right</mat-icon>
@@ -35,5 +49,5 @@
         </li>
       </ul>
     </li>
-  </ul>
+  </ul> -->
 </div>

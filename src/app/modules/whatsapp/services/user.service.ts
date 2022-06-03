@@ -57,7 +57,7 @@ export class UserService {
     param = param.append("uid", value.uid);
     param = param.append("name", value.name);
     param = param.append("email", value.email);
-    param = param.append("group_id", value.groups_id.toString());
+    param = param.append("groups_id", value.groups_id.toString());
     param = param.append("role_id", value.role_id.toString());
 
     return this.http.post(`${environment.url_api}user`, param, {
@@ -76,8 +76,10 @@ export class UserService {
     param = param.append("uid", value.uid);
     param = param.append("name", value.name);
     param = param.append("email", value.email);
-    param = param.append("group_id", value.groups_id.toString());
-    param = param.append("role_id", value.role_id.toString());
+    param = param.append("groups_id", value.groups_id.toString());
+    param = param.append("role_id", value.role_id);
+
+    console.log(param)
     return this.http.put(`${environment.url_api}user/${value.id}`, param, {
       headers: headers,
     });

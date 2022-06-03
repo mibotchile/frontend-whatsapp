@@ -29,15 +29,15 @@
 
         <mat-form-field class="flex-auto">
             <mat-label>Grupos</mat-label>
-            <mat-select formControlName="groupsName" multiple>
-                <mat-option *ngFor="let group of groupList" [value]="group">{{group}}</mat-option>
+            <mat-select formControlName="groups_id" multiple selected>
+                <mat-option *ngFor="let group of groupList" [value]="group.id">{{group.name}}</mat-option>
             </mat-select>
         </mat-form-field>
 
         <mat-form-field class="flex-auto">
             <mat-label>Rol</mat-label>
-            <mat-select formControlName="roleName">
-                <mat-option *ngFor="let role of roleList" [value]="role">{{role}}</mat-option>
+            <mat-select formControlName="role_id">
+                <mat-option *ngFor="let role of roleList" [value]="role.id">{{role.name}}</mat-option>
             </mat-select>
         </mat-form-field>
     </mat-dialog-content>

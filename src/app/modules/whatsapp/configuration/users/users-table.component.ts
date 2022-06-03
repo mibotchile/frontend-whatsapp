@@ -25,6 +25,7 @@ import { stagger40ms } from "src/@vex/animations/stagger.animation";
 
 export interface UserView {
   id: number;
+  uid: string;
   name: string;
   email: string;
   groupNames: Array<string>;
@@ -110,6 +111,7 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
         result[0].data.forEach((element) => {
           data.push({
             id: element.id,
+            uid: element.uid,
             name: element.name,
             email: element.email,
             groupNames: result[1].data

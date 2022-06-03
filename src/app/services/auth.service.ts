@@ -26,4 +26,8 @@ export class AuthService {
     return this.auth.currentUser.displayName;
   }
 
+  getUid(){
+    return this.auth.currentUser.uid;
+  }
+
 }

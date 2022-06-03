@@ -7,7 +7,12 @@ import { User } from '../../../models/user.model';
 import { GroupService } from '../../../services/group.service';
 import { Subscription } from 'rxjs';
 import { RoleService } from '../../../services/role.service';
+import { MatOption } from '@angular/material/core';
 
+export interface SelectIdName{
+  id: number;
+  name: string;
+}
 
 @Component({
   selector: 'frontend-whatsapp-user-create-update',
@@ -19,9 +24,11 @@ export class UserCreateUpdateComponent implements OnInit {
   icClose = icClose;
   icPeople = icPeople;
 
+  selected: MatOption[];
+
   subscription: Subscription;
-  groupList: string[];
-  roleList: string[];
+  groupList: SelectIdName[];
+  roleList: SelectIdName[];
 
   form: FormGroup;
   mode: 'create' | 'update' = 'create';
@@ -47,8 +54,8 @@ export class UserCreateUpdateComponent implements OnInit {
     this.form = this.fb.group({
       name: this.defaults.name,
       email: this.defaults.email,
-      // groups_id: this.defaults.groups_id,
-      // role_id: this.defaults.role_id
+      groups_id: this.defaults.groups_id,
+      role_id: this.defaults.role_id
     });
 
   }
@@ -64,14 +71,31 @@ export class UserCreateUpdateComponent implements OnInit {
   getGroupList(){
     this.subscription = new Subscription();
     this.subscription = this.groupService.getGroups().subscribe((data: any) => {
-      this.groupList = data.data.filter((n) => n.status === 1).map((x)=>x.name);
+      this.groupList = [];
+      data.data.filter(n=>n.status === 1).forEach(element => {
+        this.groupList.push(
+          {
+            id: element.id ,
+            name: element.name,
+          }
+        );
+      });
     });
   }
 
   getRoleList(){
     this.subscription = new Subscription();
     this.subscription = this.roleService.getRoles().subscribe((data: any) => {
-      this.roleList = data.data.filter((n) => n.status === 1).map((x)=>x.name);
+      this.roleList = [];
+      data.data.filter(n=>n.status === 1).forEach(element => {
+        this.roleList.push(
+          {
+            id: element.id ,
+            name: element.name,
+          }
+        );
+      });
+      //this.roleList = data.data.filter((n) => n.status === 1).map((x)=>x.name);
     });
   }
 
@@ -84,6 +108,7 @@ export class UserCreateUpdateComponent implements OnInit {
   updateUser() {
     const user = this.form.value;
     user.id = this.defaults.id;
+    user.uid = this.defaults.uid,
 
     this.dialogRef.close(user);
   }
