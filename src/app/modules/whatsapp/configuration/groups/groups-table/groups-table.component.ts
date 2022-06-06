@@ -31,6 +31,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { MatSelectChange } from "@angular/material/select";
 import { GroupService } from "../../../services/group.service";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @UntilDestroy()
 @Component({
@@ -83,7 +84,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private dialog: MatDialog, private groupService: GroupService) {}
+  constructor(private dialog: MatDialog, private groupService: GroupService,private snackbar: MatSnackBar) {}
 
   get visibleColumns() {
     return this.columns
@@ -156,31 +157,6 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
   }
 
   createGroup() {
-    // this.dialog.open(GroupCreateUpdateComponent).afterClosed().subscribe((group: Group) => {
-    //   /**
-    //    * Customer is the updated customer (if the user pressed Save - otherwise it's null)
-    //    */
-    //   if (group) {
-    //     /**
-    //      * Here we are updating our local array.
-    //      * You would probably make an HTTP request here.
-    //      */
-    //     this.groups.unshift(new Group(group));
-    //     //this.subject$.next(this.groups);
-    //   }
-    // });
-    const dialogRef = this.dialog.open(GroupCreateUpdateComponent, {
-      width: "500px",
-      //data: {name: this.name, animal: this.animal},
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log("The dialog was closed");
-      //this.animal = result;
-    });
-  }
-
-  createGroup1() {
     this.dialog
       .open(GroupCreateUpdateComponent)
       .afterClosed()
@@ -199,11 +175,17 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
           this.subscription = new Subscription();
           this.subscription = this.groupService.insertGroup(group).subscribe(
             () => {
-              console.log("Success");
+              this.snackbar.open('Grupo creado exitosamente.', "CLOSE", {
+                duration: 3000,
+                horizontalPosition: 'right'
+              });
               this.getData();
             },
             (error) => {
-              console.log(`Error: ${error}`);
+              this.snackbar.open(error.message, "CLOSE", {
+                duration: 3000,
+                horizontalPosition: "right",
+              });
             }
           );
         }
@@ -236,11 +218,17 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
             .updateGroup(updatedGroup)
             .subscribe(
               () => {
-                console.log("Success");
+                this.snackbar.open('Grupo actualizado exitosamente.', "CLOSE", {
+                  duration: 3000,
+                  horizontalPosition: 'right'
+                });
                 this.getData();
               },
               (error) => {
-                console.log(`Error: ${error}`);
+                this.snackbar.open(error.message, "CLOSE", {
+                  duration: 3000,
+                  horizontalPosition: "right",
+                });
               }
             );
         }
@@ -252,11 +240,17 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
     this.subscription = new Subscription();
     this.subscription = this.groupService.deleteGroup(group).subscribe(
       () => {
-        console.log("Success");
+        this.snackbar.open('Grupo eliminado exitosamente.', "CLOSE", {
+          duration: 3000,
+          horizontalPosition: 'right'
+        });
         this.getData();
       },
       (error) => {
-        console.log(`Error: ${error}`);
+        this.snackbar.open(error.message, "CLOSE", {
+          duration: 3000,
+          horizontalPosition: "right",
+        });
       }
     );
   }
@@ -274,11 +268,17 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
       this.subscription = new Subscription();
       this.subscription = this.groupService.updateGroup(group).subscribe(
         () => {
-          console.log(group)
-          //this.getData();
+          this.snackbar.open('Se agrego una etiqueta.', "CLOSE", {
+            duration: 3000,
+            horizontalPosition: 'right'
+          });
+          this.getData();
         },
         (error) => {
-          console.log(`Error: ${error}`);
+          this.snackbar.open(error.message, "CLOSE", {
+            duration: 3000,
+            horizontalPosition: "right",
+          });
         }
       );
     }
@@ -296,11 +296,17 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
     this.subscription = new Subscription();
       this.subscription = this.groupService.updateGroup(group).subscribe(
         () => {
-          console.log(group)
-          //this.getData();
+          this.snackbar.open('Se elimino una etiqueta.', "CLOSE", {
+            duration: 3000,
+            horizontalPosition: 'right'
+          });
+          this.getData();
         },
         (error) => {
-          console.log(`Error: ${error}`);
+          this.snackbar.open(error.message, "CLOSE", {
+            duration: 3000,
+            horizontalPosition: "right",
+          });
         }
       );
   }

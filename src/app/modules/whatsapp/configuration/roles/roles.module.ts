@@ -20,12 +20,14 @@ import { TreeModule } from '@circlon/angular-tree-component';
 import { RoleSelectorComponent } from './role-selector/role-selector.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatListModule} from '@angular/material/list';
+import { ButtonGroupComponent } from './role-selector/button-group/button-group.component';
 
 @NgModule({
   declarations: [
     RolesTableComponent,
     RoleCreateUpdateComponent,
-    RoleSelectorComponent
+    RoleSelectorComponent,
+    ButtonGroupComponent
   ],
   imports: [
     CommonModule,

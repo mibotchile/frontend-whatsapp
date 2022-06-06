@@ -1,5 +1,31 @@
 <div>
   <ul>
+    <li *ngFor="let item of data; let i = index">
+      <button (click)="toggle[i] = !toggle[i]" mat-icon-button type="button">
+        <mat-icon *ngIf="!toggle[i]">chevron_right</mat-icon>
+        <mat-icon *ngIf="toggle[i]">expand_more</mat-icon>
+      </button>
+      <mat-checkbox color="primary">
+        {{ item.name }}
+      </mat-checkbox>
+      <div *ngIf="toggle[i]" class="container">
+        <div *ngIf="item.hasTabs">
+          <p>Tabs</p>
+          <frontend-whatsapp-role-selector [data]="item.tabs"></frontend-whatsapp-role-selector>
+        </div>
+        <div *ngIf="item.hasChildrens">
+          <frontend-whatsapp-role-selector [data]="item.childrens"></frontend-whatsapp-role-selector>
+        </div>
+        <div *ngIf="item.hasPermissions">
+          <p>Permisos</p>
+          <frontend-whatsapp-button-group [permissions]="item.permissions"></frontend-whatsapp-button-group>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+<!-- <div>
+  <ul>
     <li *ngFor="let item of allLinks;let i = index">
       <button (click)="toggle[i]=!toggle[i]" mat-icon-button type="button">
         <mat-icon *ngIf="toggle[i]">chevron_right</mat-icon>
@@ -24,30 +50,4 @@
       </ul>
     </li>
   </ul>
-
-  <!-- <ul>
-    <li *ngFor="let item of data;let i = index">
-      <button (click)="toggle[i]=!toggle[i]" mat-icon-button type="button">
-        <mat-icon *ngIf="toggle[i]">chevron_right</mat-icon>
-        <mat-icon *ngIf="!toggle[i]">expand_more</mat-icon>
-      </button>
-      <mat-checkbox>
-        {{ item.name }}
-      </mat-checkbox>
-      <ul class="tabs">
-        <li *ngFor="let itemTab of item.tabs">
-          <div class="tabContainer">
-            <mat-checkbox>
-              {{ itemTab.name }}
-            </mat-checkbox>
-            <div class="labelParent">
-              <div class="label" *ngFor="let label of itemTab.permissions">
-                {{ label }}
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </li>
-  </ul> -->
-</div>
+</div> -->

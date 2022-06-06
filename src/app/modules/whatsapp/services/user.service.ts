@@ -80,7 +80,7 @@ export class UserService {
     param = param.append("role_id", value.role_id);
 
     console.log(param)
-    return this.http.put(`${environment.url_api}user/${value.id}`, param, {
+    return this.http.put(`${environment.url_api}user/${value.id}`, value, {
       headers: headers,
     });
   }

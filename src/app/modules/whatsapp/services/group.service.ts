@@ -40,7 +40,7 @@ export class GroupService {
     //param = param.append('tags',value.tags.toString());
 
     return this.http.post
-    (`${environment.url_api}group`, param, {headers: headers});
+    (`${environment.url_api}group`, value, {headers: headers});
   }
 
   updateGroup(value: Group){
@@ -54,7 +54,7 @@ export class GroupService {
     param = param.append('description',value.description);
     param = param.append('tags',value.tags.toString());
     return this.http.put
-    (`${environment.url_api}group/${value.id}`, param, {headers: headers});
+    (`${environment.url_api}group/${value.id}`, value, {headers: headers});
   }
 
   deleteGroup(value: Group){

@@ -22,6 +22,7 @@ import { UserService } from "../../services/user.service";
 import { UserCreateUpdateComponent } from "./user-create-update/user-create-update.component";
 import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 export interface UserView {
   id: number;
@@ -82,7 +83,11 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
       .map((column) => column.property);
   }
 
-  constructor(private dialog: MatDialog, private userService: UserService) {}
+  constructor(
+    private dialog: MatDialog,
+    private userService: UserService,
+    private snackbar: MatSnackBar
+  ) {}
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -105,27 +110,34 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
     // });
     this.subscription = this.userService
       .getUsersWithRoleAndGroupNames()
-      .subscribe((result) => {
-        let data = [];
+      .subscribe(
+        (result) => {
+          let data = [];
 
-        result[0].data.forEach((element) => {
-          data.push({
-            id: element.id,
-            uid: element.uid,
-            name: element.name,
-            email: element.email,
-            groupNames: result[1].data
-              .filter((n) => element.groups_id.includes(n.id))
-              .map((x) => x.name),
-            roleName: result[2].data
-              .filter((n) => element.role_id === n.id)
-              .map((x) => x.name)
-              .toString(),
+          result[0].data.forEach((element) => {
+            data.push({
+              id: element.id,
+              uid: element.uid,
+              name: element.name,
+              email: element.email,
+              groupNames: result[1].data
+                .filter((n) => element.groups_id.includes(n.id))
+                .map((x) => x.name),
+              roleName: result[2].data
+                .filter((n) => element.role_id === n.id)
+                .map((x) => x.name)
+                .toString(),
+            });
           });
-        });
-        this.dataSource.data = data;
-        console.log(this.dataSource.data);
-      });
+          this.dataSource.data = data;
+        },
+        (error) => {
+          this.snackbar.open(error.message, "CLOSE", {
+            duration: 3000,
+            horizontalPosition: "right",
+          });
+        }
+      );
   }
 
   showData() {
@@ -141,11 +153,17 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
           this.subscription = new Subscription();
           this.subscription = this.userService.insertUser(user).subscribe(
             () => {
-              console.log("Success");
+              this.snackbar.open('Usuario creado exitosamente.', "CLOSE", {
+                duration: 3000,
+                horizontalPosition: 'right'
+              });
               this.getData();
             },
             (error) => {
-              console.log(`Error: ${error}`);
+              this.snackbar.open(error.message, "CLOSE", {
+                duration: 3000,
+                horizontalPosition: "right",
+              });
             }
           );
         }
@@ -165,11 +183,17 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
             .updateUser(updatedUser)
             .subscribe(
               () => {
-                console.log("Success");
+                this.snackbar.open('Usuario actualizado exitosamente.', "CLOSE", {
+                  duration: 3000,
+                  horizontalPosition: 'right'
+                });
                 this.getData();
               },
               (error) => {
-                console.log(`Error: ${error}`);
+                this.snackbar.open(error.message, "CLOSE", {
+                  duration: 3000,
+                  horizontalPosition: "right",
+                });
               }
             );
         }
@@ -180,11 +204,17 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscription = new Subscription();
     this.subscription = this.userService.deleteUser(user).subscribe(
       () => {
-        console.log("Success");
+        this.snackbar.open('Usuario eliminado exitosamente.', "CLOSE", {
+          duration: 3000,
+          horizontalPosition: 'right',
+        });
         this.getData();
       },
       (error) => {
-        console.log(`Error: ${error}`);
+        this.snackbar.open(error.message, "CLOSE", {
+          duration: 3000,
+          horizontalPosition: "right",
+        });
       }
     );
   }

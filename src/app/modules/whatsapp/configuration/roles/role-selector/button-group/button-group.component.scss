@@ -1,0 +1,29 @@
+.labelParent {
+    //margin-left: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+.label {
+    background-color: rgb(245,245,245);
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.label_click {
+    background-color: rgb(42, 209, 165);
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.label:hover {
+    background-color: rgba(42, 209, 165, .5);
+}
+
+.label:active {
+    background-color: rgb(42, 209, 165);
+}

@@ -1,0 +1,10 @@
+<div class="labelParent">
+  <div *ngFor="let label of permissions; let i = index">
+    <button
+      [class]="toggle[i] ? 'label_click' : 'label'"
+      (click)="toggle[i] = !toggle[i]; test()"
+    >
+      {{ label }}
+    </button>
+  </div>
+</div>

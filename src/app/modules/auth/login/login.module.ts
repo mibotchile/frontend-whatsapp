@@ -27,7 +27,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     IconModule,
     MatTooltipModule,
     MatButtonModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSnackBarModule
   ]
 })
 export class LoginModule {

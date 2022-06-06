@@ -17,6 +17,7 @@ import { MatTableModule } from '@angular/material/table';
 import { UserCreateUpdateComponent } from './user-create-update/user-create-update.component';
 import { MatChipsModule } from '@angular/material/chips';
 import {MatSelectModule} from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatPaginatorModule,
     MatMenuModule,
     MatChipsModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSnackBarModule
   ],
   exports: [
     UsersTableComponent

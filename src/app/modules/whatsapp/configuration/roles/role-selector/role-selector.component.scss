@@ -2,30 +2,14 @@
     margin-left: 50px;
 }
 
-.label {
-    background-color: rgb(245,245,245);
-    margin: 5px;
-    padding: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.label:hover {
-    background-color: rgba(42, 209, 165, .5);
-}
-
-.label:active {
-    background-color: rgb(42, 209, 165);
-}
-
 .tabContainer {
     display: flex;
     flex-direction: column;
 }
 
-.labelParent {
+.container {
     margin-left: 20px;
-    display: flex;
-    flex-direction: row;
+    // background-color: aqua;
+    // width: 300px;
+    // height: 160px;
 }
-
