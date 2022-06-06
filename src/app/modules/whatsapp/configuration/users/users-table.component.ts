@@ -132,7 +132,7 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
           this.dataSource.data = data;
         },
         (error) => {
-          this.snackbar.open(error.message, "CLOSE", {
+          this.snackbar.open(error.message, "X", {
             duration: 3000,
             horizontalPosition: "right",
           });
@@ -153,14 +153,14 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
           this.subscription = new Subscription();
           this.subscription = this.userService.insertUser(user).subscribe(
             () => {
-              this.snackbar.open('Usuario creado exitosamente.', "CLOSE", {
+              this.snackbar.open('Usuario creado exitosamente.', "X", {
                 duration: 3000,
                 horizontalPosition: 'right'
               });
               this.getData();
             },
             (error) => {
-              this.snackbar.open(error.message, "CLOSE", {
+              this.snackbar.open(error.message, "X", {
                 duration: 3000,
                 horizontalPosition: "right",
               });
@@ -183,14 +183,14 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
             .updateUser(updatedUser)
             .subscribe(
               () => {
-                this.snackbar.open('Usuario actualizado exitosamente.', "CLOSE", {
+                this.snackbar.open('Usuario actualizado exitosamente.', "X", {
                   duration: 3000,
                   horizontalPosition: 'right'
                 });
                 this.getData();
               },
               (error) => {
-                this.snackbar.open(error.message, "CLOSE", {
+                this.snackbar.open(error.message, "X", {
                   duration: 3000,
                   horizontalPosition: "right",
                 });
@@ -204,14 +204,14 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscription = new Subscription();
     this.subscription = this.userService.deleteUser(user).subscribe(
       () => {
-        this.snackbar.open('Usuario eliminado exitosamente.', "CLOSE", {
+        this.snackbar.open('Usuario eliminado exitosamente.', "X", {
           duration: 3000,
           horizontalPosition: 'right',
         });
         this.getData();
       },
       (error) => {
-        this.snackbar.open(error.message, "CLOSE", {
+        this.snackbar.open(error.message, "X", {
           duration: 3000,
           horizontalPosition: "right",
         });

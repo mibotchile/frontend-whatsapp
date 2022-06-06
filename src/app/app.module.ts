@@ -11,6 +11,7 @@ import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
 import { environment } from "../environments/environment";
 import { provideAuth, getAuth } from "@angular/fire/auth";
 import { TokenInterceptorService } from "./services/token-interceptor.service";
+import { CustomHttpInterceptorService } from "./services/custom-http-interceptor.service";
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +32,11 @@ import { TokenInterceptorService } from "./services/token-interceptor.service";
       useClass: TokenInterceptorService,
       multi: true,
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CustomHttpInterceptorService,
+      multi: true,
+    }
   ],
   bootstrap: [AppComponent],
 })

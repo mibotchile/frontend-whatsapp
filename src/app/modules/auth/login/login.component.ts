@@ -59,14 +59,14 @@ export class LoginComponent implements OnInit {
       .login(this.form.value)
       .then((response) => {
         console.log(response);
-        this.snackbar.open('Bienvenido!!!', 'CLOSE', {
+        this.snackbar.open('Bienvenido!!!', 'X', {
           duration: 3000,
           horizontalPosition: 'right'
         });
         this.router.navigate([""]);
       })
       .catch((error) => {
-        this.snackbar.open(error.message, 'CLOSE', {
+        this.snackbar.open(error.message, 'X', {
           duration: 3000,
           horizontalPosition: 'right'
         });

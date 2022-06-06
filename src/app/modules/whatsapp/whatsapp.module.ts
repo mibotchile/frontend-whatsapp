@@ -30,6 +30,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { RolesModule } from './configuration/roles/roles.module';
 import { UsersModule } from './configuration/users/users.module';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+
 
 @NgModule({
   declarations: [ConfigurationComponent, GroupsTableComponent, GroupCreateUpdateComponent],
@@ -78,7 +80,8 @@ import { UsersModule } from './configuration/users/users.module';
     MatMenuModule,
     IconModule,
     MatDividerModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatProgressBarModule
   ]
 })
 export class WhatsappModule { }

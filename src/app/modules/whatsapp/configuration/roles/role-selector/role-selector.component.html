@@ -11,14 +11,21 @@
       <div *ngIf="toggle[i]" class="container">
         <div *ngIf="item.hasTabs">
           <p>Tabs</p>
-          <frontend-whatsapp-role-selector [data]="item.tabs"></frontend-whatsapp-role-selector>
+          <frontend-whatsapp-role-selector
+            [data]="item.tabs"
+          ></frontend-whatsapp-role-selector>
         </div>
         <div *ngIf="item.hasChildrens">
-          <frontend-whatsapp-role-selector [data]="item.childrens"></frontend-whatsapp-role-selector>
+          <frontend-whatsapp-role-selector
+            [data]="item.childrens"
+          ></frontend-whatsapp-role-selector>
         </div>
         <div *ngIf="item.hasPermissions">
           <p>Permisos</p>
-          <frontend-whatsapp-button-group [permissions]="item.permissions"></frontend-whatsapp-button-group>
+          <frontend-whatsapp-button-group
+            [permissions]="item.permissions"
+            (selectedPermissions)="selectedPermissionsHandle($event,item)"
+          ></frontend-whatsapp-button-group>
         </div>
       </div>
     </li>

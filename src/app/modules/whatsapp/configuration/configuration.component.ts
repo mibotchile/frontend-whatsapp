@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ProgressService } from 'src/app/services/progress.service';
 import menu from '../../../../static-data/menu.json';
 
 @Component({
@@ -10,7 +11,7 @@ export class ConfigurationComponent implements OnInit {
 
   menu:any = menu;
 
-  constructor() { 
+  constructor(public progressService: ProgressService) { 
   }
 
   ngOnInit(): void {

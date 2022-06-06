@@ -65,6 +65,8 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
     { label: "Acciones", property: "actions", type: "button", visible: true },
   ];
 
+  // length: number;
+  // pageIndex = 1
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
   dataSource: MatTableDataSource<Group> | null;
@@ -94,7 +96,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
 
   getData() {
     this.subscription = new Subscription();
-    this.subscription = this.groupService.getGroups().subscribe((data: any) => {
+    this.subscription = this.groupService.getGroups(this.paginator.pageSize,this.paginator.page).subscribe((data: any) => {
       this.groupTableData = [];
       this.deactivatedGroupTableData = [];
       for (let item of data.data) {
@@ -175,14 +177,14 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
           this.subscription = new Subscription();
           this.subscription = this.groupService.insertGroup(group).subscribe(
             () => {
-              this.snackbar.open('Grupo creado exitosamente.', "CLOSE", {
+              this.snackbar.open('Grupo creado exitosamente.', "X", {
                 duration: 3000,
                 horizontalPosition: 'right'
               });
               this.getData();
             },
             (error) => {
-              this.snackbar.open(error.message, "CLOSE", {
+              this.snackbar.open(error.message, "X", {
                 duration: 3000,
                 horizontalPosition: "right",
               });
@@ -218,14 +220,14 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
             .updateGroup(updatedGroup)
             .subscribe(
               () => {
-                this.snackbar.open('Grupo actualizado exitosamente.', "CLOSE", {
+                this.snackbar.open('Grupo actualizado exitosamente.', "X", {
                   duration: 3000,
                   horizontalPosition: 'right'
                 });
                 this.getData();
               },
               (error) => {
-                this.snackbar.open(error.message, "CLOSE", {
+                this.snackbar.open(error.message, "X", {
                   duration: 3000,
                   horizontalPosition: "right",
                 });
@@ -240,14 +242,14 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
     this.subscription = new Subscription();
     this.subscription = this.groupService.deleteGroup(group).subscribe(
       () => {
-        this.snackbar.open('Grupo eliminado exitosamente.', "CLOSE", {
+        this.snackbar.open('Grupo eliminado exitosamente.', "X", {
           duration: 3000,
           horizontalPosition: 'right'
         });
         this.getData();
       },
       (error) => {
-        this.snackbar.open(error.message, "CLOSE", {
+        this.snackbar.open(error.message, "X", {
           duration: 3000,
           horizontalPosition: "right",
         });
@@ -268,14 +270,14 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
       this.subscription = new Subscription();
       this.subscription = this.groupService.updateGroup(group).subscribe(
         () => {
-          this.snackbar.open('Se agrego una etiqueta.', "CLOSE", {
+          this.snackbar.open('Se agrego una etiqueta.', "X", {
             duration: 3000,
             horizontalPosition: 'right'
           });
           this.getData();
         },
         (error) => {
-          this.snackbar.open(error.message, "CLOSE", {
+          this.snackbar.open(error.message, "X", {
             duration: 3000,
             horizontalPosition: "right",
           });
@@ -296,14 +298,14 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
     this.subscription = new Subscription();
       this.subscription = this.groupService.updateGroup(group).subscribe(
         () => {
-          this.snackbar.open('Se elimino una etiqueta.', "CLOSE", {
+          this.snackbar.open('Se elimino una etiqueta.', "X", {
             duration: 3000,
             horizontalPosition: 'right'
           });
           this.getData();
         },
         (error) => {
-          this.snackbar.open(error.message, "CLOSE", {
+          this.snackbar.open(error.message, "X", {
             duration: 3000,
             horizontalPosition: "right",
           });
