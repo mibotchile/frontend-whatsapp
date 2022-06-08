@@ -6,7 +6,7 @@
         <mat-icon *ngIf="toggle[i]">expand_more</mat-icon>
       </button>
       <mat-checkbox color="primary">
-        {{ item.name }}
+        {{ item.displayName }}
       </mat-checkbox>
       <div *ngIf="toggle[i]" class="container">
         <div *ngIf="item.hasTabs">
@@ -25,6 +25,7 @@
           <p>Permisos</p>
           <frontend-whatsapp-button-group
             [permissions]="item.permissions"
+            [displayPermissions]="item.permissionsToDisplay"
             (selectedPermissions)="selectedPermissionsHandle($event, item)"
           ></frontend-whatsapp-button-group>
         </div>

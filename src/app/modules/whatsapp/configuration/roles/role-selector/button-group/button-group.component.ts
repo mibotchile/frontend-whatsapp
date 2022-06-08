@@ -9,6 +9,9 @@ export class ButtonGroupComponent implements OnInit {
   @Input()
   permissions;
 
+  @Input()
+  displayPermissions;
+
   @Output()
   selectedPermissions = new EventEmitter<[string]>();
 

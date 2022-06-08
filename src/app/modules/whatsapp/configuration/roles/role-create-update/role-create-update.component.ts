@@ -15,40 +15,52 @@ export class RoleCreateUpdateComponent implements OnInit {
 
   allLinks: Selector[] = [
     {
-      name: "Conversaciones",
+      name: "conversation",
+      displayName: "Conversaciones",
       tabs: [],
       hasTabs: false,
       childrens: [],
-      permissions: ["Crear", "Leer", "Actualizar", "Eliminar"],
+      permissionsToDisplay: ["Crear", "Leer", "Actualizar", "Eliminar"],
+      permissions: ["create", "read", "update", "delete"],
       hasChildrens: false,
       hasPermissions: true,
     },
     {
-      name: "Configuración",
+      name: "settings",
+      displayName: "Configuración",
       tabs: [
         {
-          name: "Usuarios",
-          permissions: ["Crear", "Leer", "Actualizar", "Eliminar"],
+          name: "user",
+          displayName: "Usuarios",
+          permissionsToDisplay: ["Crear", "Leer", "Actualizar", "Eliminar"],
+          permissions: ["create", "read", "update", "delete"],
           hasPermissions: true,
         },
         {
-          name: "Grupos",
-          permissions: ["Crear", "Leer", "Actualizar", "Eliminar"],
+          name: "group",
+          displayName: "Grupos",
+          permissionsToDisplay: ["Crear", "Leer", "Actualizar", "Eliminar"],
+          permissions: ["create", "read", "update", "delete"],
           hasPermissions: true,
         },
         {
-          name: "Canales",
-          permissions: ["Crear", "Leer", "Actualizar", "Eliminar"],
+          name: "channel",
+          displayName: "Canales",
+          permissionsToDisplay: ["Crear", "Leer", "Actualizar", "Eliminar"],
+          permissions: ["create", "read", "update", "delete"],
           hasPermissions: true,
         },
         {
-          name: "Roles",
-          permissions: ["Crear", "Leer", "Actualizar", "Eliminar"],
+          name: "role",
+          displayName: "Roles",
+          permissionsToDisplay: ["Crear", "Leer", "Actualizar", "Eliminar"],
+          permissions: ["create", "read", "update", "delete"],
           hasPermissions: true,
         },
       ],
       hasTabs: true,
       childrens: [],
+      permissionsToDisplay: [],
       permissions: [],
       hasChildrens: false,
       hasPermissions: false,
@@ -74,9 +86,12 @@ export class RoleCreateUpdateComponent implements OnInit {
       this.defaults = {} as Role;
     }
 
+    console.log(this.defaults.config)
+
     this.form = this.fb.group({
       name: this.defaults.name,
       description: this.defaults.description,
+      //config: [this.defaults.config]
       config: [this.allLinks]
     });
   }

@@ -15,9 +15,11 @@ export class RoleService {
       "mibot_session",
       '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
     );
+
     return this.http.get<Role[]>(`${environment.url_api}role/`, {
       headers: headers,
     });
+
   }
 
   getRoleById(id: number) {
