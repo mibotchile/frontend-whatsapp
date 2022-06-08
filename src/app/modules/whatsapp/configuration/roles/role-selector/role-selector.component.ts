@@ -1,12 +1,20 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, Output } from "@angular/core";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { Selector, Tab } from "./selector";
 
 @Component({
   selector: "frontend-whatsapp-role-selector",
   templateUrl: "./role-selector.component.html",
   styleUrls: ["./role-selector.component.scss"],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi:true,
+      useExisting: RoleSelectorComponent
+    }
+  ]
 })
-export class RoleSelectorComponent implements OnInit {
+export class RoleSelectorComponent implements OnInit, ControlValueAccessor {
   toggle = {};
   permissionsToSend: Selector[];
   tabsToSend: Tab[];
@@ -14,56 +22,58 @@ export class RoleSelectorComponent implements OnInit {
   @Input()
   data: Selector[];
 
+  onChange = (permissionsToSend) => {};
+
   constructor() {
     this.permissionsToSend = [];
     this.tabsToSend = [];
   }
+  writeValue(data: Selector[]): void {
+    this.data = data;
+  }
+  registerOnChange(onChange: any): void {
+    this.onChange = onChange;
+  }
+  registerOnTouched(fn: any): void {
+    //throw new Error("Method not implemented.");
+  }
+  setDisabledState?(isDisabled: boolean): void {
+    //throw new Error("Method not implemented.");
+  }
 
   ngOnInit(): void {}
 
-  selectedPermissionsHandle(permissions, item) {
-    let objectToSend = {
-      name: item.name,
-      tabs: item.tabs,
-      hasTabs: item.hasTabs,
-      childrens: item.childrens,
-      permissions: permissions,
-      hasChildrens: item.hasChildrens,
-      hasPermissions: item.hasPermissions,
-    };
+  selectedTabsHandled(tabs: Tab[], item) {
+    this.tabsToSend = [...tabs];
 
-    let tabToSend = {
-      name: item.name,
-      permissions: permissions,
-      hasPermissions: item.hasPermissions,
-    };
+    let object = {...item};
 
-    if (
-      item.tabs === undefined &&
-      item.hasTabs === undefined &&
-      item.hasChildrens === undefined
-    ) {
-      let toSend = this.tabsToSend.filter((n) => n.name === item.name);
-      let index = this.tabsToSend.indexOf(toSend[0]);
+    object.tabs = tabs;
 
-      if (toSend.length === 1) {
-        this.tabsToSend[index].permissions = permissions;
-      } else {
-        this.tabsToSend.push(tabToSend);
-      }
-    } else {
-      let toSend = this.permissionsToSend.filter((n) => n.name === item.name);
-      let index = this.permissionsToSend.indexOf(toSend[0]);
+    let toFind = this.permissionsToSend.filter((n) => n.name === object.name);
 
-      if (toSend.length === 1) {
-        this.permissionsToSend[index].permissions = permissions;
-        
-      } else {
-        this.permissionsToSend.push(objectToSend);
-      }
+    if (toFind.length === 1) {
+      this.permissionsToSend[this.permissionsToSend.indexOf(toFind[0])].tabs = tabs;
+    }else{
+      this.permissionsToSend.push(object);
     }
 
-    console.log(this.permissionsToSend);
-    console.log(this.tabsToSend)
+    this.onChange(this.permissionsToSend);
+  }
+
+  selectedPermissionsHandle(permissions: string[], item) {
+
+    let object = {...item};
+
+    object.permissions = permissions;
+
+    let toFind = this.permissionsToSend.filter((n) => n.name === object.name);
+
+    if (toFind.length === 1) {
+      this.permissionsToSend[this.permissionsToSend.indexOf(toFind[0])].permissions = permissions;
+    }else{
+      this.permissionsToSend.push(object);
+    }
+    this.onChange(this.permissionsToSend);
   }
 }

@@ -38,12 +38,12 @@ export class RoleService {
       '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
     );
 
-    let param = new HttpParams();
-    param = param.append("name", value.name);
-    param = param.append("description", value.description);
-    param = param.append("config", value.config);
+    // let param = new HttpParams();
+    // param = param.append("name", value.name);
+    // param = param.append("description", value.description);
+    // param = param.append("config", value.config);
 
-    return this.http.post(`${environment.url_api}group`, param, {
+    return this.http.post(`${environment.url_api}role`, value, {
       headers: headers,
     });
   }

@@ -120,6 +120,8 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
               uid: element.uid,
               name: element.name,
               email: element.email,
+              groups_id: element.groups_id,
+              role_id: element.role_id,
               groupNames: result[1].data
                 .filter((n) => element.groups_id.includes(n.id))
                 .map((x) => x.name),

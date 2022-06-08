@@ -21,13 +21,15 @@ import { RoleSelectorComponent } from './role-selector/role-selector.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatListModule} from '@angular/material/list';
 import { ButtonGroupComponent } from './role-selector/button-group/button-group.component';
+import { TabComponent } from './role-selector/tab/tab.component';
 
 @NgModule({
   declarations: [
     RolesTableComponent,
     RoleCreateUpdateComponent,
     RoleSelectorComponent,
-    ButtonGroupComponent
+    ButtonGroupComponent,
+    TabComponent
   ],
   imports: [
     CommonModule,

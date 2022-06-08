@@ -26,6 +26,8 @@ export class UserCreateUpdateComponent implements OnInit {
 
   selected: MatOption[];
 
+  selectedOptions: SelectIdName[];
+
   subscription: Subscription;
   groupList: SelectIdName[];
   roleList: SelectIdName[];
@@ -54,10 +56,16 @@ export class UserCreateUpdateComponent implements OnInit {
     this.form = this.fb.group({
       name: this.defaults.name,
       email: this.defaults.email,
-      groups_id: this.defaults.groups_id,
+      groups_id: [this.defaults.groups_id],
       role_id: this.defaults.role_id
     });
 
+  }
+
+  compareObjects(o1: any, o2: any) {
+    if(o1.name == o2.name && o1.id == o2.id )
+    return true;
+    else return false
   }
 
   save() {

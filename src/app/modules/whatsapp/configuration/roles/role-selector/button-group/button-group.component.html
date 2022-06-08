@@ -1,10 +1,10 @@
 <div class="labelParent">
   <div *ngFor="let label of permissions; let i = index">
-    <button
+    <div
       [class]="toggle[i] ? 'label_click' : 'label'"
       (click)="toggle[i] = !toggle[i]; onSelect()"
     >
       {{ label }}
-    </button>
+  </div>
   </div>
 </div>

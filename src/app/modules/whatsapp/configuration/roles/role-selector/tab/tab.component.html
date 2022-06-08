@@ -1,0 +1,17 @@
+<ul>
+  <li *ngFor="let item of data; let i = index">
+    <button (click)="toggle[i] = !toggle[i]" mat-icon-button type="button">
+      <mat-icon *ngIf="!toggle[i]">chevron_right</mat-icon>
+      <mat-icon *ngIf="toggle[i]">expand_more</mat-icon>
+    </button>
+    <mat-checkbox color="primary">
+      {{ item.name }}
+    </mat-checkbox>
+    <div *ngIf="toggle[i]" class="container">
+      <frontend-whatsapp-button-group
+        [permissions]="item.permissions"
+        (selectedPermissions)="selectedPermissionsHandle($event, item); onSelect()"
+      ></frontend-whatsapp-button-group>
+    </div>
+  </li>
+</ul>

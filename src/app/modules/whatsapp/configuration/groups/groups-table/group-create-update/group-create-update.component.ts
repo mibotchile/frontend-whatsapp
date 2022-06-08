@@ -72,5 +72,4 @@ export class GroupCreateUpdateComponent implements OnInit {
     return this.mode === 'update';
   }
 
-
 }

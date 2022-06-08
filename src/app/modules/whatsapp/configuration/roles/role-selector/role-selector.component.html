@@ -11,9 +11,10 @@
       <div *ngIf="toggle[i]" class="container">
         <div *ngIf="item.hasTabs">
           <p>Tabs</p>
-          <frontend-whatsapp-role-selector
+          <frontend-whatsapp-tab
             [data]="item.tabs"
-          ></frontend-whatsapp-role-selector>
+            (selectedTabs)="selectedTabsHandled($event, item)"
+          ></frontend-whatsapp-tab>
         </div>
         <div *ngIf="item.hasChildrens">
           <frontend-whatsapp-role-selector
@@ -24,37 +25,10 @@
           <p>Permisos</p>
           <frontend-whatsapp-button-group
             [permissions]="item.permissions"
-            (selectedPermissions)="selectedPermissionsHandle($event,item)"
+            (selectedPermissions)="selectedPermissionsHandle($event, item)"
           ></frontend-whatsapp-button-group>
         </div>
       </div>
     </li>
   </ul>
 </div>
-<!-- <div>
-  <ul>
-    <li *ngFor="let item of allLinks;let i = index">
-      <button (click)="toggle[i]=!toggle[i]" mat-icon-button type="button">
-        <mat-icon *ngIf="toggle[i]">chevron_right</mat-icon>
-        <mat-icon *ngIf="!toggle[i]">expand_more</mat-icon>
-      </button>
-      <mat-checkbox color="primary">
-        {{ item.name }}
-      </mat-checkbox>
-      <ul *ngIf="item.hasTabs" class="tabs">
-        <li *ngFor="let itemTab of item.tabs">
-          <div class="tabContainer">
-            <mat-checkbox color="primary">
-              {{ itemTab.name }}
-            </mat-checkbox>
-            <div class="labelParent">
-              <div class="label" *ngFor="let label of itemTab.permissions">
-                <button (click)="enableDisablePermission(label,item.name,itemTab.name)">{{ label }}</button>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </li>
-  </ul>
-</div> -->
