@@ -40,7 +40,7 @@
 
     <div fxLayout="column" class="ml-6" fxFlex="60">
       <h3 class="mt-3">Configuración</h3>
-      <frontend-whatsapp-role-selector formControlName="config"></frontend-whatsapp-role-selector>
+      <frontend-whatsapp-role-selector [data]="allLinks" formControlName="config"></frontend-whatsapp-role-selector>
     </div>
   </mat-dialog-content>
 

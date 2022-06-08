@@ -21,7 +21,11 @@ export class ButtonGroupComponent implements OnInit {
     this.toggle = [false, false, false, false];
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // if (this.permissions) {
+    //   this.toggle = this.toggle = [true, false, false, false];
+    // }
+  }
 
   onSelect() {
 

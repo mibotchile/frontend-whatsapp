@@ -16,6 +16,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { RoleCreateUpdateComponent } from "./role-create-update/role-create-update.component";
 import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "frontend-whatsapp-roles-table",
@@ -66,7 +67,7 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
       .map((column) => column.property);
   }
 
-  constructor(private dialog: MatDialog,private roleService: RoleService) {}
+  constructor(private dialog: MatDialog,private roleService: RoleService,private snackbar: MatSnackBar) {}
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -121,11 +122,17 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
           this.subscription = new Subscription();
           this.subscription = this.roleService.insertRole(role).subscribe(
             () => {
-              console.log("Success");
+              this.snackbar.open('Rol creado exitosamente.', "X", {
+                duration: 3000,
+                horizontalPosition: 'right'
+              });
               this.getData();
             },
             (error) => {
-              console.log(`Error: ${error}`);
+              this.snackbar.open(error.message, "X", {
+                duration: 3000,
+                horizontalPosition: "right",
+              });
             }
           );
         }
@@ -147,11 +154,17 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
             .updateRole(updatedRole)
             .subscribe(
               () => {
-                console.log("Success");
+                this.snackbar.open('Rol actualizado exitosamente.', "X", {
+                  duration: 3000,
+                  horizontalPosition: 'right'
+                });
                 this.getData();
               },
               (error) => {
-                console.log(`Error: ${error}`);
+                this.snackbar.open(error.message, "X", {
+                  duration: 3000,
+                  horizontalPosition: "right",
+                });
               }
             );
         }
@@ -162,11 +175,17 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
     this.subscription = new Subscription();
     this.subscription = this.roleService.deleteRole(role).subscribe(
       () => {
-        console.log("Success");
+        this.snackbar.open('Rol eliminado exitosamente.', "X", {
+          duration: 3000,
+          horizontalPosition: 'right'
+        });
         this.getData();
       },
       (error) => {
-        console.log(`Error: ${error}`);
+        this.snackbar.open(error.message, "X", {
+          duration: 3000,
+          horizontalPosition: "right",
+        });
       }
     );
   }

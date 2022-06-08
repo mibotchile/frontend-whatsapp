@@ -22,6 +22,9 @@ export class RoleSelectorComponent implements OnInit, ControlValueAccessor {
   @Input()
   data: Selector[];
 
+
+  selectedData: Selector[];
+
   onChange = (permissionsToSend) => {};
 
   constructor() {
@@ -29,7 +32,7 @@ export class RoleSelectorComponent implements OnInit, ControlValueAccessor {
     this.tabsToSend = [];
   }
   writeValue(data: Selector[]): void {
-    this.data = data;
+    this.selectedData = data;
   }
   registerOnChange(onChange: any): void {
     this.onChange = onChange;
