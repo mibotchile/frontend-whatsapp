@@ -116,7 +116,6 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
         this.dataSource.data = this.deactivatedGroupTableData;
       }
       //this.dataSource.data = this.groupTableData;
-      console.log(this.groupTableData);
     });
     //return of(groupTableData.map(group => new Group(group)));
   }
@@ -179,14 +178,16 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
             () => {
               this.snackbar.open('Grupo creado exitosamente.', "X", {
                 duration: 3000,
-                horizontalPosition: 'right'
+                horizontalPosition: 'center',
+                panelClass: ['green-snackbar']
               });
               this.getData();
             },
             (error) => {
               this.snackbar.open(error.message, "X", {
                 duration: 3000,
-                horizontalPosition: "right",
+                horizontalPosition: "center",
+                panelClass: ['red-snackbar']
               });
             }
           );
@@ -195,7 +196,6 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
   }
 
   updateGroup(group: Group) {
-    console.log(group);
     this.dialog
       .open(GroupCreateUpdateComponent, {
         data: group,
@@ -222,14 +222,16 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
               () => {
                 this.snackbar.open('Grupo actualizado exitosamente.', "X", {
                   duration: 3000,
-                  horizontalPosition: 'right'
+                  horizontalPosition: 'center',
+                  panelClass: ['green-snackbar']
                 });
                 this.getData();
               },
               (error) => {
                 this.snackbar.open(error.message, "X", {
                   duration: 3000,
-                  horizontalPosition: "right",
+                  horizontalPosition: "center",
+                  panelClass: ['red-snackbar']
                 });
               }
             );
@@ -238,20 +240,21 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
   }
 
   deleteGroup(group: Group) {
-    console.log(group)
     this.subscription = new Subscription();
     this.subscription = this.groupService.deleteGroup(group).subscribe(
       () => {
         this.snackbar.open('Grupo eliminado exitosamente.', "X", {
           duration: 3000,
-          horizontalPosition: 'right'
+          horizontalPosition: 'center',
+          panelClass: ['green-snackbar']
         });
         this.getData();
       },
       (error) => {
         this.snackbar.open(error.message, "X", {
           duration: 3000,
-          horizontalPosition: "right",
+          horizontalPosition: "center",
+          panelClass: ['red-snackbar']
         });
       }
     );
@@ -272,14 +275,16 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
         () => {
           this.snackbar.open('Se agrego una etiqueta.', "X", {
             duration: 3000,
-            horizontalPosition: 'right'
+            horizontalPosition: 'center',
+            panelClass: ['green-snackbar']
           });
           this.getData();
         },
         (error) => {
           this.snackbar.open(error.message, "X", {
             duration: 3000,
-            horizontalPosition: "right",
+            horizontalPosition: "center",
+            panelClass: ['red-snackbar']
           });
         }
       );
@@ -300,14 +305,16 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
         () => {
           this.snackbar.open('Se elimino una etiqueta.', "X", {
             duration: 3000,
-            horizontalPosition: 'right'
+            horizontalPosition: 'center',
+            panelClass: ['green-snackbar']
           });
           this.getData();
         },
         (error) => {
           this.snackbar.open(error.message, "X", {
             duration: 3000,
-            horizontalPosition: "right",
+            horizontalPosition: "center",
+            panelClass: ['red-snackbar']
           });
         }
       );

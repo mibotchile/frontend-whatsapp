@@ -58,17 +58,18 @@ export class LoginComponent implements OnInit {
     this.authService
       .login(this.form.value)
       .then((response) => {
-        console.log(response);
         this.snackbar.open('Bienvenido!!!', 'X', {
           duration: 3000,
-          horizontalPosition: 'right'
+          horizontalPosition: 'center',
+          panelClass: ['green-snackbar']
         });
         this.router.navigate([""]);
       })
       .catch((error) => {
         this.snackbar.open(error.message, 'X', {
           duration: 3000,
-          horizontalPosition: 'right'
+          horizontalPosition: 'center',
+          panelClass: ['red-snackbar']
         });
       });
   }

@@ -79,7 +79,6 @@ export class UserService {
     param = param.append("groups_id", value.groups_id.toString());
     param = param.append("role_id", value.role_id);
 
-    console.log(param)
     return this.http.put(`${environment.url_api}user/${value.id}`, value, {
       headers: headers,
     });

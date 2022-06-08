@@ -86,8 +86,6 @@ export class RoleCreateUpdateComponent implements OnInit {
       this.defaults = {} as Role;
     }
 
-    console.log(this.defaults.config)
-
     this.form = this.fb.group({
       name: this.defaults.name,
       description: this.defaults.description,

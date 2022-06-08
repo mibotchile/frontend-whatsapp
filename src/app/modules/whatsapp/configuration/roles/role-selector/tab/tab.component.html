@@ -10,7 +10,9 @@
     <div *ngIf="toggle[i]" class="container">
       <frontend-whatsapp-button-group
         [permissions]="item.permissions"
+        [item]= "item"
         [displayPermissions]="item.permissionsToDisplay"
+        [selectedData]="selectedData"
         (selectedPermissions)="selectedPermissionsHandle($event, item); onSelect()"
       ></frontend-whatsapp-button-group>
     </div>

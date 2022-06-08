@@ -91,7 +91,6 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
       this.roleTableData = [];
       this.deactivatedRoleTableData = [];
       for (let item of data.data) {
-        console.log(item);
         if (item.status === 0) {
           this.deactivatedRoleTableData.push(item);
         } else {
@@ -103,7 +102,6 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
       } else {
         this.dataSource.data = this.deactivatedRoleTableData;
       }
-      console.log(this.dataSource.data);
     });
   }
 
@@ -124,14 +122,16 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
             () => {
               this.snackbar.open('Rol creado exitosamente.', "X", {
                 duration: 3000,
-                horizontalPosition: 'right'
+                horizontalPosition: 'center',
+                panelClass: ['green-snackbar']
               });
               this.getData();
             },
             (error) => {
               this.snackbar.open(error.message, "X", {
                 duration: 3000,
-                horizontalPosition: "right",
+                horizontalPosition: "center",
+                panelClass: ['red-snackbar']
               });
             }
           );
@@ -156,14 +156,16 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
               () => {
                 this.snackbar.open('Rol actualizado exitosamente.', "X", {
                   duration: 3000,
-                  horizontalPosition: 'right'
+                  horizontalPosition: 'center',
+                  panelClass: ['green-snackbar']
                 });
                 this.getData();
               },
               (error) => {
                 this.snackbar.open(error.message, "X", {
                   duration: 3000,
-                  horizontalPosition: "right",
+                  horizontalPosition: "center",
+                  panelClass: ['red-snackbar']
                 });
               }
             );
@@ -177,14 +179,16 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
       () => {
         this.snackbar.open('Rol eliminado exitosamente.', "X", {
           duration: 3000,
-          horizontalPosition: 'right'
+          horizontalPosition: 'center',
+          panelClass: ['green-snackbar']
         });
         this.getData();
       },
       (error) => {
         this.snackbar.open(error.message, "X", {
           duration: 3000,
-          horizontalPosition: "right",
+          horizontalPosition: "center",
+          panelClass: ['red-snackbar']
         });
       }
     );

@@ -13,6 +13,7 @@
           <p>Tabs</p>
           <frontend-whatsapp-tab
             [data]="item.tabs"
+            [selectedData]="selectedData"
             (selectedTabs)="selectedTabsHandled($event, item)"
           ></frontend-whatsapp-tab>
         </div>
@@ -25,7 +26,9 @@
           <p>Permisos</p>
           <frontend-whatsapp-button-group
             [permissions]="item.permissions"
+            [item]= "item"
             [displayPermissions]="item.permissionsToDisplay"
+            [selectedData]="selectedData"
             (selectedPermissions)="selectedPermissionsHandle($event, item)"
           ></frontend-whatsapp-button-group>
         </div>

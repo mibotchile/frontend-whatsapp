@@ -11,6 +11,9 @@ export class TabComponent implements OnInit {
   @Input()
   data: Tab[];
 
+  @Input()
+  selectedData;
+
   @Output()
   selectedTabs= new EventEmitter<Tab[]>();
 

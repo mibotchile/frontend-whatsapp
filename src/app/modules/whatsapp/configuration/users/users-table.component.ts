@@ -137,6 +137,7 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
           this.snackbar.open(error.message, "X", {
             duration: 3000,
             horizontalPosition: "right",
+            panelClass: ['red-snackbar']
           });
         }
       );
@@ -157,14 +158,16 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
             () => {
               this.snackbar.open('Usuario creado exitosamente.', "X", {
                 duration: 3000,
-                horizontalPosition: 'right'
+                horizontalPosition: 'center',
+                panelClass: ['green-snackbar']
               });
               this.getData();
             },
             (error) => {
               this.snackbar.open(error.message, "X", {
                 duration: 3000,
-                horizontalPosition: "right",
+                horizontalPosition: "center",
+                panelClass: ['red-snackbar']
               });
             }
           );
@@ -187,14 +190,16 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
               () => {
                 this.snackbar.open('Usuario actualizado exitosamente.', "X", {
                   duration: 3000,
-                  horizontalPosition: 'right'
+                  horizontalPosition: 'center',
+                  panelClass: ['green-snackbar']
                 });
                 this.getData();
               },
               (error) => {
                 this.snackbar.open(error.message, "X", {
                   duration: 3000,
-                  horizontalPosition: "right",
+                  horizontalPosition: "center",
+                  panelClass: ['red-snackbar']
                 });
               }
             );
@@ -208,14 +213,16 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
       () => {
         this.snackbar.open('Usuario eliminado exitosamente.', "X", {
           duration: 3000,
-          horizontalPosition: 'right',
+          horizontalPosition: 'center',
+          panelClass: ['green-snackbar']
         });
         this.getData();
       },
       (error) => {
         this.snackbar.open(error.message, "X", {
           duration: 3000,
-          horizontalPosition: "right",
+          horizontalPosition: "center",
+          panelClass: ['red-snackbar']
         });
       }
     );

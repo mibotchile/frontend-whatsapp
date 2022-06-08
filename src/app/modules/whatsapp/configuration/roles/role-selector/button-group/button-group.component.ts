@@ -10,6 +10,12 @@ export class ButtonGroupComponent implements OnInit {
   permissions;
 
   @Input()
+  item;
+
+  @Input()
+  selectedData;
+
+  @Input()
   displayPermissions;
 
   @Output()
@@ -22,9 +28,25 @@ export class ButtonGroupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // if (this.permissions) {
-    //   this.toggle = this.toggle = [true, false, false, false];
-    // }
+
+    const order = ['create', 'read', 'update', 'delete'];
+    if (this.selectedData) {
+
+      this.selectedData.forEach(element => {
+        if (element.name === this.item.name) {
+          this.toggle = order.map(x=>x = element.permissions.includes(x) );
+        }
+        if (this.item.hasTabs === undefined) {
+
+          element.tabs.forEach(i=>{
+            if (i.name === this.item.name) {
+              this.toggle = order.map(x=>x = i.permissions.includes(x) );
+            }
+          })
+        }
+       
+      });
+    }
   }
 
   onSelect() {
