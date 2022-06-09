@@ -120,7 +120,7 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
           this.subscription = new Subscription();
           this.subscription = this.roleService.insertRole(role).subscribe(
             () => {
-              this.snackbar.open('Rol creado exitosamente.', "X", {
+              this.snackbar.open('Rol creado exitosamente.', 'Completado', {
                 duration: 3000,
                 horizontalPosition: 'center',
                 panelClass: ['green-snackbar']
@@ -128,7 +128,7 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
               this.getData();
             },
             (error) => {
-              this.snackbar.open(error.message, "X", {
+              this.snackbar.open(error.message, 'Completado', {
                 duration: 3000,
                 horizontalPosition: "center",
                 panelClass: ['red-snackbar']
@@ -154,7 +154,7 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
             .updateRole(updatedRole)
             .subscribe(
               () => {
-                this.snackbar.open('Rol actualizado exitosamente.', "X", {
+                this.snackbar.open('Rol actualizado exitosamente.', 'Completado', {
                   duration: 3000,
                   horizontalPosition: 'center',
                   panelClass: ['green-snackbar']
@@ -162,7 +162,7 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
                 this.getData();
               },
               (error) => {
-                this.snackbar.open(error.message, "X", {
+                this.snackbar.open(error.message, 'Completado', {
                   duration: 3000,
                   horizontalPosition: "center",
                   panelClass: ['red-snackbar']
@@ -177,7 +177,7 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
     this.subscription = new Subscription();
     this.subscription = this.roleService.deleteRole(role).subscribe(
       () => {
-        this.snackbar.open('Rol eliminado exitosamente.', "X", {
+        this.snackbar.open('Rol eliminado exitosamente.', 'Completado', {
           duration: 3000,
           horizontalPosition: 'center',
           panelClass: ['green-snackbar']
@@ -185,7 +185,7 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
         this.getData();
       },
       (error) => {
-        this.snackbar.open(error.message, "X", {
+        this.snackbar.open(error.message, 'Completado', {
           duration: 3000,
           horizontalPosition: "center",
           panelClass: ['red-snackbar']

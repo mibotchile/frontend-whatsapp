@@ -140,4 +140,5 @@ export class AppComponent {
 
     this.navigationService.items = this.newItems;
   }
+  
 }

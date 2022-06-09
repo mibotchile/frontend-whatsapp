@@ -43,8 +43,12 @@ tree-node-checkbox {
   padding: 3px;
 }
 
-.green-snackbar {
-  background: #34D1A5;
+.green-snackbar .mat-simple-snackbar-action{
+  color: rgb(39,149,129);
+  //font-weight: bold;
+}
+
+.red-snackbar .mat-simple-snackbar-action{
   color: white;
   font-weight: bold;
 }

@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  OnDestroy,
   OnInit,
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -11,6 +12,8 @@ import icVisibility from "@iconify/icons-ic/twotone-visibility";
 import icVisibilityOff from "@iconify/icons-ic/twotone-visibility-off";
 import { fadeInUp400ms } from "../../../../@vex/animations/fade-in-up.animation";
 import { AuthService } from "src/app/services/auth.service";
+import { Subscription } from "rxjs";
+import { UserService } from "../../whatsapp/services/user.service";
 
 @Component({
   selector: "vex-login",
@@ -21,6 +24,7 @@ import { AuthService } from "src/app/services/auth.service";
 })
 export class LoginComponent implements OnInit {
   form: FormGroup;
+  subscription: Subscription;
 
   inputType = "password";
   visible = false;
@@ -58,7 +62,7 @@ export class LoginComponent implements OnInit {
     this.authService
       .login(this.form.value)
       .then((response) => {
-        this.snackbar.open('Bienvenido!!!', 'X', {
+        this.snackbar.open('Bienvenido!!!', 'Completado', {
           duration: 3000,
           horizontalPosition: 'center',
           panelClass: ['green-snackbar']

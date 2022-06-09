@@ -20,6 +20,8 @@ export class GroupCreateUpdateComponent implements OnInit {
   icClose = icClose;
   icPeople = icPeople;
 
+  isChecked = true;
+
   form: FormGroup;
   mode: 'create' | 'update' = 'create';
 
@@ -31,6 +33,7 @@ export class GroupCreateUpdateComponent implements OnInit {
   ngOnInit(): void {
     if (this.defaults) {
       this.mode = 'update';
+      this.isChecked= !!this.defaults.status;
     } else {
       this.defaults = {} as Group;
     }
@@ -50,9 +53,13 @@ export class GroupCreateUpdateComponent implements OnInit {
     }
   }
 
+  changeStatus(){
+    this.isChecked = !this.isChecked; 
+  }
+
   createGroup() {
     const group = this.form.value;
-
+    group.status = +this.isChecked;
     this.dialogRef.close(group);
   }
 
@@ -60,6 +67,7 @@ export class GroupCreateUpdateComponent implements OnInit {
     const group = this.form.value;
     group.id = this.defaults.id;
     group.tags = this.defaults.tags;
+    group.status = +this.isChecked;
 
     this.dialogRef.close(group);
   }

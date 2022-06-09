@@ -96,7 +96,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
 
   getData() {
     this.subscription = new Subscription();
-    this.subscription = this.groupService.getGroups(this.paginator.pageSize,this.paginator.page).subscribe((data: any) => {
+    this.subscription = this.groupService.getGroups().subscribe((data: any) => {
       this.groupTableData = [];
       this.deactivatedGroupTableData = [];
       for (let item of data.data) {
@@ -176,7 +176,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
           this.subscription = new Subscription();
           this.subscription = this.groupService.insertGroup(group).subscribe(
             () => {
-              this.snackbar.open('Grupo creado exitosamente.', "X", {
+              this.snackbar.open('Grupo creado exitosamente.', 'Completado', {
                 duration: 3000,
                 horizontalPosition: 'center',
                 panelClass: ['green-snackbar']
@@ -184,7 +184,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
               this.getData();
             },
             (error) => {
-              this.snackbar.open(error.message, "X", {
+              this.snackbar.open(error.message, 'Completado', {
                 duration: 3000,
                 horizontalPosition: "center",
                 panelClass: ['red-snackbar']
@@ -220,7 +220,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
             .updateGroup(updatedGroup)
             .subscribe(
               () => {
-                this.snackbar.open('Grupo actualizado exitosamente.', "X", {
+                this.snackbar.open('Grupo actualizado exitosamente.', 'Completado', {
                   duration: 3000,
                   horizontalPosition: 'center',
                   panelClass: ['green-snackbar']
@@ -228,7 +228,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
                 this.getData();
               },
               (error) => {
-                this.snackbar.open(error.message, "X", {
+                this.snackbar.open(error.message, 'Completado', {
                   duration: 3000,
                   horizontalPosition: "center",
                   panelClass: ['red-snackbar']
@@ -243,7 +243,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
     this.subscription = new Subscription();
     this.subscription = this.groupService.deleteGroup(group).subscribe(
       () => {
-        this.snackbar.open('Grupo eliminado exitosamente.', "X", {
+        this.snackbar.open('Grupo eliminado exitosamente.', 'Completado', {
           duration: 3000,
           horizontalPosition: 'center',
           panelClass: ['green-snackbar']
@@ -251,7 +251,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
         this.getData();
       },
       (error) => {
-        this.snackbar.open(error.message, "X", {
+        this.snackbar.open(error.message, 'Completado', {
           duration: 3000,
           horizontalPosition: "center",
           panelClass: ['red-snackbar']
@@ -273,7 +273,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
       this.subscription = new Subscription();
       this.subscription = this.groupService.updateGroup(group).subscribe(
         () => {
-          this.snackbar.open('Se agrego una etiqueta.', "X", {
+          this.snackbar.open('Se agrego una etiqueta.', 'Completado', {
             duration: 3000,
             horizontalPosition: 'center',
             panelClass: ['green-snackbar']
@@ -281,7 +281,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
           this.getData();
         },
         (error) => {
-          this.snackbar.open(error.message, "X", {
+          this.snackbar.open(error.message, 'Completado', {
             duration: 3000,
             horizontalPosition: "center",
             panelClass: ['red-snackbar']
@@ -303,7 +303,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
     this.subscription = new Subscription();
       this.subscription = this.groupService.updateGroup(group).subscribe(
         () => {
-          this.snackbar.open('Se elimino una etiqueta.', "X", {
+          this.snackbar.open('Se elimino una etiqueta.', 'Completado', {
             duration: 3000,
             horizontalPosition: 'center',
             panelClass: ['green-snackbar']
@@ -311,7 +311,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
           this.getData();
         },
         (error) => {
-          this.snackbar.open(error.message, "X", {
+          this.snackbar.open(error.message, 'Completado', {
             duration: 3000,
             horizontalPosition: "center",
             panelClass: ['red-snackbar']

@@ -5,9 +5,10 @@
         <mat-icon *ngIf="!toggle[i]">chevron_right</mat-icon>
         <mat-icon *ngIf="toggle[i]">expand_more</mat-icon>
       </button>
-      <mat-checkbox color="primary">
+      <!-- <mat-checkbox color="primary">
         {{ item.displayName }}
-      </mat-checkbox>
+      </mat-checkbox> -->
+      <span>{{ item.displayName }}</span>
       <div *ngIf="toggle[i]" class="container">
         <div *ngIf="item.hasTabs">
           <p>Tabs</p>
