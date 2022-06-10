@@ -11,14 +11,14 @@ import menu from '../../../../static-data/menu.json';
 })
 export class ConfigurationComponent implements OnInit {
 
-  //menu:any = menu;
-  menu:any;
+  menu:any = menu;
+  //menu:any;
 
   constructor(public progressService: ProgressService) { 
   }
 
   ngOnInit(): void {
-    this.menu = JSON.parse(localStorage.getItem('config'));
+    //this.menu = JSON.parse(localStorage.getItem('config'));
   }
 
 

@@ -24,7 +24,8 @@ export class AppComponent {
   title = "vex";
 
   menuItems: any = {};
-  menu: any = JSON.parse(localStorage.getItem('config'));
+  //menu: any = JSON.parse(localStorage.getItem('config'));
+  menu:any = menu;
   newItems: any = {};
 
   items: any = [
@@ -135,7 +136,7 @@ export class AppComponent {
     this.menuItems = this.items[0].children.filter((childrenItem) =>
       this.menu
         .map((menuItem) => menuItem.name)
-        .includes(childrenItem.name.toLowerCase())
+        .includes(childrenItem.label.toLowerCase())
     );
 
     this.newItems = this.items;

@@ -63,7 +63,7 @@
     </th>
     <td *matCellDef="let row" mat-cell>
       <mat-chip-list>
-        <mat-chip class="myChip" *ngFor="let group of row.groupNames"
+        <mat-chip class="myChip" disableRipple="true" *ngFor="let group of row.groupNames"
           >{{ group }}
         </mat-chip>
       </mat-chip-list>
