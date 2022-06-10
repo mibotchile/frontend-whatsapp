@@ -9,14 +9,20 @@ import { Role } from "../models/role.model";
 export class RoleService {
   constructor(private http: HttpClient) {}
 
-  getRoles() {
+  getRoles(page:number=null,pageSize:number=null) {
+
+    let url=`${environment.url_api}role`
+    if(page && pageSize){
+      url+=`?page=${page}&pageSize=${pageSize}`
+    }
+    
     let headers = new HttpHeaders();
     headers = headers.append(
       "mibot_session",
       '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
     );
 
-    return this.http.get<Role[]>(`${environment.url_api}role/`, {
+    return this.http.get<Role[]>(url, {
       headers: headers,
     });
 

@@ -15,7 +15,7 @@ import icDelete from "@iconify/icons-ic/twotone-delete";
 import icMoreHoriz from "@iconify/icons-ic/twotone-more-horiz";
 import { GroupCreateUpdateComponent } from "./group-create-update/group-create-update.component";
 import { MatDialog } from "@angular/material/dialog";
-import { Group } from "../../../models/group.model";
+import { Group } from "../../models/group.model";
 import { COMMA, ENTER, G } from "@angular/cdk/keycodes";
 import { Observable, of, ReplaySubject, scheduled, Subscription } from "rxjs";
 import { FormControl } from "@angular/forms";
@@ -30,7 +30,7 @@ import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { MatSelectChange } from "@angular/material/select";
-import { GroupService } from "../../../services/group.service";
+import { GroupService } from "../../services/group.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 
 @UntilDestroy()
@@ -183,8 +183,8 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
               });
               this.getData();
             },
-            (error) => {
-              this.snackbar.open(error.message, 'Completado', {
+            ({error}) => {
+              this.snackbar.open(error.message, 'X', {
                 duration: 3000,
                 horizontalPosition: "center",
                 panelClass: ['red-snackbar']
@@ -227,8 +227,8 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
                 });
                 this.getData();
               },
-              (error) => {
-                this.snackbar.open(error.message, 'Completado', {
+              ({error}) => {
+                this.snackbar.open(error.message, 'X', {
                   duration: 3000,
                   horizontalPosition: "center",
                   panelClass: ['red-snackbar']
@@ -250,8 +250,8 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
         });
         this.getData();
       },
-      (error) => {
-        this.snackbar.open(error.message, 'Completado', {
+      ({error}) => {
+        this.snackbar.open(error.message, 'X', {
           duration: 3000,
           horizontalPosition: "center",
           panelClass: ['red-snackbar']
@@ -280,8 +280,8 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
           });
           this.getData();
         },
-        (error) => {
-          this.snackbar.open(error.message, 'Completado', {
+        ({error}) => {
+          this.snackbar.open(error.message, 'X', {
             duration: 3000,
             horizontalPosition: "center",
             panelClass: ['red-snackbar']
@@ -310,8 +310,8 @@ export class GroupsTableComponent implements OnInit, AfterViewInit {
           });
           this.getData();
         },
-        (error) => {
-          this.snackbar.open(error.message, 'Completado', {
+        ({error}) => {
+          this.snackbar.open(error.message, 'X', {
             duration: 3000,
             horizontalPosition: "center",
             panelClass: ['red-snackbar']

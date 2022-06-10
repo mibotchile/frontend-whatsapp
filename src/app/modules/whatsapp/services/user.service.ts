@@ -16,13 +16,19 @@ export class UserService {
     private roleService: RoleService
   ) {}
 
-  getUsers(): Observable<User[]> {
+  getUsers(page:number=null,pageSize:number=null): Observable<User[]> {
+
+    let url=`${environment.url_api}user`
+    if(page && pageSize){
+      url+=`?page=${page}&pageSize=${pageSize}`
+    }
+
     let headers = new HttpHeaders();
     headers = headers.append(
       "mibot_session",
       '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
     );
-    return this.http.get<User[]>(`${environment.url_api}user/`, {
+    return this.http.get<User[]>(url, {
       headers: headers,
     });
   }

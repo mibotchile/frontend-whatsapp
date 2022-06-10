@@ -18,13 +18,19 @@
         <mat-tab label="Usuarios" *ngIf="menuVisibility('usuarios')">
           <div class="p-0">
             <!-- <vex-page-layout-demo></vex-page-layout-demo> -->
-            <frontend-whatsapp-users-table></frontend-whatsapp-users-table>
+            <ng-template matTabContent>
+              <router-outlet name="configurationUsers"></router-outlet>
+            </ng-template>
+            
           </div>
         </mat-tab>
         <mat-tab label="Grupos" *ngIf="menuVisibility('grupos')">
           <div class="p-0">
             <!-- <vex-page-layout-demo></vex-page-layout-demo> -->
-            <frontend-whatsapp-groups-table></frontend-whatsapp-groups-table>
+            <ng-template matTabContent>
+              <router-outlet name="configurationGroups"></router-outlet>
+            </ng-template>
+            
           </div>
         </mat-tab>
         <mat-tab label="Canales" *ngIf="menuVisibility('canales')">
@@ -34,7 +40,10 @@
         </mat-tab>
         <mat-tab label="Roles" *ngIf="menuVisibility('roles')">
           <div class="p-0">
-            <frontend-whatsapp-roles-table></frontend-whatsapp-roles-table>
+            <ng-template matTabContent>
+              <router-outlet name="configurationRoles"></router-outlet>
+            </ng-template>
+            
           </div>
         </mat-tab>
       </mat-tab-group>

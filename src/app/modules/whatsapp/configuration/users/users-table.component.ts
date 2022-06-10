@@ -128,8 +128,8 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
           });
           this.dataSource.data = this.isChecked? data.filter(n=>n.status===1): data.filter(n=>n.status===0);
         },
-        (error) => {
-          this.snackbar.open(error.message, 'Completado', {
+        ({error}) => {
+          this.snackbar.open(error.message, 'X', {
             duration: 3000,
             horizontalPosition: "right",
             panelClass: ['red-snackbar']
@@ -158,8 +158,8 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
               });
               this.getData();
             },
-            (error) => {
-              this.snackbar.open(error.message, 'Completado', {
+            ({error}) => {
+              this.snackbar.open(error.message, 'X', {
                 duration: 3000,
                 horizontalPosition: "center",
                 panelClass: ['red-snackbar']
@@ -190,8 +190,8 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 });
                 this.getData();
               },
-              (error) => {
-                this.snackbar.open(error.message, 'Completado', {
+              ({error}) => {
+                this.snackbar.open(error.message, 'X', {
                   duration: 3000,
                   horizontalPosition: "center",
                   panelClass: ['red-snackbar']
@@ -213,8 +213,8 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         this.getData();
       },
-      (error) => {
-        this.snackbar.open(error.message, 'Completado', {
+      ({error}) => {
+        this.snackbar.open(error.message, 'X', {
           duration: 3000,
           horizontalPosition: "center",
           panelClass: ['red-snackbar']
