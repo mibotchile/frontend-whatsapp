@@ -26,8 +26,9 @@ export class GroupService {
   searchGroupByName(name: string){
     let headers = new HttpHeaders();
     headers = headers.append('mibot_session','{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}');
+    
     return this.http.get<Group[]>
-    (`${environment.url_api}group/${name}`, {headers: headers} );
+    (`${environment.url_api}group/search/?name=${name}`, {headers: headers} );
   }
 
   getGroupById(id: number) {
