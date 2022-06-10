@@ -24,6 +24,8 @@ export class UserCreateUpdateComponent implements OnInit {
   icClose = icClose;
   icPeople = icPeople;
 
+  isChecked = true;
+
   selected: MatOption[];
 
   selectedOptions: SelectIdName[];
@@ -48,6 +50,7 @@ export class UserCreateUpdateComponent implements OnInit {
     this.getRoleList();
 
     if (this.defaults) {
+      this.isChecked= !!this.defaults.status;
       this.mode = 'update';
     } else {
       this.defaults = {} as User;
@@ -66,6 +69,10 @@ export class UserCreateUpdateComponent implements OnInit {
     if(o1.name == o2.name && o1.id == o2.id )
     return true;
     else return false
+  }
+
+  changeStatus(){
+    this.isChecked = !this.isChecked; 
   }
 
   save() {
@@ -109,6 +116,7 @@ export class UserCreateUpdateComponent implements OnInit {
 
   createUser() {
     const user = this.form.value;
+    user.status = +this.isChecked;
 
     this.dialogRef.close(user);
   }
@@ -117,6 +125,7 @@ export class UserCreateUpdateComponent implements OnInit {
     const user = this.form.value;
     user.id = this.defaults.id;
     user.uid = this.defaults.uid,
+    user.status = +this.isChecked;
 
     this.dialogRef.close(user);
   }

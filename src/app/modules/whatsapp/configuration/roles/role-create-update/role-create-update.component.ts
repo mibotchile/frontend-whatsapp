@@ -92,8 +92,7 @@ export class RoleCreateUpdateComponent implements OnInit {
     this.form = this.fb.group({
       name: this.defaults.name,
       description: this.defaults.description,
-      config: [this.defaults.config],
-      status: this.defaults.status
+      config: [this.defaults.config]
     });
   }
 

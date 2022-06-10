@@ -101,13 +101,7 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getData() {
     this.subscription = new Subscription();
-    // this.subscription = this.userService.getUsers().subscribe((data: any) => {
-    //   this.userTableData = data.data.filter((n) => n.status === 1);
-    //   this.deactivatedUserTableData = data.data.filter((n) => n.status === 0);
-    //   this.isChecked
-    //     ? (this.dataSource.data = this.userTableData)
-    //     : (this.dataSource.data = this.deactivatedUserTableData);
-    // });
+
     this.subscription = this.userService
       .getUsersWithRoleAndGroupNames()
       .subscribe(
@@ -122,6 +116,7 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
               email: element.email,
               groups_id: element.groups_id,
               role_id: element.role_id,
+              status: element.status,
               groupNames: result[1].data
                 .filter((n) => element.groups_id.includes(n.id))
                 .map((x) => x.name),
@@ -131,7 +126,7 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 .toString(),
             });
           });
-          this.dataSource.data = data;
+          this.dataSource.data = this.isChecked? data.filter(n=>n.status===1): data.filter(n=>n.status===0);
         },
         (error) => {
           this.snackbar.open(error.message, 'Completado', {

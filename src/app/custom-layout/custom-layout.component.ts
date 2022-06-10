@@ -11,6 +11,7 @@ import { forkJoin, Observable, Subscription } from 'rxjs';
 import { UserService } from '../modules/whatsapp/services/user.service';
 import { AuthService } from '../services/auth.service';
 import { RoleService } from '../modules/whatsapp/services/role.service';
+import { MenuService } from '../services/menu.service';
 
 
 @UntilDestroy()
@@ -41,7 +42,8 @@ export class CustomLayoutComponent implements OnInit {
               private router: Router,
               private userService: UserService,
               private roleService: RoleService,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private menusService: MenuService) { }
 
   ngOnInit() {
     this.loadConfigByUid(this.authService.getUid())
@@ -63,7 +65,7 @@ export class CustomLayoutComponent implements OnInit {
     this.subscription = this.getUsersWithRoles().subscribe((response: any)=>{
       const user = response[0].data.filter((n)=>n.uid === uid)[0];
       const role = response[1].data.filter(n=>n.id === user.role_id)[0];
-      console.log(role.config);
+      localStorage.setItem('config', JSON.stringify(role.config));
     });
   }
 

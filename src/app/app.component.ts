@@ -13,6 +13,7 @@ import { SplashScreenService } from "../@vex/services/splash-screen.service";
 import { Style, StyleService } from "../@vex/services/style.service";
 import { ConfigName } from "../@vex/interfaces/config-name.model";
 import menu from "../static-data/menu.json";
+import { MenuService } from "./services/menu.service";
 
 @Component({
   selector: "vex-root",
@@ -23,7 +24,7 @@ export class AppComponent {
   title = "vex";
 
   menuItems: any = {};
-  menu: any = menu;
+  menu: any = JSON.parse(localStorage.getItem('config'));
   newItems: any = {};
 
   items: any = [
@@ -37,11 +38,13 @@ export class AppComponent {
         {
           type: "link",
           label: "Conversaciones",
+          name: "conversation",
           route: "/apps/chat",
         },
         {
           type: "link",
           label: "Configuracion",
+          name: "settings",
           route: "/whatsapp/configuration",
         },
       ],
@@ -132,7 +135,7 @@ export class AppComponent {
     this.menuItems = this.items[0].children.filter((childrenItem) =>
       this.menu
         .map((menuItem) => menuItem.name)
-        .includes(childrenItem.label.toLowerCase())
+        .includes(childrenItem.name.toLowerCase())
     );
 
     this.newItems = this.items;
