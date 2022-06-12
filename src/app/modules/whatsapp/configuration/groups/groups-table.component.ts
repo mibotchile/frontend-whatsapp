@@ -104,7 +104,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription = this.groupService.getGroups().subscribe((data: any) => {
       this.groupTableData = [];
       this.deactivatedGroupTableData = [];
-      for (let item of data.data) {
+      for (let item of data.data.groups) {
         if (item.status === 0) {
           this.deactivatedGroupTableData.push(item);
         } else {

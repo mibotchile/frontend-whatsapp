@@ -90,7 +90,7 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
     this.subscription = this.roleService.getRoles().subscribe((data: any) => {
       this.roleTableData = [];
       this.deactivatedRoleTableData = [];
-      for (let item of data.data) {
+      for (let item of data.data.roles) {
         if (item.status === 0) {
           this.deactivatedRoleTableData.push(item);
         } else {
