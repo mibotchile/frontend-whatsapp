@@ -15,7 +15,7 @@
   <vex-page-layout-content vexContainer>
     <div class="card">
       <mat-tab-group>
-        <mat-tab label="Usuarios" *ngIf="menuVisibility('usuarios')">
+        <mat-tab label="Usuarios" *ngIf="menuVisibility('user')">
           <div class="p-0">
             <!-- <vex-page-layout-demo></vex-page-layout-demo> -->
             <ng-template matTabContent>
@@ -24,7 +24,7 @@
             
           </div>
         </mat-tab>
-        <mat-tab label="Grupos" *ngIf="menuVisibility('grupos')">
+        <mat-tab label="Grupos" *ngIf="menuVisibility('group')">
           <div class="p-0">
             <!-- <vex-page-layout-demo></vex-page-layout-demo> -->
             <ng-template matTabContent>
@@ -33,12 +33,12 @@
             
           </div>
         </mat-tab>
-        <mat-tab label="Canales" *ngIf="menuVisibility('canales')">
+        <mat-tab label="Canales" *ngIf="menuVisibility('channel')">
           <div class="p-0">
             <!-- <vex-page-layout-demo></vex-page-layout-demo> -->
           </div>
         </mat-tab>
-        <mat-tab label="Roles" *ngIf="menuVisibility('roles')">
+        <mat-tab label="Roles" *ngIf="menuVisibility('role')">
           <div class="p-0">
             <ng-template matTabContent>
               <router-outlet name="configurationRoles"></router-outlet>

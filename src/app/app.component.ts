@@ -1,4 +1,4 @@
-import { Component, Inject, LOCALE_ID, Renderer2 } from "@angular/core";
+import { Component, Inject, LOCALE_ID, OnInit, Renderer2 } from "@angular/core";
 import { ConfigService } from "../@vex/services/config.service";
 import { Settings } from "luxon";
 import { DOCUMENT } from "@angular/common";
@@ -13,7 +13,6 @@ import { SplashScreenService } from "../@vex/services/splash-screen.service";
 import { Style, StyleService } from "../@vex/services/style.service";
 import { ConfigName } from "../@vex/interfaces/config-name.model";
 import menu from "../static-data/menu.json";
-import { MenuService } from "./services/menu.service";
 
 @Component({
   selector: "vex-root",
