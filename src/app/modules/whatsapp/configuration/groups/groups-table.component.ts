@@ -71,6 +71,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
   dataSource: MatTableDataSource<Group> | null;
+  dataSourceForSearch: MatTableDataSource<Group> | null;
   searchCtrl = new FormControl();
 
   tags: string[];
@@ -91,8 +92,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private dialog: MatDialog,
     private groupService: GroupService,
     private snackbar: MatSnackBar
-  ) {
-  }
+  ) {}
 
   get visibleColumns() {
     return this.columns
@@ -100,26 +100,29 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .map((column) => column.property);
   }
 
-  getData(page?:number,pageSize?:number) {
+  getData(page?: number, pageSize?: number) {
     this.subscription = new Subscription();
     if (this.isChecked) {
-      this.subscription = this.groupService.getActiveGroups(page,pageSize).subscribe((result: any) => {
-        this.dataSource.data = result.data.groups;
-        this.length = result.data.length;
-        console.log(this.length)
-      });
+      this.subscription = this.groupService
+        .getActiveGroups(page, pageSize)
+        .subscribe((result: any) => {
+          this.dataSource.data = result.data.groups;
+          this.length = result.data.length;
+          //console.log(this.length)
+        });
     } else {
-      this.subscription = this.groupService.getInactiveGroups(page,pageSize).subscribe((result: any) => {
-        this.dataSource.data = result.data.groups;
-        this.length = result.data.length;
-      });
+      this.subscription = this.groupService
+        .getInactiveGroups(page, pageSize)
+        .subscribe((result: any) => {
+          this.dataSource.data = result.data.groups;
+          this.length = result.data.length;
+        });
     }
-    
   }
 
-  OnPageChange(event: PageEvent){
-    console.log(event)
-    this.getData(event.pageIndex+1,event.pageSize);
+  OnPageChange(event: PageEvent) {
+    console.log(event);
+    this.getData(event.pageIndex + 1, event.pageSize);
   }
 
   ngOnInit(): void {
@@ -128,9 +131,8 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // });
     //this.searchDataByName("grupo 7");
     this.isChecked = true;
-    this.length = 100;
 
-    this.getData(1,this.pageSize);
+    this.getData(1, this.pageSize);
 
     this.dataSource = new MatTableDataSource();
 
@@ -144,27 +146,31 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((value) => this.onFilterChange(value));
   }
 
-  searchDataByName(name: string) {
-    this.subscription = new Subscription();
-    this.subscription = this.groupService
-      .searchGroupByName(name)
-      .subscribe((response: any) => {
-        console.log(response);
-      });
-  }
-
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    //this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
   onFilterChange(value: string) {
-    if (!this.dataSource) {
-      return;
-    }
+    // if (!this.dataSource) {
+    //   return;
+    // }
+    console.log(value);
+
     value = value.trim();
     value = value.toLowerCase();
-    this.dataSource.filter = value;
+
+    this.subscription = new Subscription();
+    this.subscription = this.groupService
+      .searchGroupByName(value)
+      .subscribe((response: any) => {
+        this.dataSourceForSearch = response.data.groups;
+        if (value === '') {
+          console.log('vacio')
+        }else{
+          this.dataSource = this.dataSourceForSearch;
+        }
+      });
   }
 
   trackByProperty<T>(index: number, column: TableColumn<T>) {
@@ -195,7 +201,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 horizontalPosition: "center",
                 panelClass: ["green-snackbar"],
               });
-              this.getData();
+              this.getData(1, this.pageSize);
             },
             ({ error }) => {
               this.snackbar.open(error.message, "X", {
@@ -243,7 +249,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     panelClass: ["green-snackbar"],
                   }
                 );
-                this.getData();
+                this.getData(1, this.pageSize);
               },
               ({ error }) => {
                 this.snackbar.open(error.message, "X", {
@@ -266,7 +272,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
           horizontalPosition: "center",
           panelClass: ["green-snackbar"],
         });
-        this.getData();
+        this.getData(1, this.pageSize);
       },
       ({ error }) => {
         this.snackbar.open(error.message, "X", {
@@ -296,7 +302,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
             horizontalPosition: "center",
             panelClass: ["green-snackbar"],
           });
-          this.getData();
+          this.getData(this.paginator.pageIndex + 1, this.pageSize);
         },
         ({ error }) => {
           this.snackbar.open(error.message, "X", {
@@ -325,7 +331,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
           horizontalPosition: "center",
           panelClass: ["green-snackbar"],
         });
-        this.getData();
+        this.getData(this.paginator.pageIndex + 1, this.pageSize);
       },
       ({ error }) => {
         this.snackbar.open(error.message, "X", {
@@ -339,7 +345,9 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   showData() {
     this.isChecked = !this.isChecked;
-    this.getData(1,this.pageSize);
+    this.paginator.pageSize = 10;
+    this.paginator.firstPage();
+    this.getData(1, this.pageSize);
   }
 
   ngOnDestroy(): void {
