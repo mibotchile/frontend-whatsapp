@@ -94,10 +94,10 @@
     </th>
     <td *matCellDef="let row" mat-cell>
       <mat-chip-list #chipList>
-        <mat-chip class="myChip" *ngFor="let tag of row.tags" (removed)="remove(tag, row)"
+        <mat-chip class="myChip" disableRipple="true" *ngFor="let tag of row.tags" (removed)="remove(tag, row)"
           >{{ tag }}
           <button matChipRemove>
-            <ic-icon [icon]="icCancel" size="18px"></ic-icon>
+            <ic-icon [icon]="icCancel" color="#2ad1a5" size="18px"></ic-icon>
           </button>
         </mat-chip>
         <input
@@ -136,6 +136,8 @@
 </table>
 
 <mat-paginator
+  [length]="length"
+  (page)="OnPageChange($event)"
   [pageSizeOptions]="pageSizeOptions"
   [pageSize]="pageSize"
   class="sticky left-0"

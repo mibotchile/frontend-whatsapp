@@ -16,8 +16,7 @@ const routes: Routes = [
       },
       {
         path: 'configuration',
-        component: ConfigurationComponent,
-
+        loadChildren: () => import('./configuration/configuration.module').then(m => m.ConfigurationModule),
       },
     ]
   }

@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import icClose from '@iconify/icons-ic/twotone-close';
 import icPeople from '@iconify/icons-ic/people';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Group } from '../../../../models/group.model';
+import { Group } from '../../../models/group.model';
 
 // export interface DialogData {
 //   animal: string;

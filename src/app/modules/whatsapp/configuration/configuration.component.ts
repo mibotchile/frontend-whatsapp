@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { MenuService } from 'src/app/services/menu.service';
 import { ProgressService } from 'src/app/services/progress.service';
 import menu from '../../../../static-data/menu.json';
 
@@ -10,13 +12,15 @@ import menu from '../../../../static-data/menu.json';
 export class ConfigurationComponent implements OnInit {
 
   menu:any = menu;
+  //menu:any;
 
   constructor(public progressService: ProgressService) { 
   }
 
   ngOnInit(): void {
-    
+    //this.menu = JSON.parse(localStorage.getItem('config'));
   }
+
 
   menuVisibility(value: string){
 

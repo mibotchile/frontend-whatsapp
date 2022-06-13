@@ -11,6 +11,7 @@ import { forkJoin, Observable, Subscription } from 'rxjs';
 import { UserService } from '../modules/whatsapp/services/user.service';
 import { AuthService } from '../services/auth.service';
 import { RoleService } from '../modules/whatsapp/services/role.service';
+import { MenuService } from '../services/menu.service';
 
 
 @UntilDestroy()
@@ -21,7 +22,7 @@ import { RoleService } from '../modules/whatsapp/services/role.service';
 })
 export class CustomLayoutComponent implements OnInit {
 
-  subscription: Subscription;
+  //subscription: Subscription;
 
   sidenavCollapsed$ = this.layoutService.sidenavCollapsed$;
   isFooterVisible$ = this.configService.config$.pipe(map(config => config.footer.visible));
@@ -41,33 +42,34 @@ export class CustomLayoutComponent implements OnInit {
               private router: Router,
               private userService: UserService,
               private roleService: RoleService,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private menusService: MenuService) { }
 
   ngOnInit() {
-    this.loadConfigByUid(this.authService.getUid())
+    //this.loadConfigByUid(this.authService.getUid())
     this.layoutService.configpanelOpen$.pipe(
       untilDestroyed(this)
     ).subscribe(open => open ? this.configpanel.open() : this.configpanel.close());
 
   }
 
-  getUsersWithRoles(): Observable<any>{
-    let users$ = this.userService.getUsers();
-    let roles$ = this.roleService.getRoles();
+  // getUsersWithRoles(): Observable<any>{
+  //   let users$ = this.userService.getUsers();
+  //   let roles$ = this.roleService.getRoles();
 
-    return forkJoin([users$,roles$]);
-  }
+  //   return forkJoin([users$,roles$]);
+  // }
 
-  loadConfigByUid(uid: string){
-    this.subscription = new Subscription();
-    this.subscription = this.getUsersWithRoles().subscribe((response: any)=>{
-      const user = response[0].data.filter((n)=>n.uid === uid)[0];
-      const role = response[1].data.filter(n=>n.id === user.role_id)[0];
-      console.log(role.config);
-    });
-  }
+  // loadConfigByUid(uid: string){
+  //   this.subscription = new Subscription();
+  //   this.subscription = this.getUsersWithRoles().subscribe((response: any)=>{
+  //     const user = response[0].data.filter((n)=>n.uid === uid)[0];
+  //     const role = response[1].data.filter(n=>n.id === user.role_id)[0];
+  //     localStorage.setItem('config', JSON.stringify(role.config));
+  //   });
+  // }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
+  // ngOnDestroy(): void {
+  //   this.subscription.unsubscribe();
+  // }
 }

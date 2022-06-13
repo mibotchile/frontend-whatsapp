@@ -90,7 +90,7 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
     this.subscription = this.roleService.getRoles().subscribe((data: any) => {
       this.roleTableData = [];
       this.deactivatedRoleTableData = [];
-      for (let item of data.data) {
+      for (let item of data.data.roles) {
         if (item.status === 0) {
           this.deactivatedRoleTableData.push(item);
         } else {
@@ -127,8 +127,8 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
               });
               this.getData();
             },
-            (error) => {
-              this.snackbar.open(error.message, 'Completado', {
+            ({error}) => {
+              this.snackbar.open(error.message, 'X', {
                 duration: 3000,
                 horizontalPosition: "center",
                 panelClass: ['red-snackbar']
@@ -161,8 +161,8 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
                 });
                 this.getData();
               },
-              (error) => {
-                this.snackbar.open(error.message, 'Completado', {
+              ({error}) => {
+                this.snackbar.open(error.message, 'X', {
                   duration: 3000,
                   horizontalPosition: "center",
                   panelClass: ['red-snackbar']
@@ -184,8 +184,8 @@ export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
         });
         this.getData();
       },
-      (error) => {
-        this.snackbar.open(error.message, 'Completado', {
+      ({error}) => {
+        this.snackbar.open(error.message, 'X', {
           duration: 3000,
           horizontalPosition: "center",
           panelClass: ['red-snackbar']

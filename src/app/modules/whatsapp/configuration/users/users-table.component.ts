@@ -23,16 +23,7 @@ import { UserCreateUpdateComponent } from "./user-create-update/user-create-upda
 import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
 import { MatSnackBar } from "@angular/material/snack-bar";
-
-export interface UserView {
-  id: number;
-  uid: string;
-  name: string;
-  email: string;
-  groupNames: Array<string>;
-  roleName: string;
-  status: number;
-}
+import { UserView } from "../../models/user-view.model";
 
 @Component({
   selector: "frontend-whatsapp-users-table",
@@ -56,7 +47,7 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   subscription: Subscription;
 
-  userTableData: User[];
+  userTableData: UserView[];
   deactivatedUserTableData: User[];
 
   pageSize = 10;
@@ -72,8 +63,8 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
       type: "text",
       visible: true,
     },
-    { label: "Grupos", property: "groupNames", type: "button", visible: true },
-    { label: "Rol", property: "roleName", type: "text", visible: true },
+    { label: "Grupos", property: "groups", type: "button", visible: true },
+    { label: "Rol", property: "role", type: "button", visible: true },
     { label: "Acciones", property: "actions", type: "button", visible: true },
   ];
 
@@ -101,46 +92,19 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getData() {
     this.subscription = new Subscription();
-    // this.subscription = this.userService.getUsers().subscribe((data: any) => {
-    //   this.userTableData = data.data.filter((n) => n.status === 1);
-    //   this.deactivatedUserTableData = data.data.filter((n) => n.status === 0);
-    //   this.isChecked
-    //     ? (this.dataSource.data = this.userTableData)
-    //     : (this.dataSource.data = this.deactivatedUserTableData);
-    // });
-    this.subscription = this.userService
-      .getUsersWithRoleAndGroupNames()
-      .subscribe(
-        (result) => {
-          let data = [];
 
-          result[0].data.forEach((element) => {
-            data.push({
-              id: element.id,
-              uid: element.uid,
-              name: element.name,
-              email: element.email,
-              groups_id: element.groups_id,
-              role_id: element.role_id,
-              groupNames: result[1].data
-                .filter((n) => element.groups_id.includes(n.id))
-                .map((x) => x.name),
-              roleName: result[2].data
-                .filter((n) => element.role_id === n.id)
-                .map((x) => x.name)
-                .toString(),
-            });
-          });
-          this.dataSource.data = data;
-        },
-        (error) => {
-          this.snackbar.open(error.message, 'Completado', {
-            duration: 3000,
-            horizontalPosition: "right",
-            panelClass: ['red-snackbar']
-          });
-        }
-      );
+    this.subscription = this.userService.getUsers().subscribe(
+      (result: any) => {
+        this.dataSource.data = result.data.users;
+      },
+      ({ error }) => {
+        this.snackbar.open(error.message, "X", {
+          duration: 3000,
+          horizontalPosition: "right",
+          panelClass: ["red-snackbar"],
+        });
+      }
+    );
   }
 
   showData() {
@@ -156,18 +120,18 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
           this.subscription = new Subscription();
           this.subscription = this.userService.insertUser(user).subscribe(
             () => {
-              this.snackbar.open('Usuario creado exitosamente.', 'Completado', {
+              this.snackbar.open("Usuario creado exitosamente.", "Completado", {
                 duration: 3000,
-                horizontalPosition: 'center',
-                panelClass: ['green-snackbar']
+                horizontalPosition: "center",
+                panelClass: ["green-snackbar"],
               });
               this.getData();
             },
-            (error) => {
-              this.snackbar.open(error.message, 'Completado', {
+            ({ error }) => {
+              this.snackbar.open(error.message, "X", {
                 duration: 3000,
                 horizontalPosition: "center",
-                panelClass: ['red-snackbar']
+                panelClass: ["red-snackbar"],
               });
             }
           );
@@ -188,18 +152,22 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
             .updateUser(updatedUser)
             .subscribe(
               () => {
-                this.snackbar.open('Usuario actualizado exitosamente.', 'Completado', {
-                  duration: 3000,
-                  horizontalPosition: 'center',
-                  panelClass: ['green-snackbar']
-                });
+                this.snackbar.open(
+                  "Usuario actualizado exitosamente.",
+                  "Completado",
+                  {
+                    duration: 3000,
+                    horizontalPosition: "center",
+                    panelClass: ["green-snackbar"],
+                  }
+                );
                 this.getData();
               },
-              (error) => {
-                this.snackbar.open(error.message, 'Completado', {
+              ({ error }) => {
+                this.snackbar.open(error.message, "X", {
                   duration: 3000,
                   horizontalPosition: "center",
-                  panelClass: ['red-snackbar']
+                  panelClass: ["red-snackbar"],
                 });
               }
             );
@@ -211,18 +179,18 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscription = new Subscription();
     this.subscription = this.userService.deleteUser(user).subscribe(
       () => {
-        this.snackbar.open('Usuario eliminado exitosamente.', 'Completado', {
+        this.snackbar.open("Usuario eliminado exitosamente.", "Completado", {
           duration: 3000,
-          horizontalPosition: 'center',
-          panelClass: ['green-snackbar']
+          horizontalPosition: "center",
+          panelClass: ["green-snackbar"],
         });
         this.getData();
       },
-      (error) => {
-        this.snackbar.open(error.message, 'Completado', {
+      ({ error }) => {
+        this.snackbar.open(error.message, "X", {
           duration: 3000,
           horizontalPosition: "center",
-          panelClass: ['red-snackbar']
+          panelClass: ["red-snackbar"],
         });
       }
     );

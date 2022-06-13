@@ -24,6 +24,8 @@ export class UserCreateUpdateComponent implements OnInit {
   icClose = icClose;
   icPeople = icPeople;
 
+  isChecked = true;
+
   selected: MatOption[];
 
   selectedOptions: SelectIdName[];
@@ -48,6 +50,7 @@ export class UserCreateUpdateComponent implements OnInit {
     this.getRoleList();
 
     if (this.defaults) {
+      this.isChecked= !!this.defaults.status;
       this.mode = 'update';
     } else {
       this.defaults = {} as User;
@@ -68,6 +71,10 @@ export class UserCreateUpdateComponent implements OnInit {
     else return false
   }
 
+  changeStatus(){
+    this.isChecked = !this.isChecked; 
+  }
+
   save() {
     if (this.mode === 'create') {
       this.createUser();
@@ -80,7 +87,7 @@ export class UserCreateUpdateComponent implements OnInit {
     this.subscription = new Subscription();
     this.subscription = this.groupService.getGroups().subscribe((data: any) => {
       this.groupList = [];
-      data.data.filter(n=>n.status === 1).forEach(element => {
+      data.data.groups.filter(n=>n.status === 1).forEach(element => {
         this.groupList.push(
           {
             id: element.id ,
@@ -95,7 +102,7 @@ export class UserCreateUpdateComponent implements OnInit {
     this.subscription = new Subscription();
     this.subscription = this.roleService.getRoles().subscribe((data: any) => {
       this.roleList = [];
-      data.data.filter(n=>n.status === 1).forEach(element => {
+      data.data.roles.filter(n=>n.status === 1).forEach(element => {
         this.roleList.push(
           {
             id: element.id ,
@@ -109,6 +116,7 @@ export class UserCreateUpdateComponent implements OnInit {
 
   createUser() {
     const user = this.form.value;
+    user.status = +this.isChecked;
 
     this.dialogRef.close(user);
   }
@@ -117,6 +125,7 @@ export class UserCreateUpdateComponent implements OnInit {
     const user = this.form.value;
     user.id = this.defaults.id;
     user.uid = this.defaults.uid,
+    user.status = +this.isChecked;
 
     this.dialogRef.close(user);
   }

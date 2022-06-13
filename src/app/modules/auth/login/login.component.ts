@@ -12,7 +12,6 @@ import icVisibility from "@iconify/icons-ic/twotone-visibility";
 import icVisibilityOff from "@iconify/icons-ic/twotone-visibility-off";
 import { fadeInUp400ms } from "../../../../@vex/animations/fade-in-up.animation";
 import { AuthService } from "src/app/services/auth.service";
-import { Subscription } from "rxjs";
 import { UserService } from "../../whatsapp/services/user.service";
 
 @Component({
@@ -24,7 +23,6 @@ import { UserService } from "../../whatsapp/services/user.service";
 })
 export class LoginComponent implements OnInit {
   form: FormGroup;
-  subscription: Subscription;
 
   inputType = "password";
   visible = false;

@@ -1,4 +1,9 @@
 .myChip{
-    border-radius: 5px;
-    background-color: rgba(42, 209, 165,.4);
+    border-radius: 3px;
+    background-color: rgba(42, 209, 165,.1);
+    color: rgb(42, 209, 165)
+}
+
+.mat-chip.mat-standard-chip::after {
+    background: #0000;
 }
