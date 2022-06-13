@@ -26,7 +26,11 @@
     <mat-icon [icIcon]="icSearch"></mat-icon>
   </button>
 
-  <mat-slide-toggle (toggleChange)="showData()" [(ngModel)]="isChecked"  color="primary"></mat-slide-toggle>
+  <mat-slide-toggle
+    (toggleChange)="showData()"
+    [(ngModel)]="isChecked"
+    color="primary"
+  ></mat-slide-toggle>
 
   <!-- <button
     (click)="createUser()"
@@ -57,14 +61,26 @@
     </ng-container>
   </ng-container>
 
-  <ng-container matColumnDef="groupNames">
+  <ng-container matColumnDef="role">
+    <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header>
+      Rol
+    </th>
+    <td *matCellDef="let row" mat-cell>
+      {{ row.role.name }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="groups">
     <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header>
       Grupos
     </th>
     <td *matCellDef="let row" mat-cell>
       <mat-chip-list>
-        <mat-chip class="myChip" disableRipple="true" *ngFor="let group of row.groupNames"
-          >{{ group }}
+        <mat-chip
+          class="myChip"
+          disableRipple="true"
+          *ngFor="let group of row.groups"
+          >{{ group.name }}
         </mat-chip>
       </mat-chip-list>
     </td>

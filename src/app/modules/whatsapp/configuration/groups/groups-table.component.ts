@@ -26,7 +26,7 @@ import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
 import { TableColumn } from "src/@vex/interfaces/table-column.interface";
-import { MatPaginator } from "@angular/material/paginator";
+import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
@@ -49,7 +49,9 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
   groupTableData: Group[];
   deactivatedGroupTableData: Group[];
 
-  isChecked = true;
+  length: number;
+
+  isChecked: boolean;
 
   subscription: Subscription;
 
@@ -66,8 +68,6 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
     { label: "Acciones", property: "actions", type: "button", visible: true },
   ];
 
-  // length: number;
-  // pageIndex = 1
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
   dataSource: MatTableDataSource<Group> | null;
@@ -91,7 +91,8 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private dialog: MatDialog,
     private groupService: GroupService,
     private snackbar: MatSnackBar
-  ) {}
+  ) {
+  }
 
   get visibleColumns() {
     return this.columns
@@ -99,35 +100,37 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .map((column) => column.property);
   }
 
-  getData() {
+  getData(page?:number,pageSize?:number) {
     this.subscription = new Subscription();
-    this.subscription = this.groupService.getGroups().subscribe((data: any) => {
-      this.groupTableData = [];
-      this.deactivatedGroupTableData = [];
-      for (let item of data.data.groups) {
-        if (item.status === 0) {
-          this.deactivatedGroupTableData.push(item);
-        } else {
-          this.groupTableData.push(item);
-        }
-      }
-      if (this.isChecked) {
-        this.dataSource.data = this.groupTableData;
-      } else {
-        this.dataSource.data = this.deactivatedGroupTableData;
-      }
-      //this.dataSource.data = this.groupTableData;
-    });
-    //return of(groupTableData.map(group => new Group(group)));
+    if (this.isChecked) {
+      this.subscription = this.groupService.getActiveGroups(page,pageSize).subscribe((result: any) => {
+        this.dataSource.data = result.data.groups;
+        this.length = result.data.length;
+        console.log(this.length)
+      });
+    } else {
+      this.subscription = this.groupService.getInactiveGroups(page,pageSize).subscribe((result: any) => {
+        this.dataSource.data = result.data.groups;
+        this.length = result.data.length;
+      });
+    }
+    
+  }
+
+  OnPageChange(event: PageEvent){
+    console.log(event)
+    this.getData(event.pageIndex+1,event.pageSize);
   }
 
   ngOnInit(): void {
     // this.getData().subscribe(groups => {
     //   this.subject$.next(groups);
     // });
-    this.searchDataByName('grupo 7');
+    //this.searchDataByName("grupo 7");
+    this.isChecked = true;
+    this.length = 100;
 
-    this.getData();
+    this.getData(1,this.pageSize);
 
     this.dataSource = new MatTableDataSource();
 
@@ -335,7 +338,8 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   showData() {
-    this.getData();
+    this.isChecked = !this.isChecked;
+    this.getData(1,this.pageSize);
   }
 
   ngOnDestroy(): void {

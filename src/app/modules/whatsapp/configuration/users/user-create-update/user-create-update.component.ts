@@ -87,7 +87,7 @@ export class UserCreateUpdateComponent implements OnInit {
     this.subscription = new Subscription();
     this.subscription = this.groupService.getGroups().subscribe((data: any) => {
       this.groupList = [];
-      data.data.filter(n=>n.status === 1).forEach(element => {
+      data.data.groups.filter(n=>n.status === 1).forEach(element => {
         this.groupList.push(
           {
             id: element.id ,
@@ -102,7 +102,7 @@ export class UserCreateUpdateComponent implements OnInit {
     this.subscription = new Subscription();
     this.subscription = this.roleService.getRoles().subscribe((data: any) => {
       this.roleList = [];
-      data.data.filter(n=>n.status === 1).forEach(element => {
+      data.data.roles.filter(n=>n.status === 1).forEach(element => {
         this.roleList.push(
           {
             id: element.id ,

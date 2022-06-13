@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { forkJoin, Observable } from "rxjs";
 import { environment } from "src/environments/environment";
+import { UserView } from "../models/user-view.model";
 import { User } from "../models/user.model";
 import { GroupService } from "./group.service";
 import { RoleService } from "./role.service";
@@ -16,7 +17,7 @@ export class UserService {
     private roleService: RoleService
   ) {}
 
-  getUsers(page:number=null,pageSize:number=null): Observable<User[]> {
+  getUsers(page:number=null,pageSize:number=null): Observable<UserView[]> {
 
     let url=`${environment.url_api}user`
     if(page && pageSize){
@@ -28,17 +29,9 @@ export class UserService {
       "mibot_session",
       '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
     );
-    return this.http.get<User[]>(url, {
+    return this.http.get<UserView[]>(url, {
       headers: headers,
     });
-  }
-
-  getUsersWithRoleAndGroupNames(): Observable<any>{
-    let users$ = this.getUsers();
-    let groups$ = this.groupService.getGroups();
-    let roles$ = this.roleService.getRoles();
-
-    return forkJoin([users$,groups$,roles$]);
   }
 
   getUserById(id: number) {

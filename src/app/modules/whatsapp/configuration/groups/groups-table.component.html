@@ -136,6 +136,8 @@
 </table>
 
 <mat-paginator
+  [length]="length"
+  (page)="OnPageChange($event)"
   [pageSizeOptions]="pageSizeOptions"
   [pageSize]="pageSize"
   class="sticky left-0"
