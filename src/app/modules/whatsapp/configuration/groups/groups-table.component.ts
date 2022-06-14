@@ -33,6 +33,7 @@ import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { MatSelectChange } from "@angular/material/select";
 import { GroupService } from "../../services/group.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { MenuService } from "src/app/services/menu.service";
 
 @UntilDestroy()
 @Component({
@@ -44,6 +45,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
   // subject$: ReplaySubject<Group[]> = new ReplaySubject<Group[]>(1);
   // data$: Observable<Group[]> = this.subject$.asObservable();
+  menu: any;
   groups: Group[];
 
   groupTableData: Group[];
@@ -91,7 +93,8 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private groupService: GroupService,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private menuService: MenuService
   ) {}
 
   get visibleColumns() {
@@ -130,6 +133,11 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
     //   this.subject$.next(groups);
     // });
     //this.searchDataByName("grupo 7");
+    this.subscription = new Subscription();
+      this.subscription = this.menuService.getConfigObs().subscribe((response)=>{
+        this.menu = response;
+      });
+
     this.isChecked = true;
 
     this.getData(1, this.pageSize);
@@ -349,6 +357,21 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.paginator.firstPage();
     this.getData(1, this.pageSize);
   }
+
+  menuVisibility(value: string) {
+    for (const item of this.menu) {
+        for (const i of item.tabs) {
+            if (i.name === 'group') {
+                for (const j of i.permissions) {
+                  if (j === value) {
+                    return true;
+                  }
+                }
+            }
+        }
+    }
+    false;
+}
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

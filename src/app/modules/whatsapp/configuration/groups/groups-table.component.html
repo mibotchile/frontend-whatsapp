@@ -36,6 +36,7 @@
     mat-mini-fab
     matTooltip="Agregar Grupo"
     type="button"
+    *ngIf="menuVisibility('create')"
   >
     <mat-icon [icIcon]="icAdd"></mat-icon>
   </button>
@@ -145,11 +146,11 @@
 
 <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below">
   <ng-template let-group="group" matMenuContent>
-    <button (click)="updateGroup(group)" mat-menu-item>
+    <button (click)="updateGroup(group)" mat-menu-item *ngIf="menuVisibility('update')">
       <mat-icon [icIcon]="icEdit"></mat-icon>
       <span>Modificar</span>
     </button>
-    <button (click)="deleteGroup(group)" mat-menu-item>
+    <button (click)="deleteGroup(group)" mat-menu-item *ngIf="menuVisibility('delete')">
       <mat-icon [icIcon]="icDelete"></mat-icon>
       <span>Eliminar</span>
     </button>

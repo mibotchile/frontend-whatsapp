@@ -1,4 +1,4 @@
-import { Component, Inject, LOCALE_ID, OnInit, Renderer2 } from "@angular/core";
+import { Component, Inject, LOCALE_ID, OnDestroy, OnInit, Renderer2 } from "@angular/core";
 import { ConfigService } from "../@vex/services/config.service";
 import { Settings } from "luxon";
 import { DOCUMENT } from "@angular/common";
@@ -13,14 +13,18 @@ import { SplashScreenService } from "../@vex/services/splash-screen.service";
 import { Style, StyleService } from "../@vex/services/style.service";
 import { ConfigName } from "../@vex/interfaces/config-name.model";
 import menu from "../static-data/menu.json";
+import { MenuService } from "./services/menu.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "vex-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   title = "vex";
+
+  subscription: Subscription;
 
   menuItems: any = {};
   //menu: any = JSON.parse(localStorage.getItem('config'));
@@ -60,8 +64,9 @@ export class AppComponent {
     @Inject(LOCALE_ID) private localeId: string,
     private layoutService: LayoutService,
     private route: ActivatedRoute,
-    private navigationService: NavigationService,
-    private splashScreenService: SplashScreenService
+    //private navigationService: NavigationService,
+    private splashScreenService: SplashScreenService,
+    private menuService: MenuService
   ) {
     Settings.defaultLocale = this.localeId;
 
@@ -131,6 +136,14 @@ export class AppComponent {
     this.menuNavigation();
   }
 
+  ngOnInit(): void {
+    // this.subscription = new Subscription();
+    //   this.subscription = this.menuService.getConfigObs().subscribe((response)=>{
+    //     //this.menu = response;
+    //     console.log(response)
+    //   });
+  }
+
   menuNavigation() {
     this.menuItems = this.items[0].children.filter((childrenItem) =>
       this.menu
@@ -141,7 +154,12 @@ export class AppComponent {
     this.newItems = this.items;
     this.newItems[0].children = this.menuItems;
 
-    this.navigationService.items = this.newItems;
+    //this.navigationService.items = this.newItems;
   }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
   
 }

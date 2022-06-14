@@ -1,22 +1,21 @@
 import { Injectable } from "@angular/core";
-import { UserService } from "../modules/whatsapp/services/user.service";
-import { AuthService } from "./auth.service";
-import { Observable } from "rxjs";
-import { map } from "rxjs/internal/operators/map";
+import { BehaviorSubject, Observable } from "rxjs";
+import { Selector } from "../modules/whatsapp/configuration/roles/role-selector/selector";
 
 @Injectable({
   providedIn: "root",
 })
 export class MenuService {
-  constructor(
-    private authService: AuthService,
-    private userService: UserService
-  ) {}
+  constructor() {}
 
-  getConfig(): Observable<any> {
-    return this.userService.getUserByUid(this.authService.getUid()).pipe(
-      map(n=>n.data.role.config)
-    );
+  private configObs$: BehaviorSubject<Selector[]> = new BehaviorSubject([]);
+
+  getConfigObs(): Observable<Selector[]> {
+    return this.configObs$.asObservable();
+  }
+
+  setConfigObs(config: Selector[]){
+    this.configObs$.next(config);
   }
 
 }
