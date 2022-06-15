@@ -5,6 +5,7 @@ export class Role extends General {
     name: string;
     description: string;
     config: string;
+    default: boolean;
 
     constructor(role){
         super(role);
@@ -12,5 +13,6 @@ export class Role extends General {
         this.name = role.name;
         this.description = role.description;
         this.config = role.config;
+        this.default = role.default;
     }
 }

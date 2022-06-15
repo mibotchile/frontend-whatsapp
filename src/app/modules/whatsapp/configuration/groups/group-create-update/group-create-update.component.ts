@@ -21,6 +21,7 @@ export class GroupCreateUpdateComponent implements OnInit {
   icPeople = icPeople;
 
   isChecked = true;
+  isCheckedDefault = false;
 
   form: FormGroup;
   mode: 'create' | 'update' = 'create';
@@ -34,6 +35,7 @@ export class GroupCreateUpdateComponent implements OnInit {
     if (this.defaults) {
       this.mode = 'update';
       this.isChecked= !!this.defaults.status;
+      this.isCheckedDefault= this.defaults.default;
     } else {
       this.defaults = {} as Group;
     }
@@ -57,9 +59,14 @@ export class GroupCreateUpdateComponent implements OnInit {
     this.isChecked = !this.isChecked; 
   }
 
+  changeStatusDefault(){
+    this.isCheckedDefault = !this.isCheckedDefault; 
+  }
+
   createGroup() {
     const group = this.form.value;
     group.status = +this.isChecked;
+    group.default = this.isCheckedDefault;
     this.dialogRef.close(group);
   }
 
@@ -68,6 +75,7 @@ export class GroupCreateUpdateComponent implements OnInit {
     group.id = this.defaults.id;
     group.tags = this.defaults.tags;
     group.status = +this.isChecked;
+    group.default = this.isCheckedDefault;
 
     this.dialogRef.close(group);
   }

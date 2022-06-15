@@ -21,6 +21,7 @@ import { Icon } from '@visurel/iconify-angular';
 import { PopoverRef } from '../../../../components/popover/popover-ref';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
+import { MenuService } from 'src/app/services/menu.service';
 
 export interface OnlineStatus {
   id: 'online' | 'away' | 'dnd' | 'offline';
@@ -116,7 +117,8 @@ export class ToolbarUserDropdownComponent implements OnInit {
   constructor(private cd: ChangeDetectorRef,
               private popoverRef: PopoverRef<ToolbarUserDropdownComponent>,
               private authService: AuthService,
-              private router: Router) { }
+              private router: Router,
+              private menuService: MenuService) { }
 
   ngOnInit() {
     this.displayName = this.authService.getUserName();
@@ -132,6 +134,8 @@ export class ToolbarUserDropdownComponent implements OnInit {
     this.authService
       .logout()
       .then(() => {
+        localStorage.clear();
+        this.menuService.setConfigObs([]);
         this.router.navigate(['/login']);
       })
       .catch((error) => console.log(error));

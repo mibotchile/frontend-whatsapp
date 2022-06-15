@@ -5,6 +5,7 @@ export class Group extends General {
     name: string;
     description: string;
     tags: Array<string>;
+    default: boolean;
 
     constructor(group) {
         super(group);
@@ -12,5 +13,6 @@ export class Group extends General {
         this.name = group.name;
         this.description = group.description;
         this.tags = group.tags;
+        this.default = group.default;
     }
 }

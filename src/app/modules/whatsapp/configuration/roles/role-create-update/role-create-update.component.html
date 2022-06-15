@@ -35,7 +35,7 @@
 
       <mat-slide-toggle color="primary" [checked]="isChecked" (toggleChange)="changeStatus()" >Estado</mat-slide-toggle>
 
-      <mat-slide-toggle color="primary">Por defecto</mat-slide-toggle>
+      <mat-slide-toggle color="primary" [checked]="isCheckedDefault" (toggleChange)="changeStatusDefault()">Por defecto</mat-slide-toggle>
     </div>
 
     <mat-divider class="ml-6 text-border" [vertical]="true"></mat-divider>

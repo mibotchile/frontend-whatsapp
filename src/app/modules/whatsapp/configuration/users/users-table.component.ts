@@ -26,6 +26,8 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { UserView } from "../../models/user-view.model";
 import { MenuService } from "src/app/services/menu.service";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
+import { AuthService } from "src/app/services/auth.service";
+import { Router } from "@angular/router";
 
 @UntilDestroy()
 @Component({
@@ -86,7 +88,9 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
     private dialog: MatDialog,
     private userService: UserService,
     private snackbar: MatSnackBar,
-    private menuService: MenuService
+    private menuService: MenuService,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngAfterViewInit(): void {
@@ -117,7 +121,7 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.subscription = this.userService.getInactiveUsers(page, pageSize).subscribe((result: any) => {
             this.dataSource.data = result.data.users;
             this.length = result.data.length;
-        });
+        },({error})=>{this.dataSource.data = []});
     }
 }
 
@@ -126,6 +130,7 @@ OnPageChange(event: PageEvent) {
 }
 
 showData() {
+  
   this.isChecked = !this.isChecked;
   this.paginator.pageSize = 10;
   this.paginator.firstPage();
@@ -173,6 +178,16 @@ showData() {
             .updateUser(updatedUser)
             .subscribe(
               () => {
+
+                if (user.uid === this.authService.getUid()) {
+                  this.authService
+                  .logout()
+                  .then(() => {
+                    this.router.navigate(['/login']);
+                  })
+                  .catch((error) => console.log(error));
+                }
+
                 this.snackbar.open(
                   "Usuario actualizado exitosamente.",
                   "Completado",

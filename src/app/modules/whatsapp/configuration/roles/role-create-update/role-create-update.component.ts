@@ -68,6 +68,7 @@ export class RoleCreateUpdateComponent implements OnInit {
   ];
 
   isChecked = true;
+  isCheckedDefault = false;
 
   icClose = icClose;
   icSecurity = icSecurity;
@@ -84,6 +85,7 @@ export class RoleCreateUpdateComponent implements OnInit {
   ngOnInit(): void {
     if (this.defaults) {
       this.isChecked= !!this.defaults.status;
+      this.isCheckedDefault= this.defaults.default;
       this.mode = "update";
     } else {
       this.defaults = {} as Role;
@@ -108,9 +110,14 @@ export class RoleCreateUpdateComponent implements OnInit {
     this.isChecked = !this.isChecked; 
   }
 
+  changeStatusDefault(){
+    this.isCheckedDefault = !this.isCheckedDefault; 
+  }
+
   createRole() {
     const role = this.form.value;
     role.status = +this.isChecked;
+    role.default = this.isCheckedDefault;
 
     this.dialogRef.close(role);
   }
@@ -119,6 +126,7 @@ export class RoleCreateUpdateComponent implements OnInit {
     const role = this.form.value;
     role.id = this.defaults.id;
     role.status = +this.isChecked;
+    role.default = this.isCheckedDefault;
 
     this.dialogRef.close(role);
   }
