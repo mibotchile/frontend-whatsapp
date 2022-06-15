@@ -40,6 +40,7 @@
     mat-mini-fab
     matTooltip="Agregar Usuario"
     type="button"
+    *ngIf="menuVisibility('create')"
   >
     <mat-icon [icIcon]="icAdd"></mat-icon>
   </button> -->
@@ -112,6 +113,8 @@
 </table>
 
 <mat-paginator
+  [length]="length"
+  (page)="OnPageChange($event)"
   [pageSizeOptions]="pageSizeOptions"
   [pageSize]="pageSize"
   class="sticky left-0"
@@ -119,11 +122,11 @@
 
 <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below">
   <ng-template let-user="user" matMenuContent>
-    <button (click)="updateUser(user)" mat-menu-item>
+    <button (click)="updateUser(user)" mat-menu-item *ngIf="menuVisibility('update')">
       <mat-icon [icIcon]="icEdit"></mat-icon>
       <span>Modificar</span>
     </button>
-    <button (click)="deleteUser(user)" mat-menu-item>
+    <button (click)="deleteUser(user)" mat-menu-item *ngIf="menuVisibility('delete')">
       <mat-icon [icIcon]="icDelete"></mat-icon>
       <span>Eliminar</span>
     </button>

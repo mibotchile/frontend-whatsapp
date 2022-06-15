@@ -17,7 +17,7 @@ export class UserService {
     private roleService: RoleService
   ) {}
 
-  getUsers(page:number=null,pageSize:number=null): Observable<UserView[]> {
+  getUsers(page?:number,pageSize?:number): Observable<UserView[]> {
 
     let url=`${environment.url_api}user`
     if(page && pageSize){
@@ -32,6 +32,40 @@ export class UserService {
     return this.http.get<UserView[]>(url, {
       headers: headers,
     });
+  }
+
+  getActiveUsers(page?:number,pageSize?:number){
+
+    let url=`${environment.url_api}user/actives`
+    if(page && pageSize){
+      url+=`?page=${page}&pageSize=${pageSize}`
+    }
+
+    let headers = new HttpHeaders();
+    headers = headers.append('mibot_session','{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}');
+    return this.http.get<UserView[]>
+    (url, {headers: headers} );
+  }
+
+  getInactiveUsers(page?:number,pageSize?:number){
+
+    let url=`${environment.url_api}user/inactives`
+    if(page && pageSize){
+      url+=`?page=${page}&pageSize=${pageSize}`
+    }
+
+    let headers = new HttpHeaders();
+    headers = headers.append('mibot_session','{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}');
+    return this.http.get<UserView[]>
+    (url, {headers: headers} );
+  }
+
+  searchUserByName(name: string){
+    let headers = new HttpHeaders();
+    headers = headers.append('mibot_session','{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}');
+    
+    return this.http.get<UserView[]>
+    (`${environment.url_api}user/search/?name=${name}`, {headers: headers} );
   }
 
   getUserById(id: number) {

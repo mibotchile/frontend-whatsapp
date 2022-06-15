@@ -36,6 +36,7 @@
     mat-mini-fab
     matTooltip="Agregar Rol"
     type="button"
+    *ngIf="menuVisibility('create')"
   >
     <mat-icon [icIcon]="icAdd"></mat-icon>
   </button>
@@ -83,6 +84,8 @@
 </table>
 
 <mat-paginator
+  [length]="length"
+  (page)="OnPageChange($event)"
   [pageSizeOptions]="pageSizeOptions"
   [pageSize]="pageSize"
   class="sticky left-0"
@@ -90,11 +93,11 @@
 
 <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below">
   <ng-template let-role="role" matMenuContent>
-    <button (click)="updateRole(role)" mat-menu-item>
+    <button (click)="updateRole(role)" mat-menu-item *ngIf="menuVisibility('update')">
       <mat-icon [icIcon]="icEdit"></mat-icon>
       <span>Modificar</span>
     </button>
-    <button (click)="deleteRole(role)" mat-menu-item>
+    <button (click)="deleteRole(role)" mat-menu-item *ngIf="menuVisibility('delete')">
       <mat-icon [icIcon]="icDelete"></mat-icon>
       <span>Eliminar</span>
     </button>

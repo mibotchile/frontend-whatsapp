@@ -15,186 +15,230 @@ import { stagger40ms } from "src/@vex/animations/stagger.animation";
 import { MatDialog } from "@angular/material/dialog";
 import { RoleCreateUpdateComponent } from "./role-create-update/role-create-update.component";
 import { MatSort } from "@angular/material/sort";
-import { MatPaginator } from "@angular/material/paginator";
+import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { MenuService } from "src/app/services/menu.service";
+import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 
+@UntilDestroy()
 @Component({
-  selector: "frontend-whatsapp-roles-table",
-  templateUrl: "./roles-table.component.html",
-  styleUrls: ["./roles-table.component.scss"],
-  animations: [fadeInUp400ms, stagger40ms],
+    selector: "frontend-whatsapp-roles-table",
+    templateUrl: "./roles-table.component.html",
+    styleUrls: ["./roles-table.component.scss"],
+    animations: [fadeInUp400ms, stagger40ms],
 })
-export class RolesTableComponent implements OnInit , OnDestroy , AfterViewInit{
-  //Icons
-  icSearch = icSearch;
-  icAdd = icAdd;
-  icMoreHoriz = icMoreHoriz;
-  icDelete = icDelete;
-  icEdit = icEdit;
-  //Icons end
+export class RolesTableComponent implements OnInit, OnDestroy, AfterViewInit {
+    menu: any;
+    //Icons
+    icSearch = icSearch;
+    icAdd = icAdd;
+    icMoreHoriz = icMoreHoriz;
+    icDelete = icDelete;
+    icEdit = icEdit;
+    //Icons end
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  isChecked = true;
+    isChecked: boolean;
 
-  subscription: Subscription;
+    subscription: Subscription;
 
-  roleTableData: Role[];
-  deactivatedRoleTableData: Role[];
+    roleTableData: Role[];
+    deactivatedRoleTableData: Role[];
 
-  pageSize = 10;
-  pageSizeOptions: number[] = [5, 10, 20, 50];
-  searchCtrl = new FormControl();
-  dataSource: MatTableDataSource<Role> | null;
+    length: number;
 
-  columns: TableColumn<Role>[] = [
-    { label: "Nombre", property: "name", type: "text", visible: true },
-    {
-      label: "Descripción",
-      property: "description",
-      type: "text",
-      visible: true,
-    },
-    // ,
-    // { label: "Etiquetas", property: "labels", type: "button", visible: true },
-    { label: "Acciones", property: "actions", type: "button", visible: true },
-  ];
+    pageSize = 10;
+    pageSizeOptions: number[] = [5, 10, 20, 50];
+    searchCtrl = new FormControl();
+    dataSource: MatTableDataSource<Role> | null;
+    dataSourceForSearch: MatTableDataSource<Role> | null;
 
-  get visibleColumns() {
-    return this.columns
-      .filter((column) => column.visible)
-      .map((column) => column.property);
-  }
+    columns: TableColumn<Role>[] = [
+        { label: "Nombre", property: "name", type: "text", visible: true },
+        {
+            label: "Descripción",
+            property: "description",
+            type: "text",
+            visible: true,
+        },
+        // ,
+        // { label: "Etiquetas", property: "labels", type: "button", visible: true },
+        { label: "Acciones", property: "actions", type: "button", visible: true },
+    ];
 
-  constructor(private dialog: MatDialog,private roleService: RoleService,private snackbar: MatSnackBar) {}
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-  
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
+    get visibleColumns() {
+        return this.columns.filter((column) => column.visible).map((column) => column.property);
+    }
 
-  ngOnInit(): void {
-    // this.searchCtrl.valueChanges
-    //   .pipe(untilDestroyed(this))
-    //   .subscribe((value) => this.onFilterChange(value));
-    this.getData();
-    this.dataSource = new MatTableDataSource();
-  }
+    constructor(
+        private dialog: MatDialog,
+        private roleService: RoleService,
+        private snackbar: MatSnackBar,
+        private menuService: MenuService
+    ) {}
+    ngAfterViewInit(): void {
+        //this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+    }
 
-  getData() {
-    this.subscription = new Subscription();
-    this.subscription = this.roleService.getRoles().subscribe((data: any) => {
-      this.roleTableData = [];
-      this.deactivatedRoleTableData = [];
-      for (let item of data.data.roles) {
-        if (item.status === 0) {
-          this.deactivatedRoleTableData.push(item);
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+    }
+
+    ngOnInit(): void {
+        this.subscription = new Subscription();
+        this.subscription = this.menuService.getConfigObs().subscribe((response) => {
+            this.menu = response;
+        });
+        this.isChecked = true;
+        this.getData(1, this.pageSize);
+        this.dataSource = new MatTableDataSource();
+
+        this.searchCtrl.valueChanges
+          .pipe(untilDestroyed(this))
+          .subscribe((value) => this.onFilterChange(value));
+    }
+
+    getData(page?: number, pageSize?: number) {
+        this.subscription = new Subscription();
+        if (this.isChecked) {
+            this.subscription = this.roleService.getActiveRoles(page, pageSize).subscribe((result: any) => {
+                this.dataSource.data = result.data.roles;
+                this.length = result.data.length;
+                //console.log(this.length)
+            });
         } else {
-          this.roleTableData.push(item);
+            this.subscription = this.roleService.getInactiveRoles(page, pageSize).subscribe((result: any) => {
+                this.dataSource.data = result.data.roles;
+                this.length = result.data.length;
+            });
         }
-      }
-      if (this.isChecked) {
-        this.dataSource.data = this.roleTableData;
-      } else {
-        this.dataSource.data = this.deactivatedRoleTableData;
-      }
-    });
-  }
+    }
 
-  showData() {
-    this.getData();
-  }
+    OnPageChange(event: PageEvent) {
+        this.getData(event.pageIndex + 1, event.pageSize);
+    }
 
-  createRole() {
-    this.dialog
-      .open(RoleCreateUpdateComponent)
-      .afterClosed()
-      .subscribe((role: Role) => {
+    onFilterChange(value: string) {
 
-        if (role) {
+        value = value.trim();
+        value = value.toLowerCase();
 
-          this.subscription = new Subscription();
-          this.subscription = this.roleService.insertRole(role).subscribe(
-            () => {
-              this.snackbar.open('Rol creado exitosamente.', 'Completado', {
-                duration: 3000,
-                horizontalPosition: 'center',
-                panelClass: ['green-snackbar']
-              });
-              this.getData();
-            },
-            ({error}) => {
-              this.snackbar.open(error.message, 'X', {
-                duration: 3000,
-                horizontalPosition: "center",
-                panelClass: ['red-snackbar']
-              });
+        this.subscription = new Subscription();
+        this.subscription = this.roleService.searchRoleByName(value).subscribe((response: any) => {
+            this.dataSourceForSearch = response.data.roles;
+            if (value === "") {
+                console.log("vacio");
+            } else {
+                this.dataSource = this.dataSourceForSearch;
             }
-          );
-        }
-      });
-  }
+        });
+    }
 
-  updateRole(role: Role) {
-    this.dialog
-      .open(RoleCreateUpdateComponent, {
-        data: role,
-      })
-      .afterClosed()
-      .subscribe((updatedRole) => {
+    showData() {
+        this.isChecked = !this.isChecked;
+        this.paginator.pageSize = 10;
+        this.paginator.firstPage();
+        this.getData(1, this.pageSize);
+    }
 
-        if (updatedRole) {
+    createRole() {
+        this.dialog
+            .open(RoleCreateUpdateComponent)
+            .afterClosed()
+            .subscribe((role: Role) => {
+                if (role) {
+                    this.subscription = new Subscription();
+                    this.subscription = this.roleService.insertRole(role).subscribe(
+                        () => {
+                            this.snackbar.open("Rol creado exitosamente.", "Completado", {
+                                duration: 3000,
+                                horizontalPosition: "center",
+                                panelClass: ["green-snackbar"],
+                            });
+                            this.getData();
+                        },
+                        ({ error }) => {
+                            this.snackbar.open(error.message, "X", {
+                                duration: 3000,
+                                horizontalPosition: "center",
+                                panelClass: ["red-snackbar"],
+                            });
+                        }
+                    );
+                }
+            });
+    }
 
-          this.subscription = new Subscription();
-          this.subscription = this.roleService
-            .updateRole(updatedRole)
-            .subscribe(
-              () => {
-                this.snackbar.open('Rol actualizado exitosamente.', 'Completado', {
-                  duration: 3000,
-                  horizontalPosition: 'center',
-                  panelClass: ['green-snackbar']
+    updateRole(role: Role) {
+        this.dialog
+            .open(RoleCreateUpdateComponent, {
+                data: role,
+            })
+            .afterClosed()
+            .subscribe((updatedRole) => {
+                if (updatedRole) {
+                    this.subscription = new Subscription();
+                    this.subscription = this.roleService.updateRole(updatedRole).subscribe(
+                        () => {
+                            this.snackbar.open("Rol actualizado exitosamente.", "Completado", {
+                                duration: 3000,
+                                horizontalPosition: "center",
+                                panelClass: ["green-snackbar"],
+                            });
+                            this.getData();
+                        },
+                        ({ error }) => {
+                            this.snackbar.open(error.message, "X", {
+                                duration: 3000,
+                                horizontalPosition: "center",
+                                panelClass: ["red-snackbar"],
+                            });
+                        }
+                    );
+                }
+            });
+    }
+
+    deleteRole(role: Role) {
+        this.subscription = new Subscription();
+        this.subscription = this.roleService.deleteRole(role).subscribe(
+            () => {
+                this.snackbar.open("Rol eliminado exitosamente.", "Completado", {
+                    duration: 3000,
+                    horizontalPosition: "center",
+                    panelClass: ["green-snackbar"],
                 });
                 this.getData();
-              },
-              ({error}) => {
-                this.snackbar.open(error.message, 'X', {
-                  duration: 3000,
-                  horizontalPosition: "center",
-                  panelClass: ['red-snackbar']
+            },
+            ({ error }) => {
+                this.snackbar.open(error.message, "X", {
+                    duration: 3000,
+                    horizontalPosition: "center",
+                    panelClass: ["red-snackbar"],
                 });
+            }
+        );
+    }
+
+    menuVisibility(value: string) {
+      for (const item of this.menu) {
+          for (const i of item.tabs) {
+              if (i.name === "role") {
+                  for (const j of i.permissions) {
+                      if (j === value) {
+                          return true;
+                      }
+                  }
               }
-            );
-        }
-      });
-  }
-
-  deleteRole(role: Role) {
-    this.subscription = new Subscription();
-    this.subscription = this.roleService.deleteRole(role).subscribe(
-      () => {
-        this.snackbar.open('Rol eliminado exitosamente.', 'Completado', {
-          duration: 3000,
-          horizontalPosition: 'center',
-          panelClass: ['green-snackbar']
-        });
-        this.getData();
-      },
-      ({error}) => {
-        this.snackbar.open(error.message, 'X', {
-          duration: 3000,
-          horizontalPosition: "center",
-          panelClass: ['red-snackbar']
-        });
+          }
       }
-    );
+      false;
   }
 
-  trackByProperty<T>(index: number, column: TableColumn<T>) {
-    return column.property;
-  }
+    trackByProperty<T>(index: number, column: TableColumn<T>) {
+        return column.property;
+    }
 }

@@ -77,7 +77,6 @@ export class CustomLayoutComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        //this.loadConfigByUid(this.authService.getUid())
         this.layoutService.configpanelOpen$.pipe(untilDestroyed(this)).subscribe((open) => (open ? this.configpanel.open() : this.configpanel.close()));
 
         this.subscription = new Subscription();
@@ -94,6 +93,7 @@ export class CustomLayoutComponent implements OnInit {
         });
 
         this.menuNavigation();
+
     }
 
     menuNavigation() {

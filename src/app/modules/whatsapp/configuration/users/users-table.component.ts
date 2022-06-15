@@ -10,7 +10,7 @@ import icAdd from "@iconify/icons-ic/twotone-add";
 import icMoreHoriz from "@iconify/icons-ic/twotone-more-horiz";
 import icDelete from "@iconify/icons-ic/twotone-delete";
 import icEdit from "@iconify/icons-ic/twotone-edit";
-import { MatPaginator } from "@angular/material/paginator";
+import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { Subscription } from "rxjs";
 import { User } from "../../models/user.model";
@@ -24,7 +24,10 @@ import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { UserView } from "../../models/user-view.model";
+import { MenuService } from "src/app/services/menu.service";
+import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 
+@UntilDestroy()
 @Component({
   selector: "frontend-whatsapp-users-table",
   templateUrl: "./users-table.component.html",
@@ -32,6 +35,8 @@ import { UserView } from "../../models/user-view.model";
   animations: [fadeInUp400ms, stagger40ms],
 })
 export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
+  
+  menu: any;
   //Icons
   icSearch = icSearch;
   icAdd = icAdd;
@@ -43,17 +48,20 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  isChecked = true;
+  isChecked: boolean;
 
   subscription: Subscription;
 
   userTableData: UserView[];
   deactivatedUserTableData: User[];
 
+  length: number;
+
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
   searchCtrl = new FormControl();
   dataSource: MatTableDataSource<UserView> | null;
+  dataSourceForSearch: MatTableDataSource<UserView> | null;
 
   columns: TableColumn<UserView>[] = [
     { label: "Nombre", property: "name", type: "text", visible: true },
@@ -77,39 +85,52 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private dialog: MatDialog,
     private userService: UserService,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private menuService: MenuService
   ) {}
 
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
+    //this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
   ngOnInit(): void {
-    this.getData();
-    this.dataSource = new MatTableDataSource();
-  }
-
-  getData() {
     this.subscription = new Subscription();
+      this.subscription = this.menuService.getConfigObs().subscribe((response)=>{
+        this.menu = response;
+      });
+      this.isChecked = true;
+      this.getData(1, this.pageSize);
+    this.dataSource = new MatTableDataSource();
+    this.searchCtrl.valueChanges.pipe(untilDestroyed(this)).subscribe((value) => this.onFilterChange(value));
+  }
 
-    this.subscription = this.userService.getUsers().subscribe(
-      (result: any) => {
-        this.dataSource.data = result.data.users;
-      },
-      ({ error }) => {
-        this.snackbar.open(error.message, "X", {
-          duration: 3000,
-          horizontalPosition: "right",
-          panelClass: ["red-snackbar"],
+  getData(page?: number, pageSize?: number) {
+    this.subscription = new Subscription();
+    if (this.isChecked) {
+        this.subscription = this.userService.getActiveUsers(page, pageSize).subscribe((result: any) => {
+            this.dataSource.data = result.data.users;
+            this.length = result.data.length;
+            //console.log(this.length)
         });
-      }
-    );
-  }
+    } else {
+        this.subscription = this.userService.getInactiveUsers(page, pageSize).subscribe((result: any) => {
+            this.dataSource.data = result.data.users;
+            this.length = result.data.length;
+        });
+    }
+}
 
-  showData() {
-    this.getData();
-  }
+OnPageChange(event: PageEvent) {
+    this.getData(event.pageIndex + 1, event.pageSize);
+}
+
+showData() {
+  this.isChecked = !this.isChecked;
+  this.paginator.pageSize = 10;
+  this.paginator.firstPage();
+  this.getData(1, this.pageSize);
+}
 
   createUser() {
     this.dialog
@@ -199,6 +220,41 @@ export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
   trackByProperty<T>(index: number, column: TableColumn<T>) {
     return column.property;
   }
+
+  menuVisibility(value: string) {
+    for (const item of this.menu) {
+        for (const i of item.tabs) {
+            if (i.name === 'user') {
+                for (const j of i.permissions) {
+                  if (j === value) {
+                    return true;
+                  }
+                }
+            }
+        }
+    }
+    false;
+}
+
+onFilterChange(value: string) {
+  // if (!this.dataSource) {
+  //   return;
+  // }
+  console.log(value);
+
+  value = value.trim();
+  value = value.toLowerCase();
+
+  this.subscription = new Subscription();
+  this.subscription = this.userService.searchUserByName(value).subscribe((response: any) => {
+      this.dataSourceForSearch = response.data.users;
+      if (value === "") {
+          console.log("vacio");
+      } else {
+          this.dataSource = this.dataSourceForSearch;
+      }
+  });
+}
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

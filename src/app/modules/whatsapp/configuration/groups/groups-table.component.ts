@@ -37,343 +37,326 @@ import { MenuService } from "src/app/services/menu.service";
 
 @UntilDestroy()
 @Component({
-  selector: "frontend-whatsapp-groups-table",
-  templateUrl: "./groups-table.component.html",
-  styleUrls: ["./groups-table.component.scss"],
-  animations: [fadeInUp400ms, stagger40ms],
+    selector: "frontend-whatsapp-groups-table",
+    templateUrl: "./groups-table.component.html",
+    styleUrls: ["./groups-table.component.scss"],
+    animations: [fadeInUp400ms, stagger40ms],
 })
 export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
-  // subject$: ReplaySubject<Group[]> = new ReplaySubject<Group[]>(1);
-  // data$: Observable<Group[]> = this.subject$.asObservable();
-  menu: any;
-  groups: Group[];
+    // subject$: ReplaySubject<Group[]> = new ReplaySubject<Group[]>(1);
+    // data$: Observable<Group[]> = this.subject$.asObservable();
+    menu: any;
+    groups: Group[];
 
-  groupTableData: Group[];
-  deactivatedGroupTableData: Group[];
+    groupTableData: Group[];
+    deactivatedGroupTableData: Group[];
 
-  length: number;
+    length: number;
 
-  isChecked: boolean;
+    isChecked: boolean;
 
-  subscription: Subscription;
+    subscription: Subscription;
 
-  @Input()
-  columns: TableColumn<Group>[] = [
-    { label: "Nombre", property: "name", type: "text", visible: true },
-    {
-      label: "Descripción",
-      property: "description",
-      type: "text",
-      visible: true,
-    },
-    { label: "Etiquetas", property: "labels", type: "button", visible: true },
-    { label: "Acciones", property: "actions", type: "button", visible: true },
-  ];
+    @Input()
+    columns: TableColumn<Group>[] = [
+        { label: "Nombre", property: "name", type: "text", visible: true },
+        {
+            label: "Descripción",
+            property: "description",
+            type: "text",
+            visible: true,
+        },
+        { label: "Etiquetas", property: "labels", type: "button", visible: true },
+        { label: "Acciones", property: "actions", type: "button", visible: true },
+    ];
 
-  pageSize = 10;
-  pageSizeOptions: number[] = [5, 10, 20, 50];
-  dataSource: MatTableDataSource<Group> | null;
-  dataSourceForSearch: MatTableDataSource<Group> | null;
-  searchCtrl = new FormControl();
+    pageSize = 10;
+    pageSizeOptions: number[] = [5, 10, 20, 50];
+    dataSource: MatTableDataSource<Group> | null;
+    dataSourceForSearch: MatTableDataSource<Group> | null;
+    searchCtrl = new FormControl();
 
-  tags: string[];
-  separatorKeysCodes: number[] = [ENTER, COMMA];
+    tags: string[];
+    separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  icSearch = icSearch;
-  icFilterList = icFilterList;
-  icAdd = icAdd;
-  icMoreHoriz = icMoreHoriz;
-  icEdit = icEdit;
-  icDelete = icDelete;
-  icCancel = icCancel;
+    icSearch = icSearch;
+    icFilterList = icFilterList;
+    icAdd = icAdd;
+    icMoreHoriz = icMoreHoriz;
+    icEdit = icEdit;
+    icDelete = icDelete;
+    icCancel = icCancel;
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(
-    private dialog: MatDialog,
-    private groupService: GroupService,
-    private snackbar: MatSnackBar,
-    private menuService: MenuService
-  ) {}
+    constructor(
+        private dialog: MatDialog,
+        private groupService: GroupService,
+        private snackbar: MatSnackBar,
+        private menuService: MenuService
+    ) {}
 
-  get visibleColumns() {
-    return this.columns
-      .filter((column) => column.visible)
-      .map((column) => column.property);
-  }
+    get visibleColumns() {
+        return this.columns.filter((column) => column.visible).map((column) => column.property);
+    }
 
-  getData(page?: number, pageSize?: number) {
-    this.subscription = new Subscription();
-    if (this.isChecked) {
-      this.subscription = this.groupService
-        .getActiveGroups(page, pageSize)
-        .subscribe((result: any) => {
-          this.dataSource.data = result.data.groups;
-          this.length = result.data.length;
-          //console.log(this.length)
+    getData(page?: number, pageSize?: number) {
+        this.subscription = new Subscription();
+        if (this.isChecked) {
+            this.subscription = this.groupService.getActiveGroups(page, pageSize).subscribe((result: any) => {
+                this.dataSource.data = result.data.groups;
+                this.length = result.data.length;
+                //console.log(this.length)
+            });
+        } else {
+            this.subscription = this.groupService.getInactiveGroups(page, pageSize).subscribe((result: any) => {
+                this.dataSource.data = result.data.groups;
+                this.length = result.data.length;
+            });
+        }
+    }
+
+    OnPageChange(event: PageEvent) {
+        this.getData(event.pageIndex + 1, event.pageSize);
+    }
+
+    ngOnInit(): void {
+        // this.getData().subscribe(groups => {
+        //   this.subject$.next(groups);
+        // });
+        //this.searchDataByName("grupo 7");
+        this.subscription = new Subscription();
+        this.subscription = this.menuService.getConfigObs().subscribe((response) => {
+            this.menu = response;
         });
-    } else {
-      this.subscription = this.groupService
-        .getInactiveGroups(page, pageSize)
-        .subscribe((result: any) => {
-          this.dataSource.data = result.data.groups;
-          this.length = result.data.length;
+
+        this.isChecked = true;
+
+        this.getData(1, this.pageSize);
+
+        this.dataSource = new MatTableDataSource();
+
+        // this.data$.pipe(filter<Group[]>(Boolean)).subscribe((groups) => {
+        //   this.groups = groups;
+        //   this.dataSource.data = groups;
+        // });
+
+        this.searchCtrl.valueChanges.pipe(untilDestroyed(this)).subscribe((value) => this.onFilterChange(value));
+    }
+
+    ngAfterViewInit() {
+        //this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+    }
+
+    onFilterChange(value: string) {
+        // if (!this.dataSource) {
+        //   return;
+        // }
+        console.log(value);
+
+        value = value.trim();
+        value = value.toLowerCase();
+
+        this.subscription = new Subscription();
+        this.subscription = this.groupService.searchGroupByName(value).subscribe((response: any) => {
+            this.dataSourceForSearch = response.data.groups;
+            if (value === "") {
+                console.log("vacio");
+            } else {
+                this.dataSource = this.dataSourceForSearch;
+            }
         });
     }
-  }
 
-  OnPageChange(event: PageEvent) {
-    console.log(event);
-    this.getData(event.pageIndex + 1, event.pageSize);
-  }
+    trackByProperty<T>(index: number, column: TableColumn<T>) {
+        return column.property;
+    }
 
-  ngOnInit(): void {
-    // this.getData().subscribe(groups => {
-    //   this.subject$.next(groups);
-    // });
-    //this.searchDataByName("grupo 7");
-    this.subscription = new Subscription();
-      this.subscription = this.menuService.getConfigObs().subscribe((response)=>{
-        this.menu = response;
-      });
+    createGroup() {
+        this.dialog
+            .open(GroupCreateUpdateComponent)
+            .afterClosed()
+            .subscribe((group: Group) => {
+                /**
+                 * Customer is the updated customer (if the user pressed Save - otherwise it's null)
+                 */
+                if (group) {
+                    /**
+                     * Here we are updating our local array.
+                     * You would probably make an HTTP request here.
+                     */
+                    // this.groups.unshift(new Group(group));
+                    // this.subject$.next(this.groups);
 
-    this.isChecked = true;
+                    this.subscription = new Subscription();
+                    this.subscription = this.groupService.insertGroup(group).subscribe(
+                        () => {
+                            this.snackbar.open("Grupo creado exitosamente.", "Completado", {
+                                duration: 3000,
+                                horizontalPosition: "center",
+                                panelClass: ["green-snackbar"],
+                            });
+                            this.getData(1, this.pageSize);
+                        },
+                        ({ error }) => {
+                            this.snackbar.open(error.message, "X", {
+                                duration: 3000,
+                                horizontalPosition: "center",
+                                panelClass: ["red-snackbar"],
+                            });
+                        }
+                    );
+                }
+            });
+    }
 
-    this.getData(1, this.pageSize);
+    updateGroup(group: Group) {
+        this.dialog
+            .open(GroupCreateUpdateComponent, {
+                data: group,
+            })
+            .afterClosed()
+            .subscribe((updatedGroup) => {
+                /**
+                 * Customer is the updated customer (if the user pressed Save - otherwise it's null)
+                 */
+                if (updatedGroup) {
+                    /**
+                     * Here we are updating our local array.
+                     * You would probably make an HTTP request here.
+                     */
+                    // const index = this.groups.findIndex(
+                    //   (existingGroup) => existingGroup.id === updatedGroup.id
+                    // );
+                    // this.groups[index] = new Group(updatedGroup);
+                    // this.subject$.next(this.groups);
+                    this.subscription = new Subscription();
+                    this.subscription = this.groupService.updateGroup(updatedGroup).subscribe(
+                        () => {
+                            this.snackbar.open("Grupo actualizado exitosamente.", "Completado", {
+                                duration: 3000,
+                                horizontalPosition: "center",
+                                panelClass: ["green-snackbar"],
+                            });
+                            this.getData(1, this.pageSize);
+                        },
+                        ({ error }) => {
+                            this.snackbar.open(error.message, "X", {
+                                duration: 3000,
+                                horizontalPosition: "center",
+                                panelClass: ["red-snackbar"],
+                            });
+                        }
+                    );
+                }
+            });
+    }
 
-    this.dataSource = new MatTableDataSource();
-
-    // this.data$.pipe(filter<Group[]>(Boolean)).subscribe((groups) => {
-    //   this.groups = groups;
-    //   this.dataSource.data = groups;
-    // });
-
-    this.searchCtrl.valueChanges
-      .pipe(untilDestroyed(this))
-      .subscribe((value) => this.onFilterChange(value));
-  }
-
-  ngAfterViewInit() {
-    //this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-  onFilterChange(value: string) {
-    // if (!this.dataSource) {
-    //   return;
-    // }
-    console.log(value);
-
-    value = value.trim();
-    value = value.toLowerCase();
-
-    this.subscription = new Subscription();
-    this.subscription = this.groupService
-      .searchGroupByName(value)
-      .subscribe((response: any) => {
-        this.dataSourceForSearch = response.data.groups;
-        if (value === '') {
-          console.log('vacio')
-        }else{
-          this.dataSource = this.dataSourceForSearch;
-        }
-      });
-  }
-
-  trackByProperty<T>(index: number, column: TableColumn<T>) {
-    return column.property;
-  }
-
-  createGroup() {
-    this.dialog
-      .open(GroupCreateUpdateComponent)
-      .afterClosed()
-      .subscribe((group: Group) => {
-        /**
-         * Customer is the updated customer (if the user pressed Save - otherwise it's null)
-         */
-        if (group) {
-          /**
-           * Here we are updating our local array.
-           * You would probably make an HTTP request here.
-           */
-          // this.groups.unshift(new Group(group));
-          // this.subject$.next(this.groups);
-
-          this.subscription = new Subscription();
-          this.subscription = this.groupService.insertGroup(group).subscribe(
+    deleteGroup(group: Group) {
+        this.subscription = new Subscription();
+        this.subscription = this.groupService.deleteGroup(group).subscribe(
             () => {
-              this.snackbar.open("Grupo creado exitosamente.", "Completado", {
-                duration: 3000,
-                horizontalPosition: "center",
-                panelClass: ["green-snackbar"],
-              });
-              this.getData(1, this.pageSize);
-            },
-            ({ error }) => {
-              this.snackbar.open(error.message, "X", {
-                duration: 3000,
-                horizontalPosition: "center",
-                panelClass: ["red-snackbar"],
-              });
-            }
-          );
-        }
-      });
-  }
-
-  updateGroup(group: Group) {
-    this.dialog
-      .open(GroupCreateUpdateComponent, {
-        data: group,
-      })
-      .afterClosed()
-      .subscribe((updatedGroup) => {
-        /**
-         * Customer is the updated customer (if the user pressed Save - otherwise it's null)
-         */
-        if (updatedGroup) {
-          /**
-           * Here we are updating our local array.
-           * You would probably make an HTTP request here.
-           */
-          // const index = this.groups.findIndex(
-          //   (existingGroup) => existingGroup.id === updatedGroup.id
-          // );
-          // this.groups[index] = new Group(updatedGroup);
-          // this.subject$.next(this.groups);
-          this.subscription = new Subscription();
-          this.subscription = this.groupService
-            .updateGroup(updatedGroup)
-            .subscribe(
-              () => {
-                this.snackbar.open(
-                  "Grupo actualizado exitosamente.",
-                  "Completado",
-                  {
+                this.snackbar.open("Grupo eliminado exitosamente.", "Completado", {
                     duration: 3000,
                     horizontalPosition: "center",
                     panelClass: ["green-snackbar"],
-                  }
-                );
-                this.getData(1, this.pageSize);
-              },
-              ({ error }) => {
-                this.snackbar.open(error.message, "X", {
-                  duration: 3000,
-                  horizontalPosition: "center",
-                  panelClass: ["red-snackbar"],
                 });
-              }
+                this.getData(1, this.pageSize);
+            },
+            ({ error }) => {
+                this.snackbar.open(error.message, "X", {
+                    duration: 3000,
+                    horizontalPosition: "center",
+                    panelClass: ["red-snackbar"],
+                });
+            }
+        );
+    }
+
+    onLabelChange(change: MatSelectChange, row: Group) {
+        const index = this.groups.findIndex((c) => c === row);
+        this.groups[index].tags = change.value;
+        //this.subject$.next(this.groups);
+    }
+
+    add(event: MatChipInputEvent, group: Group): void {
+        const value = (event.value || "").trim();
+        if (value) {
+            group.tags.push(value);
+            this.subscription = new Subscription();
+            this.subscription = this.groupService.updateGroup(group).subscribe(
+                () => {
+                    this.snackbar.open("Se agrego una etiqueta.", "Completado", {
+                        duration: 3000,
+                        horizontalPosition: "center",
+                        panelClass: ["green-snackbar"],
+                    });
+                    this.getData(this.paginator.pageIndex + 1, this.pageSize);
+                },
+                ({ error }) => {
+                    this.snackbar.open(error.message, "X", {
+                        duration: 3000,
+                        horizontalPosition: "center",
+                        panelClass: ["red-snackbar"],
+                    });
+                }
             );
         }
-      });
-  }
+        event.chipInput!.clear();
+    }
 
-  deleteGroup(group: Group) {
-    this.subscription = new Subscription();
-    this.subscription = this.groupService.deleteGroup(group).subscribe(
-      () => {
-        this.snackbar.open("Grupo eliminado exitosamente.", "Completado", {
-          duration: 3000,
-          horizontalPosition: "center",
-          panelClass: ["green-snackbar"],
-        });
-        this.getData(1, this.pageSize);
-      },
-      ({ error }) => {
-        this.snackbar.open(error.message, "X", {
-          duration: 3000,
-          horizontalPosition: "center",
-          panelClass: ["red-snackbar"],
-        });
-      }
-    );
-  }
+    remove(tag: string, group: Group): void {
+        const index = group.tags.indexOf(tag);
 
-  onLabelChange(change: MatSelectChange, row: Group) {
-    const index = this.groups.findIndex((c) => c === row);
-    this.groups[index].tags = change.value;
-    //this.subject$.next(this.groups);
-  }
-
-  add(event: MatChipInputEvent, group: Group): void {
-    const value = (event.value || "").trim();
-    if (value) {
-      group.tags.push(value);
-      this.subscription = new Subscription();
-      this.subscription = this.groupService.updateGroup(group).subscribe(
-        () => {
-          this.snackbar.open("Se agrego una etiqueta.", "Completado", {
-            duration: 3000,
-            horizontalPosition: "center",
-            panelClass: ["green-snackbar"],
-          });
-          this.getData(this.paginator.pageIndex + 1, this.pageSize);
-        },
-        ({ error }) => {
-          this.snackbar.open(error.message, "X", {
-            duration: 3000,
-            horizontalPosition: "center",
-            panelClass: ["red-snackbar"],
-          });
+        if (index >= 0) {
+            group.tags.splice(index, 1);
         }
-      );
+
+        this.subscription = new Subscription();
+        this.subscription = this.groupService.updateGroup(group).subscribe(
+            () => {
+                this.snackbar.open("Se elimino una etiqueta.", "Completado", {
+                    duration: 3000,
+                    horizontalPosition: "center",
+                    panelClass: ["green-snackbar"],
+                });
+                this.getData(this.paginator.pageIndex + 1, this.pageSize);
+            },
+            ({ error }) => {
+                this.snackbar.open(error.message, "X", {
+                    duration: 3000,
+                    horizontalPosition: "center",
+                    panelClass: ["red-snackbar"],
+                });
+            }
+        );
     }
-    event.chipInput!.clear();
-  }
 
-  remove(tag: string, group: Group): void {
-    const index = group.tags.indexOf(tag);
-
-    if (index >= 0) {
-      group.tags.splice(index, 1);
+    showData() {
+        this.isChecked = !this.isChecked;
+        this.paginator.pageSize = 10;
+        this.paginator.firstPage();
+        this.getData(1, this.pageSize);
     }
 
-    this.subscription = new Subscription();
-    this.subscription = this.groupService.updateGroup(group).subscribe(
-      () => {
-        this.snackbar.open("Se elimino una etiqueta.", "Completado", {
-          duration: 3000,
-          horizontalPosition: "center",
-          panelClass: ["green-snackbar"],
-        });
-        this.getData(this.paginator.pageIndex + 1, this.pageSize);
-      },
-      ({ error }) => {
-        this.snackbar.open(error.message, "X", {
-          duration: 3000,
-          horizontalPosition: "center",
-          panelClass: ["red-snackbar"],
-        });
-      }
-    );
-  }
-
-  showData() {
-    this.isChecked = !this.isChecked;
-    this.paginator.pageSize = 10;
-    this.paginator.firstPage();
-    this.getData(1, this.pageSize);
-  }
-
-  menuVisibility(value: string) {
-    for (const item of this.menu) {
-        for (const i of item.tabs) {
-            if (i.name === 'group') {
-                for (const j of i.permissions) {
-                  if (j === value) {
-                    return true;
-                  }
+    menuVisibility(value: string) {
+        for (const item of this.menu) {
+            for (const i of item.tabs) {
+                if (i.name === "group") {
+                    for (const j of i.permissions) {
+                        if (j === value) {
+                            return true;
+                        }
+                    }
                 }
             }
         }
+        false;
     }
-    false;
-}
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+    }
 }
