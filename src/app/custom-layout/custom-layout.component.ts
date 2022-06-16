@@ -72,7 +72,7 @@ export class CustomLayoutComponent implements OnInit {
                         type: "link",
                         label: "Conversaciones",
                         name: "conversation",
-                        route: "/apps/chat",
+                        route: "/whatsapp/conversations",
                     },
                     {
                         type: "link",

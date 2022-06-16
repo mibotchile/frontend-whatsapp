@@ -130,8 +130,10 @@ export class RolesTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.subscription = this.roleService.searchRoleByName(value).subscribe((response: any) => {
             this.dataSourceForSearch = response.data.roles;
             if (value === "") {
-                console.log("vacio");
+                this.dataSource = new MatTableDataSource();
+                this.getData(1, this.pageSize);
             } else {
+                this.dataSourceForSearch = response.data.roles;
                 this.dataSource = this.dataSourceForSearch;
             }
         });

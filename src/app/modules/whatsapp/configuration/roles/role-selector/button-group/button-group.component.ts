@@ -52,6 +52,13 @@ export class ButtonGroupComponent implements OnInit {
   onSelect() {
 
     const selected = this.permissions.filter((x, i) => this.toggle[i] === true);
+    
+    if (selected.includes('create')||selected.includes('update')||selected.includes('delete')) {
+      if (!selected.includes('read')) {
+        selected.push('read');
+        this.toggle[1] = true; 
+      }
+    }
 
     this.selectedPermissions.emit(selected);
   }

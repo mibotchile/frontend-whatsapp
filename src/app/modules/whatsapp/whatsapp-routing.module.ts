@@ -15,6 +15,10 @@ const routes: Routes = [
         redirectTo: 'configuration'
       },
       {
+        path: 'conversations',
+        loadChildren: () => import('./conversations/conversations.module').then(m => m.ConversationsModule),
+      },
+      {
         path: 'configuration',
         loadChildren: () => import('./configuration/configuration.module').then(m => m.ConfigurationModule),
       },

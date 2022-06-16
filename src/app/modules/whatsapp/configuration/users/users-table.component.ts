@@ -264,9 +264,11 @@ onFilterChange(value: string) {
   this.subscription = this.userService.searchUserByName(value).subscribe((response: any) => {
       this.dataSourceForSearch = response.data.users;
       if (value === "") {
-          console.log("vacio");
+        this.dataSource = new MatTableDataSource();
+        this.getData(1, this.pageSize);
       } else {
-          this.dataSource = this.dataSourceForSearch;
+        this.dataSourceForSearch = response.data.users;
+        this.dataSource = this.dataSourceForSearch;
       }
   });
 }

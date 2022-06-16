@@ -154,17 +154,17 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
         // if (!this.dataSource) {
         //   return;
         // }
-        console.log(value);
-
+        
         value = value.trim();
         value = value.toLowerCase();
 
         this.subscription = new Subscription();
         this.subscription = this.groupService.searchGroupByName(value).subscribe((response: any) => {
-            this.dataSourceForSearch = response.data.groups;
             if (value === "") {
-                console.log("vacio");
+                this.dataSource = new MatTableDataSource();
+                this.getData(1, this.pageSize);
             } else {
+                this.dataSourceForSearch = response.data.groups;
                 this.dataSource = this.dataSourceForSearch;
             }
         });
