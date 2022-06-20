@@ -1,0 +1,93 @@
+<div
+  class="bg-app-bar px-6 h-16 border-b sticky left-0"
+  fxLayout="row"
+  fxLayoutAlign="start center"
+>
+  <div
+    class="bg-card rounded-full border px-4"
+    fxFlex="400px"
+    fxFlex.lt-md="auto"
+    fxHide.xs
+    fxLayout="row"
+    fxLayoutAlign="start center"
+  >
+    <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
+    <input
+      [formControl]="searchCtrl"
+      class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+      placeholder="Buscar por Nombre..."
+      type="search"
+    />
+  </div>
+
+  <span fxFlex></span>
+
+  <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+    <mat-icon [icIcon]="icSearch"></mat-icon>
+  </button>
+
+</div>
+
+<table
+  @stagger
+  [dataSource]="dataSource"
+  class="mat-elevation-z8 w-full"
+  mat-table
+  matSort
+>
+  <!-- Text Columns -->
+  <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+    <ng-container
+      *ngIf="column.type === 'text'"
+      [matColumnDef]="column.property"
+    >
+      <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header>
+        {{ column.label }}
+      </th>
+      <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+        {{ row[column.property] }}
+      </td>
+    </ng-container>
+  </ng-container>
+
+  <!-- Action Column -->
+  <ng-container matColumnDef="actions">
+    <th *matHeaderCellDef mat-header-cell mat-sort-header></th>
+    <td *matCellDef="let row" class="w-10 text-secondary" mat-cell>
+      <button
+        (click)="$event.stopPropagation()"
+        [matMenuTriggerData]="{ channel: row }"
+        [matMenuTriggerFor]="actionsMenu"
+        mat-icon-button
+        type="button"
+      >
+        <mat-icon [icIcon]="icMoreHoriz"></mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+  <tr
+    *matRowDef="let row; columns: visibleColumns"
+    @fadeInUp
+    class="hover:bg-hover trans-ease-out cursor-pointer"
+    mat-row
+  ></tr>
+</table>
+
+<mat-paginator
+  [length]="100"
+  (page)="OnPageChange($event)"
+  [pageSizeOptions]="pageSizeOptions"
+  [pageSize]="pageSize"
+  class="sticky left-0"
+></mat-paginator>
+
+<mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below">
+  <ng-template let-channel="channel" matMenuContent>
+    <button mat-menu-item>
+      <mat-icon [icIcon]="icSettings"></mat-icon>
+      <span>Configurar</span>
+    </button>
+  </ng-template>
+</mat-menu>

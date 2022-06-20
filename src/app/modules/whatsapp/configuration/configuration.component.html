@@ -4,7 +4,7 @@
       [crumbs]="['Configuración']"
       fxFlex="auto"
     ></vex-breadcrumbs>
-    
+
   </vex-secondary-toolbar>
   <mat-progress-bar color="primary" mode="indeterminate"  *ngIf="progressService.visibility | async"></mat-progress-bar>
 </vex-page-layout>
@@ -21,7 +21,7 @@
             <ng-template matTabContent>
               <router-outlet name="configurationUsers"></router-outlet>
             </ng-template>
-            
+
           </div>
         </mat-tab>
         <mat-tab label="Grupos" *ngIf="menuVisibility('group')">
@@ -30,12 +30,15 @@
             <ng-template matTabContent>
               <router-outlet name="configurationGroups"></router-outlet>
             </ng-template>
-            
+
           </div>
         </mat-tab>
         <mat-tab label="Canales" *ngIf="menuVisibility('channel')">
           <div class="p-0">
             <!-- <vex-page-layout-demo></vex-page-layout-demo> -->
+            <ng-template matTabContent>
+                <router-outlet name="configurationChannels"></router-outlet>
+              </ng-template>
           </div>
         </mat-tab>
         <mat-tab label="Roles" *ngIf="menuVisibility('role')">
@@ -43,7 +46,7 @@
             <ng-template matTabContent>
               <router-outlet name="configurationRoles"></router-outlet>
             </ng-template>
-            
+
           </div>
         </mat-tab>
       </mat-tab-group>

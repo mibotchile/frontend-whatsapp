@@ -21,10 +21,15 @@ const routes: Routes = [
         path: '',
         outlet: 'configurationGroups',
         loadChildren: () => import('./groups/groups-table.module').then(m => m.GroupsTableModule),
+      },
+      {
+        path: '',
+        outlet: 'configurationChannels',
+        loadChildren: () => import('./channels/channels-table.module').then(m => m.ChannelsTableModule),
       }
     ]
   }
-  
+
 ];
 
 @NgModule({
