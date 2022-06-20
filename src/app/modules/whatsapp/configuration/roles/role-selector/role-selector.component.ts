@@ -3,97 +3,91 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { Selector, Tab } from "./selector";
 
 @Component({
-  selector: "frontend-whatsapp-role-selector",
-  templateUrl: "./role-selector.component.html",
-  styleUrls: ["./role-selector.component.scss"],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      multi:true,
-      useExisting: RoleSelectorComponent
-    }
-  ]
+    selector: "frontend-whatsapp-role-selector",
+    templateUrl: "./role-selector.component.html",
+    styleUrls: ["./role-selector.component.scss"],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            multi: true,
+            useExisting: RoleSelectorComponent,
+        },
+    ],
 })
 export class RoleSelectorComponent implements OnInit, ControlValueAccessor {
-  toggle = {};
-  permissionsToSend: Selector[];
-  tabsToSend: Tab[];
+    toggle = {};
+    permissionsToSend: Selector[];
+    tabsToSend: Tab[];
 
-  @Input()
-  data: Selector[];
+    @Input()
+    data: Selector[];
 
+    selectedData: Selector[];
 
-  selectedData: Selector[];
+    onChange = (permissionsToSend) => {};
 
-  onChange = (permissionsToSend) => {};
-
-  constructor() {
-    this.permissionsToSend = [];
-    this.tabsToSend = [];
-  }
-  writeValue(data: Selector[]): void {
-    this.selectedData = data;
-    if (this.selectedData) {
-        this.permissionsToSend = [...this.selectedData];
-        // this.selectedData.forEach(e => {
-        //     this.selectedTabsHandled(e.tabs,e);
-        // })
+    constructor() {
+        this.permissionsToSend = [];
+        this.tabsToSend = [];
     }
-  }
-  registerOnChange(onChange: any): void {
-    this.onChange = onChange;
-  }
-  registerOnTouched(fn: any): void {
-    //throw new Error("Method not implemented.");
-  }
-  setDisabledState?(isDisabled: boolean): void {
-    //throw new Error("Method not implemented.");
-  }
-
-  ngOnInit(): void {
-
-  }
-
-  selectedTabsHandled(tabs: Tab[], item) {
-    this.tabsToSend = [...tabs];
-
-    let object = {...item};
-
-    object.tabs = tabs;
-
-    let toFind = this.permissionsToSend.filter((n) => n.name === object.name);
-
-    if (toFind.length === 1) {
+    writeValue(data: Selector[]): void {
+        this.selectedData = data;
         if (this.selectedData) {
-            const index = this.permissionsToSend[this.permissionsToSend.indexOf(toFind[0])].tabs.map(x=>x.name).indexOf(tabs[tabs.length-1].name);
-            if (index !== -1) {
-                this.permissionsToSend[this.permissionsToSend.indexOf(toFind[0])].tabs[index] = tabs[tabs.length-1];
-            }
+            this.permissionsToSend = [...this.selectedData];
+        }
+    }
+    registerOnChange(onChange: any): void {
+        this.onChange = onChange;
+    }
+    registerOnTouched(fn: any): void {
+        //throw new Error("Method not implemented.");
+    }
+    setDisabledState?(isDisabled: boolean): void {
+        //throw new Error("Method not implemented.");
+    }
 
-        }else{
-            this.permissionsToSend[this.permissionsToSend.indexOf(toFind[0])].tabs = tabs;
+    ngOnInit(): void {}
+
+    selectedTabsHandled(tabs: Tab[], item) {
+        this.tabsToSend = [...tabs];
+
+        let object = { ...item };
+
+        object.tabs = tabs;
+
+        let toFind = this.permissionsToSend.filter((n) => n.name === object.name);
+
+        if (toFind.length === 1) {
+            if (this.selectedData) {
+                const index = this.permissionsToSend[this.permissionsToSend.indexOf(toFind[0])].tabs
+                    .map((x) => x.name)
+                    .indexOf(tabs[tabs.length - 1].name);
+                if (index !== -1) {
+                    this.permissionsToSend[this.permissionsToSend.indexOf(toFind[0])].tabs[index] =
+                        tabs[tabs.length - 1];
+                }
+            } else {
+                this.permissionsToSend[this.permissionsToSend.indexOf(toFind[0])].tabs = tabs;
+            }
+        } else {
+            this.permissionsToSend.push(object);
         }
 
-    }else{
-      this.permissionsToSend.push(object);
+        this.onChange(this.permissionsToSend);
     }
 
-    this.onChange(this.permissionsToSend);
-  }
+    selectedPermissionsHandle(permissions: string[], item) {
+        let object = { ...item };
 
-  selectedPermissionsHandle(permissions: string[], item) {
+        object.permissions = permissions;
 
-    let object = {...item};
+        let toFind = this.permissionsToSend.filter((n) => n.name === object.name);
 
-    object.permissions = permissions;
-
-    let toFind = this.permissionsToSend.filter((n) => n.name === object.name);
-
-    if (toFind.length === 1) {
-      this.permissionsToSend[this.permissionsToSend.indexOf(toFind[0])].permissions = permissions;
-    }else{
-      this.permissionsToSend.push(object);
+        if (toFind.length === 1) {
+            this.permissionsToSend[this.permissionsToSend.indexOf(toFind[0])].permissions = permissions;
+        } else {
+            this.permissionsToSend.push(object);
+        }
+        this.onChange(this.permissionsToSend);
     }
-    this.onChange(this.permissionsToSend);
-  }
 }
