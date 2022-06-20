@@ -33,6 +33,12 @@ export class RoleSelectorComponent implements OnInit, ControlValueAccessor {
   }
   writeValue(data: Selector[]): void {
     this.selectedData = data;
+    if (this.selectedData) {
+        this.permissionsToSend = [...this.selectedData];
+        // this.selectedData.forEach(e => {
+        //     this.selectedTabsHandled(e.tabs,e);
+        // })
+    }
   }
   registerOnChange(onChange: any): void {
     this.onChange = onChange;
@@ -44,7 +50,9 @@ export class RoleSelectorComponent implements OnInit, ControlValueAccessor {
     //throw new Error("Method not implemented.");
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+  }
 
   selectedTabsHandled(tabs: Tab[], item) {
     this.tabsToSend = [...tabs];
