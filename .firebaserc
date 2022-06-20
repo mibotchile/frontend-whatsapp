@@ -1,0 +1,22 @@
+{
+    "projects": {
+        "default": "it-infrastruture-hq",
+        "dev": "valhalla-onbotgo"
+    },
+    "targets": {
+        "it-infrastruture-hq": {
+            "hosting": {
+                "prod": [
+                    "whatsapp-prod-onbotgo"
+                ]
+            }
+        },
+        "valhalla-onbotgo": {
+            "hosting": {
+                "dev": [
+                    "whatsapp-dev-onbotgo"
+                ]
+            }
+        }
+    }
+}

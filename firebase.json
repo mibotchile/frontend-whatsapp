@@ -1,1 +1,26 @@
-{}
+{
+    "hosting": [
+        {
+            "target": "prod",
+            "public": "dist/frontend-whatsapp",
+            "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+            "rewrites": [
+                {
+                    "source": "**",
+                    "destination": "/index.html"
+                }
+            ]
+        },
+        {
+            "target": "dev",
+            "public": "dist/frontend-whatsapp",
+            "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+            "rewrites": [
+                {
+                    "source": "**",
+                    "destination": "/index.html"
+                }
+            ]
+        }
+    ]
+}
