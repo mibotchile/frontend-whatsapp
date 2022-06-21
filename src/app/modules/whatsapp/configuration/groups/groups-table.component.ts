@@ -154,7 +154,7 @@ export class GroupsTableComponent implements OnInit, AfterViewInit, OnDestroy {
         // if (!this.dataSource) {
         //   return;
         // }
-        
+
         value = value.trim();
         value = value.toLowerCase();
 

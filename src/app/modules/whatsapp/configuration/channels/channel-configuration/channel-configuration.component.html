@@ -1,0 +1,27 @@
+<h2>Configuración</h2>
+
+<mat-divider class="-mx-6 my-5 text-border"></mat-divider>
+
+<div cdkDropListGroup>
+    <div class="example-container">
+        <h3>Acciones disponibles</h3>
+
+        <div
+            cdkDropList
+            [cdkDropListData]="items"
+            class="example-list"
+            cdkDropListSortingDisabled
+            (cdkDropListDropped)="drop($event)"
+        >
+            <frontend-whatsapp-action *ngFor="let item of items" cdkDrag [label]="item"></frontend-whatsapp-action>
+        </div>
+    </div>
+
+    <div class="example-container">
+        <h3>Acciones seleccionadas</h3>
+
+        <div cdkDropList [cdkDropListData]="basket" class="example-list" (cdkDropListDropped)="drop($event)">
+            <frontend-whatsapp-selected-action *ngFor="let item of basket, index as i" cdkDrag [label]="item" [position]="i + 1" (deleteItemEvent)="deleteItem(i)"></frontend-whatsapp-selected-action>
+        </div>
+    </div>
+</div>

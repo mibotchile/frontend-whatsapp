@@ -1,0 +1,12 @@
+<div class="example-box">
+    <span class="position">{{ position }}</span>
+    {{ label }}
+    <div class="buttons">
+        <button (click)="editMessage()">
+            <mat-icon [icIcon]="icEdit"></mat-icon>
+        </button>
+        <button (click)="onDelete()">
+            <mat-icon [icIcon]="icDelete"></mat-icon>
+        </button>
+    </div>
+</div>

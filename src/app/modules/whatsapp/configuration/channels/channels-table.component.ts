@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from "@angular/core";
+import { Component, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { MatTableDataSource } from "@angular/material/table";
 import icSearch from "@iconify/icons-ic/twotone-search";
@@ -8,6 +8,11 @@ import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
 import { TableColumn } from "src/@vex/interfaces/table-column.interface";
 import { MatPaginator, PageEvent } from "@angular/material/paginator";
+import { Subscription } from "rxjs";
+import { ChannelService } from "../../services/channel.service";
+import { Channel } from "../../models/channel.model";
+import { ChannelConfigurationComponent } from "./channel-configuration/channel-configuration.component";
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
     selector: "frontend-whatsapp-channels-table",
@@ -15,7 +20,7 @@ import { MatPaginator, PageEvent } from "@angular/material/paginator";
     styleUrls: ["./channels-table.component.scss"],
     animations: [fadeInUp400ms, stagger40ms],
 })
-export class ChannelsTableComponent implements OnInit {
+export class ChannelsTableComponent implements OnInit, OnDestroy {
     //Icons
     icSearch = icSearch;
     icMoreHoriz = icMoreHoriz;
@@ -24,7 +29,7 @@ export class ChannelsTableComponent implements OnInit {
     //Inputs
     @Input()
     columns: TableColumn<any>[] = [
-        { label: "Nombre", property: "phone_number", type: "text", visible: true },
+        { label: "Número Telefónico", property: "friendlyName", type: "text", visible: true },
         { label: "Acciones", property: "actions", type: "button", visible: true },
     ];
 
@@ -37,11 +42,55 @@ export class ChannelsTableComponent implements OnInit {
     pageSizeOptions: number[] = [5, 10, 20, 50];
 
     searchCtrl = new FormControl();
-    dataSource: MatTableDataSource<any> | null;
+    dataSource: MatTableDataSource<Channel> | null;
+    subscription: Subscription;
 
-    constructor() {}
+    constructor(private channelService: ChannelService, private dialog: MatDialog) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+
+        this.getData(1, this.pageSize);
+
+    }
+
+    getData(page?: number, pageSize?: number){
+        this.subscription = new Subscription();
+        this.subscription = this.channelService.getChannels(page, pageSize).subscribe((result: any) => {
+            this.dataSource = result.data.channels;
+        });
+    }
+
+    updateChannel(channel: Channel) {
+        this.dialog
+            .open(ChannelConfigurationComponent, {
+                data: channel,
+            })
+            .afterClosed()
+            .subscribe((updatedChannel) => {
+
+                // if (updatedChannel) {
+
+                //     this.subscription = new Subscription();
+                //     this.subscription = this.groupService.updateGroup(updatedGroup).subscribe(
+                //         () => {
+                //             this.snackbar.open("Grupo actualizado exitosamente.", "Completado", {
+                //                 duration: 3000,
+                //                 horizontalPosition: "center",
+                //                 panelClass: ["green-snackbar"],
+                //             });
+                //             this.getData(1, this.pageSize);
+                //         },
+                //         ({ error }) => {
+                //             this.snackbar.open(error.message, "X", {
+                //                 duration: 3000,
+                //                 horizontalPosition: "center",
+                //                 panelClass: ["red-snackbar"],
+                //             });
+                //         }
+                //     );
+                // }
+            });
+    }
 
     get visibleColumns() {
         return this.columns.filter((column) => column.visible).map((column) => column.property);
@@ -53,6 +102,10 @@ export class ChannelsTableComponent implements OnInit {
 
     OnPageChange(event: PageEvent) {
         //this.getData(event.pageIndex + 1, event.pageSize);
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
     }
 
 }

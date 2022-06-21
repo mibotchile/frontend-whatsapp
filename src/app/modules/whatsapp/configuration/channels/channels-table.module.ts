@@ -10,10 +10,24 @@ import { PageLayoutModule } from 'src/@vex/components/page-layout/page-layout.mo
 import { MatTableModule } from '@angular/material/table';
 import {MatMenuModule} from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { ChannelConfigurationComponent } from './channel-configuration/channel-configuration.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import { MatDividerModule } from '@angular/material/divider';
+import { SelectedActionComponent } from './channel-configuration/selected-action/selected-action.component';
+import { ActionComponent } from './channel-configuration/action/action.component';
+import { ActionMessageComponent } from './channel-configuration/selected-action/action-message/action-message.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
-    ChannelsTableComponent
+    ChannelsTableComponent,
+    ChannelConfigurationComponent,
+    SelectedActionComponent,
+    ActionComponent,
+    ActionMessageComponent
   ],
   imports: [
     CommonModule,
@@ -24,7 +38,13 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     FlexLayoutModule,
     MatTableModule,
     MatMenuModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatButtonModule,
+    MatIconModule,
+    DragDropModule,
+    MatDividerModule,
+    MatDialogModule,
+    MatFormFieldModule
   ]
 })
 export class ChannelsTableModule { }

@@ -18,13 +18,16 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { IconModule } from '@visurel/iconify-angular';
 import { ScrollbarModule } from 'src/@vex/components/scrollbar/scrollbar.module';
 import { MatBadgeModule } from '@angular/material/badge';
-import { ChatConversationComponent } from './chat-conversation/chat-conversation.component';
-import { ChatEmptyComponent } from './chat-empty/chat-empty.component';
-
+import { ConversationsSidenavComponent } from './conversations-sidenav/conversations-sidenav.component';
+import { ConversationsSidenavLinkComponent } from './conversations-sidenav/conversations-sidenav-link/conversations-sidenav-link.component';
+import { ConversationsChatComponent } from './conversations-chat/conversations-chat.component';
 
 @NgModule({
   declarations: [
-    ConversationsComponent,ChatConversationComponent, ChatEmptyComponent
+    ConversationsComponent,
+    ConversationsSidenavComponent,
+    ConversationsSidenavLinkComponent,
+    ConversationsChatComponent
   ],
   imports: [
     CommonModule,
