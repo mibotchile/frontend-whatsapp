@@ -85,7 +85,7 @@
 
 <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below">
   <ng-template let-channel="channel" matMenuContent>
-    <button (click)="updateChannel(channel)" mat-menu-item>
+    <button (click)="configureChannel(channel)" mat-menu-item>
       <mat-icon [icIcon]="icSettings"></mat-icon>
       <span>Configurar</span>
     </button>

@@ -60,7 +60,7 @@ export class ChannelsTableComponent implements OnInit, OnDestroy {
         });
     }
 
-    updateChannel(channel: Channel) {
+    configureChannel(channel: Channel) {
         this.dialog
             .open(ChannelConfigurationComponent, {
                 data: channel,

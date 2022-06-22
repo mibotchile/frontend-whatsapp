@@ -17,7 +17,9 @@ export class ChannelConfigurationComponent implements OnInit {
         private dialogRef: MatDialogRef<ChannelConfigurationComponent>
     ) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        console.log(this.defaults.phoneNumber);
+    }
 
     drop(event: CdkDragDrop<string[]>) {
         if (event.previousContainer === event.container) {

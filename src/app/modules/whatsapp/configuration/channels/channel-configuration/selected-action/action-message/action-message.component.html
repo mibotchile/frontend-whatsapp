@@ -26,21 +26,21 @@
     <mat-dialog-content fxLayout="column">
       <mat-form-field class="mt-6 flex-auto">
         <mat-label>Nombre</mat-label>
-        <input cdkFocusInitial formControlName="name" matInput />
+        <input cdkFocusInitial formControlName="id" matInput />
 
         <mat-icon [icIcon]="icPeople" class="mr-3" matPrefix></mat-icon>
       </mat-form-field>
 
       <mat-form-field class="flex-auto">
-        <mat-label>Descripción</mat-label>
-        <textarea formControlName="description" matInput></textarea>
+        <mat-label>Mensaje</mat-label>
+        <textarea formControlName="message" matInput></textarea>
       </mat-form-field>
 
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
       <button mat-button mat-dialog-close type="button">CANCELAR</button>
-      <button *ngIf="isCreateMode()" color="primary" mat-button type="submit">CREAR GRUPO</button>
-      <button *ngIf="isUpdateMode()" color="primary" mat-button type="submit">ACTUALIZAR GRUPO</button>
+      <button *ngIf="isCreateMode()" color="primary" mat-button type="submit">CREAR MENSAJE</button>
+      <button *ngIf="isUpdateMode()" color="primary" mat-button type="submit">ACTUALIZAR MENSAJE</button>
     </mat-dialog-actions>
   </form>
