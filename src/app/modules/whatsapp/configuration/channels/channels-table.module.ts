@@ -17,9 +17,15 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { MatDividerModule } from '@angular/material/divider';
 import { SelectedActionComponent } from './channel-configuration/selected-action/selected-action.component';
 import { ActionComponent } from './channel-configuration/action/action.component';
-import { ActionMessageComponent } from './channel-configuration/selected-action/action-message/action-message.component';
+import { ActionMessageComponent } from './channel-configuration/action-message/action-message.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { ActionDataRequestComponent } from './channel-configuration/action-data-request/action-data-request.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatSelectModule} from '@angular/material/select';
+import { DataRequestPanelComponent } from './channel-configuration/action-data-request/data-request-panel/data-request-panel.component';
+
 
 @NgModule({
   declarations: [
@@ -27,7 +33,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     ChannelConfigurationComponent,
     SelectedActionComponent,
     ActionComponent,
-    ActionMessageComponent
+    ActionMessageComponent,
+    ActionDataRequestComponent,
+    DataRequestPanelComponent
   ],
   imports: [
     CommonModule,
@@ -44,7 +52,10 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     DragDropModule,
     MatDividerModule,
     MatDialogModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatInputModule,
+    MatExpansionModule,
+    MatSelectModule
   ]
 })
 export class ChannelsTableModule { }

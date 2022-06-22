@@ -1,8 +1,8 @@
 <div class="example-box">
     <span class="position">{{ position }}</span>
-    {{ label }}
+    {{ label.value }}
     <div class="buttons">
-        <button (click)="editMessage()">
+        <button (click)="onUpdate(label.action)">
             <mat-icon [icIcon]="icEdit"></mat-icon>
         </button>
         <button (click)="onDelete()">

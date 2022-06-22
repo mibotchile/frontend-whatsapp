@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
 import icEdit from "@iconify/icons-ic/twotone-edit";
 import icDelete from "@iconify/icons-ic/twotone-delete";
-import { ActionMessageComponent } from "./action-message/action-message.component";
-import { Channel } from "src/app/modules/whatsapp/models/channel.model";
-import { MatDialog } from "@angular/material/dialog";
+import { Item } from "../item.interface";
 
 @Component({
     selector: "frontend-whatsapp-selected-action",
@@ -16,14 +14,17 @@ export class SelectedActionComponent implements OnInit {
     icDelete = icDelete;
 
     @Input()
-    label: string;
+    label: Item;
     @Input()
     position: string;
 
     @Output()
     deleteItemEvent = new EventEmitter<void>();
 
-    constructor(private dialog: MatDialog) {}
+    @Output()
+    updateItemEvent = new EventEmitter<string>();
+
+    constructor() {}
 
     ngOnInit(): void {}
 
@@ -31,32 +32,9 @@ export class SelectedActionComponent implements OnInit {
         this.deleteItemEvent.emit();
     }
 
-    editMessage(){
-        this.dialog
-            .open(ActionMessageComponent)
-            .afterClosed()
-            .subscribe((channel: Channel) => {
-                // if (role) {
-                //     this.subscription = new Subscription();
-                //     this.subscription = this.roleService.insertRole(role).subscribe(
-                //         () => {
-                //             this.snackbar.open("Rol creado exitosamente.", "Completado", {
-                //                 duration: 3000,
-                //                 horizontalPosition: "center",
-                //                 panelClass: ["green-snackbar"],
-                //             });
-                //             this.getData();
-                //         },
-                //         ({ error }) => {
-                //             this.snackbar.open(error.message, "X", {
-                //                 duration: 3000,
-                //                 horizontalPosition: "center",
-                //                 panelClass: ["red-snackbar"],
-                //             });
-                //         }
-                //     );
-                // }
-            });
+    onUpdate(action: string){
+        this.updateItemEvent.emit(action);
     }
+
 }
 

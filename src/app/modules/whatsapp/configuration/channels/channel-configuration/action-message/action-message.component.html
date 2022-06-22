@@ -1,10 +1,10 @@
 <form (ngSubmit)="save()" [formGroup]="form">
     <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
-      <h2 *ngIf="form.get('name').value" class="headline m-0" fxFlex="auto">
-        {{ form.get('name').value }}
+      <h2 *ngIf="form.get('id').value" class="headline m-0" fxFlex="auto">
+        {{ form.get('id').value }}
       </h2>
       <h2
-        *ngIf="!form.get('name').value"
+        *ngIf="!form.get('id').value"
         class="headline m-0"
         fxFlex="auto"
       >

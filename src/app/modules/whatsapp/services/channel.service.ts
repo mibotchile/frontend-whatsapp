@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Message } from '../configuration/channels/channel-configuration/selected-action/action-message/message.interface';
+import { ChannelConfiguration } from '../interfaces/channel-configuration.interface';
 import { Channel } from '../models/channel.model';
 
 @Injectable({
@@ -24,20 +24,40 @@ export class ChannelService {
     (url, {headers: headers} );
   }
 
-  setMessage(value: Message){
+  setChannelConfig(value: ChannelConfiguration){
     let headers = new HttpHeaders();
     headers = headers.append(
       "mibot_session",
       '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
     );
 
-    return this.http.post(`${environment.url_api}channel`, value, {
+    return this.http.post(`${environment.url_api}channel/config`, value, {
       headers: headers,
     });
   }
 
-  getMessages(){
+  getChannelConfig(phoneNumber: number){
+    let headers = new HttpHeaders();
+    headers = headers.append(
+      "mibot_session",
+      '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
+    );
 
+    return this.http.get(`${environment.url_api}channel/phoneNumber/${phoneNumber}`, {
+      headers: headers,
+    });
+  }
+
+  updateChannelConfigs(value: ChannelConfiguration){
+    let headers = new HttpHeaders();
+    headers = headers.append(
+      "mibot_session",
+      '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
+    );
+
+    return this.http.put(`${environment.url_api}role/${value.id}`, value, {
+      headers: headers,
+    });
   }
 
 }

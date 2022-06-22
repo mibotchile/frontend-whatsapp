@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import icClose from "@iconify/icons-ic/twotone-close";
 import icPeople from "@iconify/icons-ic/people";
-import { Message } from "./message.interface";
+import { ChannelConfiguration, Message } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
+
 
 @Component({
     selector: "frontend-whatsapp-action-message",
@@ -17,6 +18,8 @@ export class ActionMessageComponent implements OnInit {
     form: FormGroup;
     mode: "create" | "update" = "create";
 
+    message : Message;
+
     constructor(
         @Inject(MAT_DIALOG_DATA) public defaults: any,
         private dialogRef: MatDialogRef<ActionMessageComponent>,
@@ -24,15 +27,24 @@ export class ActionMessageComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        if (this.defaults) {
-            this.mode = "update";
-        } else {
-            this.defaults = {} as Message;
-        }
+
+         this.message = {
+            id: "",
+            message: ""
+         };
+
+        // if (messages.length >= 1) {
+        //     this.mode = "update";
+        // }
+        // else {
+        //     messages = {} as Message;
+        // }
+
+        this.mode = "create";
 
         this.form = this.fb.group({
-            id: this.defaults.id,
-            message: this.defaults.message,
+            id: this.message.id,
+            message: this.message.message,
         });
     }
 
@@ -46,7 +58,9 @@ export class ActionMessageComponent implements OnInit {
 
     createMessage() {
         const message = this.form.value;
-        this.dialogRef.close(message);
+
+        this.defaults.messages.push(message);
+        this.dialogRef.close(this.defaults);
     }
 
     updateMessage() {

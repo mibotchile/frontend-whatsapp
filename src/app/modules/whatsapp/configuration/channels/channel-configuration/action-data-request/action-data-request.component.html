@@ -1,0 +1,55 @@
+<form (ngSubmit)="save()" [formGroup]="form">
+    <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+        <h2 *ngIf="form.get('id').value" class="headline m-0" fxFlex="auto">
+            {{ form.get("id").value }}
+        </h2>
+        <h2 *ngIf="!form.get('id').value" class="headline m-0" fxFlex="auto">Nueva Petición de Datos</h2>
+
+        <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+            <mat-icon [icIcon]="icClose"></mat-icon>
+        </button>
+    </div>
+
+    <mat-divider class="-mx-6 text-border"></mat-divider>
+
+    <mat-dialog-content fxLayout="column">
+        <!-- <mat-form-field class="mt-6 flex-auto">
+        <mat-label>ID</mat-label>
+        <input cdkFocusInitial formControlName="id" matInput />
+
+        <mat-icon [icIcon]="icPeople" class="mr-3" matPrefix></mat-icon>
+      </mat-form-field> -->
+
+        <!-- <mat-form-field class="flex-auto">
+        <mat-label>Pregunta</mat-label>
+        <textarea formControlName="message" matInput></textarea>
+      </mat-form-field> -->
+        <div class="my-5 addQuestion">
+            <h3>Ingrese una nueva pregunta</h3>
+            <button mat-icon-button class="ml-3" color="primary" (click)="addQuestion()" type="button">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+
+        <mat-accordion class="mb-5">
+
+            <frontend-whatsapp-data-request-panel *ngFor="question of questions"></frontend-whatsapp-data-request-panel>
+
+            <!-- <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                    <mat-panel-title> Self aware panel </mat-panel-title>
+                    <mat-panel-description>
+                        Currently I am {{ panelOpenState ? "open" : "closed" }}
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <p>I'm visible because I am open</p>
+            </mat-expansion-panel> -->
+        </mat-accordion>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close type="button">CANCELAR</button>
+        <button *ngIf="isCreateMode()" color="primary" mat-button type="submit">CREAR MENSAJE</button>
+        <button *ngIf="isUpdateMode()" color="primary" mat-button type="submit">ACTUALIZAR MENSAJE</button>
+    </mat-dialog-actions>
+</form>
