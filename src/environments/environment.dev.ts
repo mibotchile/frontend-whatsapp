@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  url_api: "http://localhost:3030/",
+  url_api: "https://api-whatsapp-dev.mibot.cl/",
 
   firebase: {
     apiKey: "AIzaSyDuzZlM_0DdP0DpmrqdQ_OJbywSphVp_Ko",
