@@ -26,8 +26,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSelectModule} from '@angular/material/select';
 import { DataRequestPanelComponent } from './channel-configuration/action-data-request/data-request-panel/data-request-panel.component';
 import { ActionOptionsMenuComponent } from './channel-configuration/action-options-menu/action-options-menu.component';
-import {MatTreeModule} from '@angular/material/tree';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { OptionsMenuItemComponent } from './channel-configuration/action-options-menu/options-menu-item/options-menu-item.component';
+import { OptionsMenuContainerComponent } from './channel-configuration/action-options-menu/options-menu-container/options-menu-container.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +38,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     ActionMessageComponent,
     ActionDataRequestComponent,
     DataRequestPanelComponent,
-    ActionOptionsMenuComponent
+    ActionOptionsMenuComponent,
+    OptionsMenuItemComponent,
+    OptionsMenuContainerComponent
   ],
   imports: [
     CommonModule,
@@ -59,9 +61,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatInputModule,
     MatExpansionModule,
     MatSelectModule,
-    FormsModule,
-    MatTreeModule,
-    MatCheckboxModule
+    FormsModule
   ]
 })
 export class ChannelsTableModule { }

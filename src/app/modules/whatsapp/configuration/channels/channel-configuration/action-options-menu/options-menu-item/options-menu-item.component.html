@@ -1,0 +1,31 @@
+<div class="container-element">
+    <button (click)="toggle = !toggle" mat-icon-button type="button">
+        <mat-icon *ngIf="!toggle">chevron_right</mat-icon>
+        <mat-icon *ngIf="toggle">expand_more</mat-icon>
+      </button>
+    <div class="mr-10">
+        <mat-form-field appearance="standard" *ngIf="status">
+            <input matInput [(ngModel)]="element" placeholder="Nuevo elemento" width="100px">
+            <button matSuffix type="button" (click)="onEdit()">
+                <mat-icon>done</mat-icon>
+            </button>
+        </mat-form-field>
+        <p *ngIf="!status">
+            {{element}}
+        </p>
+    </div>
+    <div class="container-buttons">
+        <button mat-icon-button color="primary" type="button">
+            <mat-icon>add</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" type="button">
+            <mat-icon>subdirectory_arrow_right</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" type="button" (click)="onEdit()">
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" type="button">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div>
+</div>
