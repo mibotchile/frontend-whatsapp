@@ -1,0 +1,52 @@
+<form (ngSubmit)="save()" [formGroup]="form">
+    <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+        <h2 *ngIf="form.get('id').value" class="headline m-0" fxFlex="auto">
+            {{ form.get("id").value }}
+        </h2>
+        <h2 *ngIf="!form.get('id').value" class="headline m-0" fxFlex="auto">Nuevo Menu de Opciones</h2>
+
+        <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+            <mat-icon [icIcon]="icClose"></mat-icon>
+        </button>
+    </div>
+
+    <mat-divider class="-mx-6 text-border"></mat-divider>
+
+    <mat-dialog-content fxLayout="column">
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="mt-5">
+            <!-- This is the tree node template for leaf nodes -->
+            <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+                <!-- use a disabled button to provide padding for tree leaf -->
+                <button mat-icon-button disabled type="button"></button>
+                {{ node.name }}
+                <button mat-icon-button type="button" color="primary"><mat-icon>escalator</mat-icon></button>
+            </mat-tree-node>
+
+            <mat-tree-node *matTreeNodeDef="let node; when: hasNoContent" matTreeNodePadding>
+                <button mat-icon-button disabled></button>
+                <mat-form-field appearance="fill">
+                    <mat-label>New item...</mat-label>
+                    <input matInput #itemValue placeholder="Ex. Lettuce" />
+                </mat-form-field>
+                <button mat-button>Save</button>
+            </mat-tree-node>
+
+            <!-- This is the tree node template for expandable nodes -->
+            <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+                <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name" type="button">
+                    <mat-icon class="mat-icon-rtl-mirror">
+                        {{ treeControl.isExpanded(node) ? "expand_more" : "chevron_right" }}
+                    </mat-icon>
+                </button>
+                {{ node.name }}
+                <button mat-icon-button type="button" (click)="addNewItem(node)"><mat-icon>add</mat-icon></button>
+            </mat-tree-node>
+        </mat-tree>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close type="button">CANCELAR</button>
+        <button *ngIf="isCreateMode()" color="primary" mat-button type="submit">CREAR MENU DE OPCIONES</button>
+        <button *ngIf="isUpdateMode()" color="primary" mat-button type="submit">ACTUALIZAR MENSAJE</button>
+    </mat-dialog-actions>
+</form>

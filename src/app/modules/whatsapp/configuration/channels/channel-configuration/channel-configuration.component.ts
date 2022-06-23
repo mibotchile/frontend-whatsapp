@@ -8,6 +8,7 @@ import { ActionMessageComponent } from "./action-message/action-message.componen
 import { Channel } from "../../../models/channel.model";
 import { Item } from "./item.interface";
 import { ActionDataRequestComponent } from "./action-data-request/action-data-request.component";
+import { ActionOptionsMenuComponent } from "./action-options-menu/action-options-menu.component";
 
 @Component({
     selector: "frontend-whatsapp-channel-configuration",
@@ -68,6 +69,9 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                 break;
             case 'dataRequest':
                 value = ActionDataRequestComponent;
+                break;
+            case 'optionsMenu':
+                value = ActionOptionsMenuComponent;
                 break;
             default:
                 break;

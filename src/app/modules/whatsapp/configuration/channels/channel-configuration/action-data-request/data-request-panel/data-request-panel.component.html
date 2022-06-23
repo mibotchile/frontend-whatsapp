@@ -2,14 +2,14 @@
     <mat-expansion-panel-header>
         <mat-panel-title> Pregunta {{questionNumber}}</mat-panel-title>
         <mat-panel-description>
-            <span>Ingrese una nueva pregunta</span>
+            <span *ngIf="question.length === 0">Ingrese una nueva pregunta</span>
             <span>{{question}}</span>
         </mat-panel-description>
     </mat-expansion-panel-header>
     <div class="question">
         <mat-form-field>
             <mat-label>Pregunta</mat-label>
-            <input formControlName="question" matInput />
+            <input [(ngModel)]="question" matInput />
         </mat-form-field>
         <mat-form-field>
             <mat-label>Tipo de Dato</mat-label>
@@ -23,6 +23,6 @@
             <mat-label>Mensaje de Error</mat-label>
             <input matInput />
         </mat-form-field>
-        <button mat-button color="primary" type="button">Eliminar</button>
+        <button mat-button color="primary" type="button" (click)="onDelete()">Eliminar</button>
     </div>
 </mat-expansion-panel>

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ChannelsTableRoutingModule } from './channels-table-routing.module';
 import { ChannelsTableComponent } from './channels-table.component';
 import { IconModule } from '@visurel/iconify-angular';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { PageLayoutModule } from 'src/@vex/components/page-layout/page-layout.module';
 import { MatTableModule } from '@angular/material/table';
@@ -25,7 +25,9 @@ import { ActionDataRequestComponent } from './channel-configuration/action-data-
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSelectModule} from '@angular/material/select';
 import { DataRequestPanelComponent } from './channel-configuration/action-data-request/data-request-panel/data-request-panel.component';
-
+import { ActionOptionsMenuComponent } from './channel-configuration/action-options-menu/action-options-menu.component';
+import {MatTreeModule} from '@angular/material/tree';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import { DataRequestPanelComponent } from './channel-configuration/action-data-r
     ActionComponent,
     ActionMessageComponent,
     ActionDataRequestComponent,
-    DataRequestPanelComponent
+    DataRequestPanelComponent,
+    ActionOptionsMenuComponent
   ],
   imports: [
     CommonModule,
@@ -55,7 +58,10 @@ import { DataRequestPanelComponent } from './channel-configuration/action-data-r
     MatFormFieldModule,
     MatInputModule,
     MatExpansionModule,
-    MatSelectModule
+    MatSelectModule,
+    FormsModule,
+    MatTreeModule,
+    MatCheckboxModule
   ]
 })
 export class ChannelsTableModule { }

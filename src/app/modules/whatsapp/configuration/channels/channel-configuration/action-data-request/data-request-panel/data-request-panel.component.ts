@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 
 interface Type {
@@ -16,7 +16,10 @@ export class DataRequestPanelComponent implements OnInit {
     @Input()
     questionNumber: number;
 
-    question = new FormControl();
+    @Output()
+    deleteQuestionEvent = new EventEmitter<void>();
+
+    question: string;
 
     types: Type[] = [
         { value: "0", viewValue: "Número" },
@@ -24,10 +27,16 @@ export class DataRequestPanelComponent implements OnInit {
         { value: "2", viewValue: "Email" },
     ];
 
-    constructor() {}
+    constructor() {
+        this.question = "";
+    }
 
     ngOnInit(): void {
 
+    }
+
+    onDelete(){
+        this.deleteQuestionEvent.emit();
     }
 }
 

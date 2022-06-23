@@ -15,7 +15,6 @@ export class ActionDataRequestComponent implements OnInit {
     panelOpenState = false;
 
     questions: Question[];
-    id: number;
 
     icClose = icClose;
     icPeople = icPeople;
@@ -33,12 +32,10 @@ export class ActionDataRequestComponent implements OnInit {
 
     ngOnInit(): void {
 
-        this.id = 1;
-
         this.questions = [];
 
          this.question = {
-            id: null,
+            id: 0,
             question: "",
             error_message: "",
             response_type: ""
@@ -61,12 +58,11 @@ export class ActionDataRequestComponent implements OnInit {
 
     addQuestion(){
         this.questions.push({
-            id: this.id,
+            id: this.question.id++,
             question: '',
             response_type: '',
             error_message: ''
         });
-        this.id++;
     }
 
     save() {
@@ -97,5 +93,9 @@ export class ActionDataRequestComponent implements OnInit {
 
     isUpdateMode() {
         return this.mode === "update";
+    }
+
+    deleteQuestion(i: number){
+        this.questions.splice(i,1);
     }
 }
