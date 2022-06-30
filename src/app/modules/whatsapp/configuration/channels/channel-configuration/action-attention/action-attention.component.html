@@ -1,14 +1,14 @@
 <form (ngSubmit)="save()" [formGroup]="form">
     <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
-      <h2 *ngIf="form.get('title').value" class="headline m-0" fxFlex="auto">
-        {{ form.get('title').value }}
+      <h2 *ngIf="form.get('id').value" class="headline m-0" fxFlex="auto">
+        {{ form.get('id').value }}
       </h2>
       <h2
-        *ngIf="!form.get('title').value"
+        *ngIf="!form.get('id').value"
         class="headline m-0"
         fxFlex="auto"
       >
-        Nuevo Mensaje
+        Nueva Valoración de Atención
       </h2>
 
       <button
@@ -24,12 +24,12 @@
     <mat-divider class="-mx-6 text-border"></mat-divider>
 
     <mat-dialog-content fxLayout="column">
-      <mat-form-field class="mt-6 flex-auto">
+      <!-- <mat-form-field class="mt-6 flex-auto">
         <mat-label>Nombre</mat-label>
-        <input cdkFocusInitial formControlName="title" matInput />
+        <input cdkFocusInitial formControlName="id" matInput />
 
-        <mat-icon [icIcon]="icMessage" class="mr-3" matPrefix></mat-icon>
-      </mat-form-field>
+        <mat-icon [icIcon]="icPeople" class="mr-3" matPrefix></mat-icon>
+      </mat-form-field> -->
 
       <mat-form-field class="flex-auto">
         <mat-label>Mensaje</mat-label>

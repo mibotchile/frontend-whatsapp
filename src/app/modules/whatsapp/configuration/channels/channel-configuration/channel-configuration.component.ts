@@ -3,12 +3,13 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dial
 import { CdkDragDrop, copyArrayItem, moveItemInArray, transferArrayItem } from "@angular/cdk/drag-drop";
 import { ChannelService } from "../../../services/channel.service";
 import { Subscription } from "rxjs";
-import { ChannelConfiguration, Message } from "../../../interfaces/channel-configuration.interface";
+import { ChannelConfiguration, Message, Step } from "../../../interfaces/channel-configuration.interface";
 import { ActionMessageComponent } from "./action-message/action-message.component";
 import { Channel } from "../../../models/channel.model";
 import { Item } from "./item.interface";
 import { ActionDataRequestComponent } from "./action-data-request/action-data-request.component";
 import { ActionOptionsMenuComponent } from "./action-options-menu/action-options-menu.component";
+import { ActionAttentionComponent } from "./action-attention/action-attention.component";
 
 @Component({
     selector: "frontend-whatsapp-channel-configuration",
@@ -29,26 +30,61 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
 
     config: ChannelConfiguration;
 
+    steps: Step[];
+
+    status: string;
+
+    messageId: number;
+    dataRequestId: number;
+    optionsMenuId: number;
+    attentionId: number;
+
     constructor(
         @Inject(MAT_DIALOG_DATA) public defaults: any,
         private dialogRef: MatDialogRef<ChannelConfigurationComponent>,
         private channelService: ChannelService,
         private dialog: MatDialog
-    ) {}
-
+    ) {
+        this.steps = [];
+        this.messageId = 0;
+        this.dataRequestId = 0;
+        this.optionsMenuId = 0;
+        this.attentionId = 0;
+    }
 
     ngOnInit(): void {
-        this.config = {
-            id: null,
-            channel_id: null,
-            channel_number: this.defaults.phoneNumber,
-            menus: [],
-            messages: [],
-            quizes: [],
-            questions: [],
-            steps: [],
-        };
+        this.getData();
+    }
+
+    getData() {
         this.subscription = new Subscription();
+
+        this.subscription = this.channelService
+            .getChannelConfig(this.defaults.phoneNumber)
+            .subscribe((response: any) => {
+                if (response.data) {
+                    this.config = response.data;
+                    this.status = "update";
+                    this.steps = response.data.steps;
+                    response.data.steps.forEach((e) => {
+                        this.basket.push({
+                            action: e.action,
+                            value: this.items.filter((n) => n.action === e.action.split(".")[0])[0].value,
+                        });
+                    });
+                } else {
+                    this.config = {
+                        id: null,
+                        channel_id: null,
+                        channel_number: this.defaults.phoneNumber,
+                        menus: [],
+                        messages: [],
+                        quizes: [],
+                        steps: [],
+                    };
+                    this.status = "create";
+                }
+            });
     }
 
     drop(event: CdkDragDrop<string[]>) {
@@ -56,22 +92,67 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
         } else {
             copyArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
-            this.updateConfig(this.basket[this.basket.length-1].action,this.config);
+            this.updateConfig(event.currentIndex);
         }
     }
 
-    updateConfig(action: string, data: any){
+    createStepsObject(step: number, action: string = "") {
+        let actionStep: string = action;
+
+        switch (actionStep) {
+            case "message":
+                actionStep += `.${this.messageId}`;
+                this.messageId++;
+                break;
+            case "dataRequest":
+                actionStep += `.${this.dataRequestId}`;
+                this.dataRequestId++;
+                break;
+            case "optionsMenu":
+                actionStep += `.${this.optionsMenuId}`;
+                this.optionsMenuId++;
+                break;
+            case "attention":
+                actionStep += `.${this.attentionId}`;
+                this.attentionId++;
+                break;
+            default:
+                break;
+        }
+
+        this.steps.splice(step, 0, {
+            step: 0,
+            action: actionStep,
+            status: 1,
+        });
+        this.steps.forEach((e, i) => {
+            e.step = i + 1;
+        });
+
+        this.basket[this.basket.length - 1] = {
+            action: actionStep,
+            value: this.items.filter((n) => n.action === actionStep.split(".")[0])[0].value,
+        };
+    }
+
+    updateConfig(index: number) {
         let value: any;
 
-        switch (action) {
-            case 'message':
+        let action = this.basket[index].action;
+
+        let actionAndId = action.split(".");
+        switch (actionAndId[0]) {
+            case "message":
                 value = ActionMessageComponent;
                 break;
-            case 'dataRequest':
+            case "dataRequest":
                 value = ActionDataRequestComponent;
                 break;
-            case 'optionsMenu':
+            case "optionsMenu":
                 value = ActionOptionsMenuComponent;
+                break;
+            case "attention":
+                value = ActionAttentionComponent;
                 break;
             default:
                 break;
@@ -79,39 +160,61 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
 
         this.dialog
             .open(value, {
-                data: data,
+                data: {
+                    configuration: this.config,
+                    id: actionAndId[1],
+                    messageId: this.messageId,
+                    dataRequestId: this.dataRequestId,
+                    optionsMenuId: this.optionsMenuId,
+                    attentionId: this.attentionId,
+                },
             })
             .afterClosed()
             .subscribe((config: ChannelConfiguration) => {
-                if (!config) {
-                    this.basket.splice(this.basket.length-1,1);
-                }else{
-                    this.config = {...config};
+                if (!config || config.messages.length === 0) {
+                    this.basket.splice(this.basket.length - 1, 1);
+                } else {
+                    if (actionAndId[1]) {
+                        this.config = { ...config };
+                    } else {
+                        this.config = { ...config };
+                        this.createStepsObject(index, action);
+                    }
                 }
             });
     }
 
-    onCreate(){
+    onCreate() {
+        this.config.steps = this.steps;
+
         this.subscription = new Subscription();
-        this.subscription = this.channelService.setChannelConfig(this.config).subscribe(
-            ()=>{
-                this.dialogRef.close();
-            }
-        );
+        this.subscription = this.channelService.setChannelConfig(this.config).subscribe(() => {
+            this.dialogRef.close();
+        });
     }
 
+    onUpdate() {
+        this.config.steps = this.steps;
+
+        this.subscription = new Subscription();
+        this.subscription = this.channelService.updateChannelConfigs(this.config).subscribe(() => {
+            this.dialogRef.close();
+        });
+    }
 
     deleteConfig(i: number) {
         this.basket.splice(i, 1);
+        this.steps.splice(i, 1);
+        this.steps.forEach((e, i) => {
+            e.step = i + 1;
+        });
     }
-
 
     onNoClick(): void {
         this.dialogRef.close();
-      }
+    }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
     }
-
 }

@@ -7,20 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OptionsMenuItemComponent implements OnInit {
 
-    status: boolean;
-    element: string;
-    toggle: boolean;
-
-  constructor() {
-    this.status = true;
-    this.toggle = false;
-  }
+  constructor() { }
 
   ngOnInit(): void {
-  }
-
-  onEdit(){
-    this.status = !this.status;
   }
 
 }

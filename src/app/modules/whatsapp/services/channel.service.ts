@@ -36,14 +36,14 @@ export class ChannelService {
     });
   }
 
-  getChannelConfig(phoneNumber: number){
+  getChannelConfig(number: number){
     let headers = new HttpHeaders();
     headers = headers.append(
       "mibot_session",
       '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
     );
 
-    return this.http.get(`${environment.url_api}channel/phoneNumber/${phoneNumber}`, {
+    return this.http.get(`${environment.url_api}channel/config/number/${number}`, {
       headers: headers,
     });
   }
@@ -55,7 +55,7 @@ export class ChannelService {
       '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
     );
 
-    return this.http.put(`${environment.url_api}role/${value.id}`, value, {
+    return this.http.put(`${environment.url_api}channel/config/${value.channel_number}`, value, {
       headers: headers,
     });
   }

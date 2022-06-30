@@ -37,7 +37,7 @@ import { Router } from "@angular/router";
   animations: [fadeInUp400ms, stagger40ms],
 })
 export class UsersTableComponent implements OnInit, OnDestroy, AfterViewInit {
-  
+
   menu: any;
   //Icons
   icSearch = icSearch;
@@ -130,7 +130,7 @@ OnPageChange(event: PageEvent) {
 }
 
 showData() {
-  
+
   this.isChecked = !this.isChecked;
   this.paginator.pageSize = 10;
   this.paginator.firstPage();
@@ -255,7 +255,6 @@ onFilterChange(value: string) {
   // if (!this.dataSource) {
   //   return;
   // }
-  console.log(value);
 
   value = value.trim();
   value = value.toLowerCase();

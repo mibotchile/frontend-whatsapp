@@ -5,20 +5,14 @@ export interface ChannelConfiguration {
     menus:          Menu[];
     messages:       Message[];
     quizes:         Quize[];
-    questions:      Question[];
     steps:          Step[];
 }
 
 export interface Menu {
     id:       number;
     title:    string;
-    options?: Option[];
-    items?:   Item[];
-}
-
-export interface Item {
-    id:    number;
-    value: string;
+    //options?: Option[];
+    options?: Menu[];
 }
 
 export interface Option {
@@ -28,7 +22,8 @@ export interface Option {
 }
 
 export interface Message {
-    id:      string;
+    id:      number;
+    title:   string;
     message: string;
 }
 
@@ -41,7 +36,7 @@ export interface Question {
 
 export interface Quize {
     id:        number;
-    questions: number[];
+    questions: Question[];
 }
 
 export interface Step {

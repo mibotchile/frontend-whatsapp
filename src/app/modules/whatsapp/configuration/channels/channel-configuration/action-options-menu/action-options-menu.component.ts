@@ -11,7 +11,6 @@ import { Menu } from "src/app/modules/whatsapp/interfaces/channel-configuration.
     styleUrls: ["./action-options-menu.component.scss"],
 })
 export class ActionOptionsMenuComponent implements OnInit {
-
     icClose = icClose;
     icPeople = icPeople;
 
@@ -30,15 +29,44 @@ export class ActionOptionsMenuComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-
         this.menus = [];
 
-         this.menu = {
+        this.menu = {
             id: 0,
             title: "",
             options: [],
-            items: []
-         };
+        };
+
+        this.menus = [
+            {
+                id: 1,
+                title: "",
+                options: [
+                    {
+                        id: 0,
+                        title: "",
+                    },
+                    {
+                        id: 1,
+                        title: "Value",
+                    },
+                    {
+                        id: 2,
+                        title: "Value",
+                        options: [
+                            {
+                                id: 0,
+                                title: "",
+                            },
+                            {
+                                id: 1,
+                                title: "Value",
+                            },
+                        ],
+                    },
+                ],
+            },
+        ];
 
         this.mode = "create";
 
@@ -46,9 +74,7 @@ export class ActionOptionsMenuComponent implements OnInit {
             id: this.menu.id,
             message: this.menu.title,
         });
-
     }
-
 
     save() {
         if (this.mode === "create") {
@@ -80,4 +106,3 @@ export class ActionOptionsMenuComponent implements OnInit {
         return this.mode === "update";
     }
 }
-

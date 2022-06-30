@@ -13,7 +13,12 @@
             cdkDropListSortingDisabled
             (cdkDropListDropped)="drop($event)"
         >
-            <frontend-whatsapp-action *ngFor="let item of items" cdkDrag [label]="item.value"></frontend-whatsapp-action>
+            <frontend-whatsapp-action
+                class="example-box"
+                *ngFor="let item of items"
+                cdkDrag
+                [label]="item.value"
+            ></frontend-whatsapp-action>
         </div>
     </div>
 
@@ -21,12 +26,23 @@
         <h3>Acciones seleccionadas</h3>
 
         <div cdkDropList [cdkDropListData]="basket" class="example-list" (cdkDropListDropped)="drop($event)">
-            <frontend-whatsapp-selected-action *ngFor="let item of basket, index as i" cdkDrag [label]="item" [position]="i + 1" (deleteItemEvent)="deleteConfig(i)"></frontend-whatsapp-selected-action>
+            <frontend-whatsapp-selected-action
+                class="example-box"
+                *ngFor="let item of basket; index as i"
+                cdkDrag
+                [label]="item"
+                [position]="i + 1"
+                (deleteItemEvent)="deleteConfig(i)"
+                (updateItemEvent)="updateConfig(i)"
+            ></frontend-whatsapp-selected-action>
         </div>
     </div>
 </div>
 
 <div align="end">
     <button mat-button (click)="onNoClick()">CANCELAR</button>
-    <button color="primary" mat-button (click)="onCreate()">CREAR CONFIGURACIÓN</button>
+    <button color="primary" mat-button *ngIf="status === 'create'" (click)="onCreate()">CREAR CONFIGURACIÓN</button>
+    <button color="primary" mat-button *ngIf="status === 'update'" (click)="onUpdate()">
+        ACTUALIZAR CONFIGURACIÓN
+    </button>
 </div>

@@ -33,7 +33,7 @@
 
         <mat-accordion class="mb-5">
 
-            <frontend-whatsapp-data-request-panel *ngFor="question of questions,index as i" [questionNumber]="i + 1" (deleteQuestionEvent)="deleteQuestion(i)"></frontend-whatsapp-data-request-panel>
+            <frontend-whatsapp-data-request-panel *ngFor="let question of questions,index as i" [questionNumber]="i + 1" (deleteQuestionEvent)="deleteQuestion(i)"></frontend-whatsapp-data-request-panel>
 
             <!-- <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                 <mat-expansion-panel-header>
