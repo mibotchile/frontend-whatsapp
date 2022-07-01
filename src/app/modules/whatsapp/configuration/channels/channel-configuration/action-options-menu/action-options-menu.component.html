@@ -13,7 +13,7 @@
     <mat-divider class="-mx-6 text-border"></mat-divider>
 
     <mat-dialog-content fxLayout="column">
-        <frontend-whatsapp-options-menu-item></frontend-whatsapp-options-menu-item>
+        <frontend-whatsapp-options-menu-container [data]="elements" (newDataEventEmitter)="addNewData($event)"></frontend-whatsapp-options-menu-container>
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">

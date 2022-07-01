@@ -1,0 +1,34 @@
+<div class="container">
+    <mat-form-field *ngIf="status" appearance="legacy">
+        <input matInput [(ngModel)]="element.title" />
+        <button matSuffix mat-icon-button aria-label="Finalizar" (click)="status=false; sendEditItem()">
+            <mat-icon>check</mat-icon>
+        </button>
+    </mat-form-field>
+    <span *ngIf="!status">{{ element.title }}</span>
+    <div class="buttons">
+        <button mat-icon-button [matMenuTriggerFor]="menu" type="button">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+    </div>
+</div>
+
+
+<mat-menu #menu="matMenu">
+    <!-- <button mat-menu-item (click)="newItem()">
+        <mat-icon>add</mat-icon>
+        <span>Nuevo elemento</span>
+    </button>
+    <button mat-menu-item (click)="newLevel()">
+        <mat-icon>subdirectory_arrow_right</mat-icon>
+        <span>Nuevo nivel</span>
+    </button> -->
+    <button mat-menu-item (click)="editItem()">
+        <mat-icon>edit</mat-icon>
+        <span>Editar</span>
+    </button>
+    <button mat-menu-item (click)="deleteItem()">
+        <mat-icon>delete</mat-icon>
+        <span>Eliminar</span>
+    </button>
+</mat-menu>

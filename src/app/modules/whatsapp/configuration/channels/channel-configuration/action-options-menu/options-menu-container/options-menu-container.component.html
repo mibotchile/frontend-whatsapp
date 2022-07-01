@@ -1,0 +1,39 @@
+<div>
+    <ul>
+        <li *ngFor="let item of data; let i = index">
+            <div class="header">
+                <button (click)="toggle[i] = !toggle[i]" mat-icon-button type="button">
+                    <mat-icon *ngIf="!toggle[i]">chevron_right</mat-icon>
+                    <mat-icon *ngIf="toggle[i]">expand_more</mat-icon>
+                </button>
+                <frontend-whatsapp-options-menu-item
+                    [element]="item"
+                    (deleteItemEventEmitter)="deleteItem(item.id)"
+                    (updateItemEventEmitter)="updateItem(item,$event)"
+                >
+                </frontend-whatsapp-options-menu-item>
+            </div>
+            <div *ngIf="toggle[i]" class="container">
+                <frontend-whatsapp-options-menu-container
+                    [data]="item.options" (newDataEventEmitter)="addNewDataInner($event,item)"
+                ></frontend-whatsapp-options-menu-container>
+            </div>
+        </li>
+    </ul>
+
+    <div class="value-container">
+        <mat-form-field appearance="legacy">
+            <input matInput #newElement placeholder="Nuevo elemento" />
+        </mat-form-field>
+        <div>
+            <button
+                color="primary"
+                mat-icon-button
+                (click)="addNewElement(newElement.value); newElement.value = ''"
+                type="button"
+            >
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

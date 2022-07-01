@@ -27,7 +27,8 @@ import {MatSelectModule} from '@angular/material/select';
 import { DataRequestPanelComponent } from './channel-configuration/action-data-request/data-request-panel/data-request-panel.component';
 import { ActionOptionsMenuComponent } from './channel-configuration/action-options-menu/action-options-menu.component';
 import { ActionAttentionComponent } from './channel-configuration/action-attention/action-attention.component';
-import { OptionsMenuItemComponent } from './channel-configuration/action-options-menu/options-menu-item/options-menu-item.component';
+import { OptionsMenuItemComponent } from './channel-configuration/action-options-menu/options-menu-container/options-menu-item/options-menu-item.component';
+import { OptionsMenuContainerComponent } from './channel-configuration/action-options-menu/options-menu-container/options-menu-container.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { OptionsMenuItemComponent } from './channel-configuration/action-options
     ActionOptionsMenuComponent,
     ActionAttentionComponent,
     OptionsMenuItemComponent,
+    OptionsMenuContainerComponent,
   ],
   imports: [
     CommonModule,

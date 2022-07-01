@@ -22,11 +22,15 @@ export class ActionOptionsMenuComponent implements OnInit {
     form: FormGroup;
     mode: "create" | "update" = "create";
 
+    elements: Menu[];
+
     constructor(
         @Inject(MAT_DIALOG_DATA) public defaults: any,
         private dialogRef: MatDialogRef<ActionOptionsMenuComponent>,
         private fb: FormBuilder
-    ) {}
+    ) {
+        this.elements = [];
+    }
 
     ngOnInit(): void {
         this.menus = [];
@@ -37,43 +41,16 @@ export class ActionOptionsMenuComponent implements OnInit {
             options: [],
         };
 
-        this.menus = [
-            {
-                id: 1,
-                title: "",
-                options: [
-                    {
-                        id: 0,
-                        title: "",
-                    },
-                    {
-                        id: 1,
-                        title: "Value",
-                    },
-                    {
-                        id: 2,
-                        title: "Value",
-                        options: [
-                            {
-                                id: 0,
-                                title: "",
-                            },
-                            {
-                                id: 1,
-                                title: "Value",
-                            },
-                        ],
-                    },
-                ],
-            },
-        ];
-
         this.mode = "create";
 
         this.form = this.fb.group({
             id: this.menu.id,
             message: this.menu.title,
         });
+    }
+
+    addNewData(event: Event){
+        console.log(event);
     }
 
     save() {

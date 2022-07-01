@@ -11,8 +11,7 @@ export interface ChannelConfiguration {
 export interface Menu {
     id:       number;
     title:    string;
-    //options?: Option[];
-    options?: Menu[];
+    options?: Option[];
 }
 
 export interface Option {
