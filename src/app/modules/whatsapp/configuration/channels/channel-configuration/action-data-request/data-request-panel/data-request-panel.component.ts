@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
+import { Subscription } from "rxjs";
 import { Question } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
+import { ChannelService } from "src/app/modules/whatsapp/services/channel.service";
 
 interface Type {
     value: number;
@@ -12,7 +14,7 @@ interface Type {
     templateUrl: "./data-request-panel.component.html",
     styleUrls: ["./data-request-panel.component.scss"],
 })
-export class DataRequestPanelComponent implements OnInit {
+export class DataRequestPanelComponent implements OnInit, OnDestroy {
 
     @Input()
     questionNumber: number;
@@ -22,6 +24,8 @@ export class DataRequestPanelComponent implements OnInit {
 
     @Output()
     createQuestionEvent = new EventEmitter<Question>();
+
+    subscription: Subscription;
 
     question: string;
     error: string;
@@ -34,13 +38,22 @@ export class DataRequestPanelComponent implements OnInit {
         { value: 2, viewValue: "Email" },
     ];
 
-    constructor() {
+    constructor(private channelService: ChannelService) {
         this.question = '';
         this.error = '';
     }
 
     ngOnInit(): void {
-
+        this.subscription = new Subscription();
+        this.subscription = this.channelService.getResponseValidator().subscribe((response: any) => {
+            this.types = [];
+            response.forEach(e=>{
+                this.types.push({
+                    value: e.id,
+                    viewValue: e.name
+                });
+            });
+        });
     }
 
     onDelete(){
@@ -55,6 +68,10 @@ export class DataRequestPanelComponent implements OnInit {
             error_message: this.error
         }
         this.createQuestionEvent.emit(questionObject);
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
     }
 }
 
