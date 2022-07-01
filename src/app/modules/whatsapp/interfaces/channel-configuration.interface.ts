@@ -1,6 +1,6 @@
 export interface ChannelConfiguration {
-    id:             number;
-    channel_id:     number;
+    id: number;
+    channel_id: number;
     channel_number: string;
     menus:          Menu[];
     messages:       Message[];
@@ -9,14 +9,14 @@ export interface ChannelConfiguration {
 }
 
 export interface Menu {
-    id:       number;
-    title:    string;
+    id: number;
+    title: string;
     options?: Option[];
 }
 
 export interface Option {
-    id:     number;
-    value:  string;
+    id: number;
+    value: string;
     action: string;
 }
 
@@ -27,8 +27,8 @@ export interface Message {
 }
 
 export interface Question {
-    id:            number;
-    question:      string;
+    id: number;
+    question: string;
     error_message: string;
     response_type: string;
 }
@@ -39,8 +39,7 @@ export interface Quize {
 }
 
 export interface Step {
-    step:   number;
+    step: number;
     action: string;
     status: number;
 }
-

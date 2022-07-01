@@ -1,27 +1,30 @@
-<vex-page-layout>
-    <vex-secondary-toolbar current="WHATSAPP">
-        <vex-breadcrumbs [crumbs]="['Conversaciones']" fxFlex="auto"></vex-breadcrumbs>
-    </vex-secondary-toolbar>
-    <mat-progress-bar
-        color="primary"
-        mode="indeterminate"
-        *ngIf="progressService.visibility | async"
-    ></mat-progress-bar>
-</vex-page-layout>
-
-<vex-page-layout mode="card">
-    <div class="bg-primary w-full h-64 absolute top-0 left-0 right-0"></div>
-
-    <mat-drawer-container class="card overflow-hidden mt-6 mx-6" fxFlex="auto">
-        <mat-drawer mode="side" opened #drawer>
-            <frontend-whatsapp-conversations-sidenav [drawer]="drawer"></frontend-whatsapp-conversations-sidenav>
-        </mat-drawer>
-        <mat-drawer-content>
-            <frontend-whatsapp-conversations-chat></frontend-whatsapp-conversations-chat>
-        </mat-drawer-content>
-    </mat-drawer-container>
-
-</vex-page-layout>
-
-
-
+<div fxLayout="column" class="h-full">
+    <vex-page-layout>
+        <vex-secondary-toolbar current="WHATSAPP">
+            <vex-breadcrumbs [crumbs]="['Conversaciones']" fxFlex="auto"></vex-breadcrumbs>
+        </vex-secondary-toolbar>
+        <mat-progress-bar
+            color="primary"
+            mode="indeterminate"
+            *ngIf="progressService.visibility | async"
+        ></mat-progress-bar>
+    </vex-page-layout>
+    <vex-page-layout fxLayout="column" class="h-full" fxFlex="100 100 auto" mode="card">
+        <div class="bg-primary w-full h-64 absolute top-0 left-0 right-0"></div>
+        <div
+            style="height: calc(100vh - calc(3rem) - var(--secondary-toolbar-height) - var(--toolbar-height))"
+            fxLayout="row nowrap"
+            [class]="'relative z-10 card overflow-hidden mt-6 mx-6 ' + (isFullscreenChatEnabled ? 'fullscreen' : ' ')"
+            fxFlex="auto"
+        >
+            <aside class="h-full">
+                <frontend-whatsapp-conversations-sidenav></frontend-whatsapp-conversations-sidenav>
+            </aside>
+            <div class="z-10 h-full w-full bg-white">
+                <frontend-whatsapp-conversations-chat
+                    (enableFullscreenChat)="isFullscreenChatEnabled = $event"
+                ></frontend-whatsapp-conversations-chat>
+            </div>
+        </div>
+    </vex-page-layout>
+</div>

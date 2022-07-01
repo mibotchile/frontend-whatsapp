@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "message": "asi nisi sapiente iste! Aperiam, ipsa a quae sint eveniet vero ut?",
+        "date": "",
+        "ownerId": 3
+    },
+    {
+        "id": 1,
+        "message": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum pariatur fuga assumenda nihil odit, esse dolor at quisquam, quasi nisi sapiente iste! Aperiam, ipsa a quae sint eveniet vero ut?",
+        "date": "",
+        "ownerId": 1
+    },
+    {
+        "id": 1,
+        "message": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum pariatur fuga assumenda nihil odit, esse dolor at quisquam, quasi nisi sapiente iste! Aperiam, ipsa a quae sint eveniet vero ut?",
+        "date": "",
+        "ownerId": 3
+    },
+    {
+        "id": 1,
+        "message": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum pariatur fuga assumenda nihil odit, esse dolor at quisquam, quasi nisi sapiente iste! Aperiam, ipsa a quae sint eveniet vero ut?",
+        "date": "",
+        "ownerId": 3
+    },
+    {
+        "id": 1,
+        "message": "atur fuga assumenda nihil odit",
+        "date": "",
+        "ownerId": 1
+    },
+    {
+        "id": 1,
+        "message": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum pariatur fuga assumenda nihil odit, esse dolor at quisquam, quasi nisi sapiente iste! Aperiam, ipsa a quae sint eveniet vero ut?",
+        "date": "",
+        "ownerId": 1
+    }
+]

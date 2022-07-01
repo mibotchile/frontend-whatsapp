@@ -1,0 +1,47 @@
+[
+    {
+        "id": 123,
+        "role_id": 1,
+        "groups_id": [123],
+        "uid": "123",
+        "name": "Max Yasid Florian García",
+        "email": "asd",
+        "status": 1
+    },
+    {
+        "id": 123,
+        "role_id": 1,
+        "groups_id": [123],
+        "uid": "123",
+        "name": "Carlos Ramirez Quintanilla",
+        "email": "asd",
+        "status": 1
+    },
+    {
+        "id": 123,
+        "role_id": 1,
+        "groups_id": [123],
+        "uid": "123",
+        "name": "Jose María Peréz Lozano",
+        "email": "asd",
+        "status": 1
+    },
+    {
+        "id": 123,
+        "role_id": 1,
+        "groups_id": [123],
+        "uid": "123",
+        "name": "Andrés Cáceres de la Plata",
+        "email": "asd",
+        "status": 1
+    },
+    {
+        "id": 123,
+        "role_id": 1,
+        "groups_id": [123],
+        "uid": "123",
+        "name": "Kimmy amberlyn Depp",
+        "email": "asd",
+        "status": 1
+    }
+]
