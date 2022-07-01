@@ -1,0 +1,71 @@
+<aside
+    fxLayout="column"
+    [class]="
+        'bg-white groupConversations border-gray-light ' +
+        (isConversationsPanelShowing ? 'show' : 'hide ') +
+        ' border-l h-full'
+    "
+>
+    <header fxLayoutAlign="start center" class="px-3" fxLayout="row">
+        <mat-icon
+            (click)="closeConversationsPanel()"
+            height="1.3rem"
+            color="primary"
+            class="cursor-pointer pt-1"
+            [icIcon]="arrowLeft"
+        ></mat-icon>
+        <h3 class="text-base font-medium mb-2 pt-2">{{ selectedGroup }}</h3>
+    </header>
+    <div class="text-right actions px-3 border-b">
+        <button class="text-xs outline-none bg-none text-gray cursor-pointer" [matMenuTriggerFor]="menu">
+            Más nuevos
+            <mat-menu #menu="matMenu">
+                <button (click)="sortByDate('asc')" mat-menu-item>Más nuevos</button>
+                <button (click)="sortByDate('desc')" mat-menu-item>Más antiguos</button>
+            </mat-menu>
+        </button>
+    </div>
+    <vex-scrollbar>
+        <div
+            *ngFor="let conversation of conversations"
+            fxLayout="row"
+            fxLayoutAlign="center center"
+            class="hover:bg-gray-light border-b py-3"
+        >
+            <div fxFlex="18%" fxLayoutAlign="center center" class="px-3 avatarContainer">
+                <img
+                    src="./../../../../../../assets/img/demo/1.jpg"
+                    alt="placeholder"
+                    class="max-w-unset avatar w-8 h-8"
+                />
+            </div>
+            <div fxFlex="65%">
+                <p class="text-xs">{{ conversation.user.name }} +519433554</p>
+                <p
+                    [title]="conversation.lastMessageData.message"
+                    class="text-ellipsis whitespace-nowrap overflow-hidden text-secondary text-xs font-medium"
+                >
+                    {{ conversation.lastMessageData.message }}
+                </p>
+            </div>
+            <div fxFlex="17%">
+                <p class="text-center text-xs">
+                    {{
+                        conversation.lastMessageData.date.substring(
+                            conversation.lastMessageData.date.indexOf("T") + 1,
+                            conversation.lastMessageData.date.lastIndexOf(":")
+                        )
+                    }}
+                </p>
+                <p fxLayoutAlign="center center">
+                    <span
+                        fxLayoutAlign="center center"
+                        class="ml-3 mr-4 w-100 text-white bg-primary text-xs rounded-full h-5 w-5"
+                    >
+                        15
+                    </span>
+                </p>
+            </div>
+        </div>
+    </vex-scrollbar>
+</aside>
