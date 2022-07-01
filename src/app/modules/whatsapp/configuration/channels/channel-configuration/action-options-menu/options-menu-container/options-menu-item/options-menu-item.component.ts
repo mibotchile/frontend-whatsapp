@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Menu } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
+import { MenuOption } from "../../menu-option.interface";
 
 @Component({
     selector: "frontend-whatsapp-options-menu-item",
@@ -9,7 +10,7 @@ import { Menu } from "src/app/modules/whatsapp/interfaces/channel-configuration.
 export class OptionsMenuItemComponent implements OnInit {
 
     @Input()
-    element: Menu;
+    element: MenuOption;
 
     @Output()
     addItemEventEmitter = new EventEmitter<void>();

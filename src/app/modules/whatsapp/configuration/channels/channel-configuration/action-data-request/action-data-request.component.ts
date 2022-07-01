@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import icClose from "@iconify/icons-ic/twotone-close";
 import icPeople from "@iconify/icons-ic/people";
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Question } from 'src/app/modules/whatsapp/interfaces/channel-configuration.interface';
+import { Question, Quize } from 'src/app/modules/whatsapp/interfaces/channel-configuration.interface';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -74,10 +74,15 @@ export class ActionDataRequestComponent implements OnInit {
     }
 
     createMessage() {
-        const message = this.form.value;
+        // const message = this.form.value;
 
-        this.defaults.messages.push(message);
-        this.dialogRef.close(this.defaults);
+        // this.defaults.messages.push(message);
+        this.defaults.configuration.quizes.push({
+            id: this.defaults.configuration.quizes.length,
+            questions: this.questions
+        });
+
+        this.dialogRef.close(this.defaults.configuration);
     }
 
     updateMessage() {
@@ -94,6 +99,16 @@ export class ActionDataRequestComponent implements OnInit {
     isUpdateMode() {
         return this.mode === "update";
     }
+
+    fillQuestion(question: Question,id: number){
+        this.questions[id] = {
+            id: this.questions[id].id,
+            question: question.question,
+            response_type: question.response_type,
+            error_message: question.error_message
+        }
+    }
+
 
     deleteQuestion(i: number){
         this.questions.splice(i,1);

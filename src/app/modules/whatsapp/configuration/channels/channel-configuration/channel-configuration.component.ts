@@ -19,9 +19,9 @@ import { ActionAttentionComponent } from "./action-attention/action-attention.co
 export class ChannelConfigurationComponent implements OnInit, OnDestroy {
     items: Item[] = [
         { action: "message", value: "Mensaje" },
-        { action: "dataRequest", value: "Petición de Datos" },
-        { action: "optionsMenu", value: "Menu de Opciones" },
-        { action: "attention", value: "Valoración de la Atención" },
+        { action: "quiz", value: "Petición de Datos" },
+        { action: "menu", value: "Menu de Opciones" },
+        // { action: "attention", value: "Valoración de la Atención" },
     ];
 
     basket: Item[] = [];
@@ -104,11 +104,11 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                 actionStep += `.${this.messageId}`;
                 this.messageId++;
                 break;
-            case "dataRequest":
+            case "quiz":
                 actionStep += `.${this.dataRequestId}`;
                 this.dataRequestId++;
                 break;
-            case "optionsMenu":
+            case "menu":
                 actionStep += `.${this.optionsMenuId}`;
                 this.optionsMenuId++;
                 break;
@@ -145,10 +145,10 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
             case "message":
                 value = ActionMessageComponent;
                 break;
-            case "dataRequest":
+            case "quiz":
                 value = ActionDataRequestComponent;
                 break;
-            case "optionsMenu":
+            case "menu":
                 value = ActionOptionsMenuComponent;
                 break;
             case "attention":

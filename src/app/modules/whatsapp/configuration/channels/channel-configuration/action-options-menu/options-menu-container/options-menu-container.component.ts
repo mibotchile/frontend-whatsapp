@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Menu } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
+import { MenuOption } from "../menu-option.interface";
 
 @Component({
     selector: "frontend-whatsapp-options-menu-container",
@@ -8,10 +9,10 @@ import { Menu } from "src/app/modules/whatsapp/interfaces/channel-configuration.
 })
 export class OptionsMenuContainerComponent implements OnInit {
     @Input()
-    data: Menu[];
+    data: MenuOption[];
 
     @Output()
-    newDataEventEmitter = new EventEmitter<Menu[]>();
+    newDataEventEmitter = new EventEmitter<MenuOption[]>();
 
     toggle = {};
 
@@ -42,7 +43,7 @@ export class OptionsMenuContainerComponent implements OnInit {
         this.addNewData();
     }
 
-    updateItem(item: Menu, newTitle: string) {
+    updateItem(item: MenuOption, newTitle: string) {
         let updatedItem = item;
         updatedItem.title = newTitle;
         this.data.splice(this.data.indexOf(this.data.filter((n) => n.id === item.id)[0]), 0, updatedItem);
@@ -53,11 +54,7 @@ export class OptionsMenuContainerComponent implements OnInit {
         this.newDataEventEmitter.emit(this.data);
     }
 
-    addNewDataInner(innerItem: Menu, item: Menu){
-        this.data[item.id].options.push({
-            id: this.data[item.id].options.length,
-            value: innerItem.title,
-            action: 'hola pepe',
-        });
+    addNewDataInner(innerItem: MenuOption, item: MenuOption){
+
     }
 }
