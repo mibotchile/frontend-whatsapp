@@ -1,0 +1,12 @@
+.hide {
+    margin-left: -18rem;
+}
+.show {
+    margin-left: 0;
+}
+/* la propieda margin-left de .hide debe medir igual al width de .groupConversations
+(por si se cambia el valor del width) */
+.groupConversations {
+    transition: margin 0.2s;
+    width: 18rem;
+}

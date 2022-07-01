@@ -1,0 +1,14 @@
+.messages div:last-child {
+    margin-bottom: 0.75rem;
+}
+.chat {
+    .chatWallpaper {
+        z-index: -1;
+        height: calc(100% - 120px);
+        top: 60px;
+        opacity: 0.26;
+        filter: sepia(30%);
+        background-image: url(../../../../../assets/img/chatWallpaper.jpg);
+        background-size: auto 100%;
+    }
+}

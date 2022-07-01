@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { LayoutService } from "src/@vex/services/layout.service";
 import { ProgressService } from "src/app/services/progress.service";
 
 @Component({
@@ -7,7 +9,24 @@ import { ProgressService } from "src/app/services/progress.service";
     styleUrls: ["./conversations.component.scss"],
 })
 export class ConversationsComponent implements OnInit {
-    constructor(public progressService: ProgressService) {}
+    isFullscreenChatEnabled = false;
+    constructor(
+        public progressService: ProgressService,
+        private route: ActivatedRoute,
+        private layoutService: LayoutService
+    ) {
+        this.route.queryParams.subscribe((params) => {
+            params.fullscreenChat === "enabled"
+                ? (this.isFullscreenChatEnabled = true)
+                : (this.isFullscreenChatEnabled = false);
+            console.log(this.isFullscreenChatEnabled);
+
+            if (this.isFullscreenChatEnabled) {
+                return this.layoutService.closeSidenav();
+            }
+            this.layoutService.openSidenav();
+        });
+    }
 
     ngOnInit() {}
 }

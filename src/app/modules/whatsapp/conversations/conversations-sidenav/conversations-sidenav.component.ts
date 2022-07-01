@@ -1,14 +1,8 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
-import { ConversationsSidenavLink } from "./conversations-sidenav-link/conversations-sidenav-link.interface";
-import icInbox from '@iconify/icons-ic/twotone-inbox';
-import icAllInbox from '@iconify/icons-ic/twotone-all-inbox';
-import icStar from '@iconify/icons-ic/twotone-star';
-import icDrafts from '@iconify/icons-ic/twotone-drafts';
-import icSend from '@iconify/icons-ic/twotone-send';
 import { MatDrawer } from "@angular/material/sidenav";
-import { LayoutService } from "src/@vex/services/layout.service";
+import { Group } from "../../models/group.model";
 
 @Component({
     selector: "frontend-whatsapp-conversations-sidenav",
@@ -17,45 +11,55 @@ import { LayoutService } from "src/@vex/services/layout.service";
     animations: [stagger40ms, fadeInUp400ms],
 })
 export class ConversationsSidenavComponent implements OnInit {
+    isConversationsPanelShowing: boolean = false;
+    selectedGroup: string = "";
 
     @Input() drawer: MatDrawer;
 
-    links: ConversationsSidenavLink[] = [
+    conversationGroups: Group[] = [
         {
-            label: "Inbox",
-            route: ["./inbox"],
-            icon: icInbox,
+            id: 1,
+            name: "Mis conversaciones",
+            conversationsCount: 0,
+            description: "",
+            tags: [],
+            default: true,
+            status: 1,
         },
         {
-            label: "All Mails",
-            route: ["./all"],
-            icon: icAllInbox,
+            id: 5,
+            name: "Grupo 1",
+            conversationsCount: 5,
+            description: "",
+            tags: [],
+            default: true,
+            status: 1,
         },
         {
-            label: "Starred",
-            route: ["./starred"],
-            icon: icStar,
+            id: 5,
+            name: "Grupo 2",
+            conversationsCount: 22,
+            description: "",
+            tags: [],
+            default: true,
+            status: 1,
         },
         {
-            label: "Drafts",
-            route: ["./drafts"],
-            icon: icDrafts,
-        },
-        {
-            label: "Sent",
-            route: ["./sent"],
-            icon: icSend,
+            id: 5,
+            name: "Grupo Provida",
+            conversationsCount: 1,
+            description: "",
+            tags: [],
+            default: true,
+            status: 1,
         },
     ];
 
-    constructor(private layoutService: LayoutService) {}
+    constructor() {}
 
     ngOnInit(): void {}
-
-    closeDrawer() {
-        if (this.layoutService.isLtLg()) {
-          this.drawer?.close();
-        }
-      }
+    openGroupConversations(group: Group) {
+        this.isConversationsPanelShowing = true;
+        this.selectedGroup = group.name;
+    }
 }
-

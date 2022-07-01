@@ -1,3 +1,124 @@
-<div style="height: 500px;">conversations-chat works!</div>
+<div fxLayout="column" fxLayoutAlign="space-between start" class="w-full chat relative h-full">
+    <div class="chatWallpaper absolute left-0 right-0"></div>
+    <header fxLayoutAlign="space-between center" fxFlex="60px" class="w-full bg-gray-light border border-amber-light">
+        <section fxLayout="row" class="h-full">
+            <div fxLayoutAlign="center center" class="h-full p-5">
+                <img
+                    src="./../../../../../assets/img/demo/0.jpg"
+                    width="30"
+                    height="30"
+                    class="avatar h-8 w-8"
+                    alt="avatar"
+                />
+            </div>
+            <div fxLayoutAlign="center left" fxLayoutGap="4px" fxLayout="column">
+                <h6 class="font-normal text-sm leading-none">Carlos Enrique Cueva</h6>
+                <span class="font-light text-xs leading-none text-gray">Toca aquí para editar o ver más</span>
+            </div>
+        </section>
+        <div fxLayout="row nowrap" fxLayoutAlign="end center" class="px-4">
+            <button mat-button fxLayout="center center" class="text-xs text-primary" [matMenuTriggerFor]="menu">
+                <mat-icon size="20px" color="primary" [icIcon]="asign"></mat-icon>
+                asignar a
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item *ngFor="let user of usersToAssign">{{ user.name }}</button>
+            </mat-menu>
+            <a
+                (click)="toggleFullscreenChat($event)"
+                routerLink="/whatsapp/conversations"
+                [queryParams]="{ fullscreenChat: 'enabled' }"
+                fxLayoutAlign="center center"
+                class="hover:bg-gray-light w-8 h-8"
+            >
+                <mat-icon color="primary" [icIcon]="fullscreen"></mat-icon>
+            </a>
+        </div>
+    </header>
+    <div
+        fxFlex="calc(100%- 120px)"
+        class="overflow-y-scroll overflow-x-hidden w-full messages border-l z-10 border-gray-light"
+        #messagesContainer
+    >
+        <div fxLayoutAlign="center center" class="my-6" *ngIf="isLoadingMessages">
+            <mat-spinner diameter="30"></mat-spinner>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end center" class="px-4 mt-3">
+            <p
+                fxLayout="row"
+                style="max-width: 80%"
+                class="py-2 text-left bg-primary text-white rounded-lg px-4 shadow-1"
+            >
+                asi nisi sapiente iste! Aperiam, ipsa a quae sint eveniet vero ut?
+            </p>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end center" class="px-4 mt-3">
+            <p
+                fxLayout="row"
+                style="max-width: 80%"
+                class="py-2 text-left bg-primary text-white rounded-lg px-4 shadow-1"
+            >
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum pariatur fuga assumenda nihil odit, esse
+                dolor at quisquam, quasi nisi sapiente iste! Aperiam, ipsa a quae sint eveniet vero ut?
+            </p>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" class="px-4 mt-6">
+            <p
+                fxLayout="row"
+                style="max-width: 80%"
+                class="py-2 text-left bg-white text-black rounded-lg px-4 shadow-1"
+            >
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum pariatur fuga assumenda nihil odit, esse
+                dolor at quisquam, quasi nisi sapiente iste! Aperiam, ipsa a quae sint eveniet vero ut?
+            </p>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end center" class="px-4 mt-6">
+            <p
+                fxLayout="row"
+                style="max-width: 80%"
+                class="py-2 text-left bg-primary text-white rounded-lg px-4 shadow-1"
+            >
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum pariatur fuga assumenda nihil odit, esse
+                dolor at quisquam, quasi nisi sapiente iste! Aperiam, ipsa a quae sint eveniet vero ut?
+            </p>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" class="px-4 mt-6">
+            <p
+                fxLayout="row"
+                style="max-width: 80%"
+                class="py-2 text-left bg-white text-black rounded-lg px-4 shadow-1"
+            >
+                atur fuga assumenda nihil odit,
+            </p>
+        </div>
 
-
+        <div *ngFor="let messageData of chatMessages" fxLayout="row" fxLayoutAlign="end center" class="px-4 mt-3">
+            <p
+                fxLayout="row"
+                style="max-width: 80%"
+                class="py-2 text-left bg-primary text-white rounded-lg px-4 shadow-1"
+            >
+                {{ messageData.message }}
+            </p>
+        </div>
+    </div>
+    <form
+        fxFlex="60px"
+        (ngSubmit)="sendMessage()"
+        fxLayoutAlign="justify-between center"
+        class="z-10 w-full bg-primary-light"
+    >
+        <input
+            [(ngModel)]="message"
+            autocomplete="off"
+            name="message"
+            class="flex-grow m-2 py-2 px-4 mr-1 rounded-full border border-gray-300 bg-gray-200 resize-none"
+            rows="1"
+            placeholder="escribe un mensaje..."
+            style="outline: none"
+        />
+        <button type="submit" fxLayoutAlign="center center" class="h-full px-3" style="outline: none">
+            <mat-icon [icIcon]="send"></mat-icon>
+        </button>
+    </form>
+</div>
