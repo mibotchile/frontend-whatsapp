@@ -4,6 +4,7 @@ import icClose from "@iconify/icons-ic/twotone-close";
 import icPeople from "@iconify/icons-ic/people";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Menu } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
+import { Option } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
 import { MenuOption } from "./menu-option.interface";
 
 @Component({
@@ -17,13 +18,13 @@ export class ActionOptionsMenuComponent implements OnInit {
 
     status: boolean;
 
-    menus: MenuOption[];
-    menu: MenuOption;
+    menus: Menu[];
+    menu: Menu;
 
     form: FormGroup;
     mode: "create" | "update" = "create";
 
-    elements: MenuOption[];
+    elements: Option[];
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public defaults: any,
@@ -51,7 +52,7 @@ export class ActionOptionsMenuComponent implements OnInit {
     }
 
     addNewData(event: Event){
-        //console.log(event);
+
     }
 
     save() {

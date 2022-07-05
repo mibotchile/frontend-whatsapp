@@ -12,6 +12,11 @@ import { ActionOptionsMenuComponent } from "./action-options-menu/action-options
 import { ActionAttentionComponent } from "./action-attention/action-attention.component";
 import { ActionRedirectionComponent } from "./action-redirection/action-redirection.component";
 
+export interface ActionConfig {
+    config: ChannelConfiguration,
+    action: string
+}
+
 @Component({
     selector: "frontend-whatsapp-channel-configuration",
     templateUrl: "./channel-configuration.component.html",
@@ -216,14 +221,14 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                 },
             })
             .afterClosed()
-            .subscribe((config: ChannelConfiguration) => {
-                if (!config || config.messages.length === 0) {
+            .subscribe((config: ActionConfig) => {
+                if (config[1] === 'noaction') {
                     this.basket.splice(this.basket.length - 1, 1);
                 } else {
                     if (actionAndId[1]) {
-                        this.config = { ...config };
+                        this.config = { ...config[0] };
                     } else {
-                        this.config = { ...config };
+                        this.config = { ...config[0] };
                         this.createStepsObject(index, action);
                     }
                 }
@@ -252,24 +257,31 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
 
         switch (action[0]) {
             case "message":
-                this.config.messages.splice(Number(action[1]), 1);
+                this.config.messages.splice(i, 1);
                 break;
             case "quiz":
-                this.config.quizes.splice(Number(action[1]), 1);
+                this.config.quizes.splice(i, 1);
                 break;
             case "menu":
-                this.config.menus.splice(Number(action[1]), 1);
+                this.config.menus.splice(i, 1);
                 break;
             case "redirect":
-                this.config.redirects.splice(Number(action[1]), 1);
+                this.config.redirects.splice(i, 1);
                 break;
 
             default:
                 break;
         }
 
+        console.log(this.config.messages)
+
         this.basket.splice(i, 1);
+
+        console.log(this.basket)
+
         this.steps.splice(i, 1);
+
+        console.log(this.steps)
         this.steps.forEach((e, i) => {
             e.step = i + 1;
         });

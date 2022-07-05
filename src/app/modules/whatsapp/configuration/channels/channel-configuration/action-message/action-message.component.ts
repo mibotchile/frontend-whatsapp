@@ -19,6 +19,7 @@ export class ActionMessageComponent implements OnInit, OnDestroy {
     mode: "create" | "update" = "create";
 
     message : Message;
+    action: string;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public defaults: any,
@@ -29,8 +30,11 @@ export class ActionMessageComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
+        this.action = 'noaction';
+
         if (this.defaults.id) {
             this.mode = 'update';
+            this.action = 'update';
             this.message = {
                 id: this.defaults.id,
                 title: this.defaults.configuration.messages.filter(n=>n.id == this.defaults.id)[0].title,
@@ -61,16 +65,17 @@ export class ActionMessageComponent implements OnInit, OnDestroy {
 
     createMessage() {
         const message = this.form.value;
-
+        this.action = 'create';
         this.defaults.configuration.messages.push(message);
-        this.dialogRef.close(this.defaults.configuration);
+        this.dialogRef.close([this.defaults.configuration,this.action]);
     }
 
     updateMessage() {
         const message = this.form.value;
         //message.id = this.defaults.id;
+        this.action = 'update'
         this.defaults.configuration.messages.splice(this.defaults.id,0,message);
-        this.dialogRef.close(this.defaults.configuration);
+        this.dialogRef.close([this.defaults.configuration,this.action]);
     }
 
     isCreateMode() {
@@ -82,6 +87,6 @@ export class ActionMessageComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.dialogRef.close(this.defaults.configuration);
+        this.dialogRef.close([this.defaults.configuration,this.action]);
     }
 }

@@ -6,6 +6,7 @@ import icPeople from "@iconify/icons-ic/people";
 import { GroupService } from "src/app/modules/whatsapp/services/group.service";
 import { UserService } from "src/app/modules/whatsapp/services/user.service";
 import { Subscription } from "rxjs";
+import { Redirect } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
 
 interface Item {
     value: string;
@@ -28,7 +29,11 @@ export class ActionRedirectionComponent implements OnInit, OnDestroy {
     mode: "create" | "update" = "create";
 
     selected: number;
-    selectedOption: number;
+    target: string;
+    action: string;
+    selectedOption: string;
+
+    redirect: Redirect;
 
     subscription: Subscription;
 
@@ -43,6 +48,22 @@ export class ActionRedirectionComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.action = "noaction";
+
+        if (this.defaults.id) {
+            this.mode = "update";
+            this.action = "update";
+            this.redirect = this.defaults.configuration.redirects[this.defaults.id];
+            this.selectedOption = this.redirect.to.split(".")[0];
+            this.fillList(this.redirect.to.split(".")[0]);
+            this.selected = Number(this.redirect.to.split(".")[1]);
+        } else {
+            this.redirect = {
+                id: this.defaults.redirectId,
+                to: "",
+            };
+        }
+
         this.subscription = new Subscription();
         this.items = [];
         this.options = [
@@ -54,6 +75,7 @@ export class ActionRedirectionComponent implements OnInit, OnDestroy {
 
     fillList(target: string) {
         this.subscription = new Subscription();
+        this.target = target;
 
         if (target === "user") {
             this.subscription = this.userService.getActiveUsers().subscribe((response: any) => {
@@ -76,23 +98,45 @@ export class ActionRedirectionComponent implements OnInit, OnDestroy {
                 });
             });
         }
-
-        this.defaults.configuration.redirections = this.createObject(this.selected, target);
-        console.log(this.createObject(this.selected, target));
     }
 
     createObject(selected: number, action: string) {
-        console.log(selected,action)
         let redirect = {
-            id: 0,
-            to: `${{ action }}.${{ selected }}`,
+            id: this.defaults.redirectId,
+            to: `${action}.${selected}`,
         };
 
         return redirect;
     }
 
+    createRedirection() {
+        this.action = "create";
+        console.log(this.selected);
+        console.log(this.target);
+        this.defaults.configuration.redirects.push(this.createObject(this.selected, this.target));
+        this.dialogRef.close([this.defaults.configuration, this.action]);
+    }
+
+    updateRedirection() {}
+
+    save() {
+        if (this.mode === "create") {
+            this.createRedirection();
+        } else if (this.mode === "update") {
+            this.updateRedirection();
+        }
+    }
+
+    isCreateMode() {
+        return this.mode === "create";
+    }
+
+    isUpdateMode() {
+        return this.mode === "update";
+    }
+
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
+        this.dialogRef.close([this.defaults.configuration, this.action]);
     }
 }
-

@@ -1,17 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
 import icClose from "@iconify/icons-ic/twotone-close";
 import icPeople from "@iconify/icons-ic/people";
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Question, Quize } from 'src/app/modules/whatsapp/interfaces/channel-configuration.interface';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { Question, Quize } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 @Component({
-  selector: 'frontend-whatsapp-action-data-request',
-  templateUrl: './action-data-request.component.html',
-  styleUrls: ['./action-data-request.component.scss']
+    selector: "frontend-whatsapp-action-data-request",
+    templateUrl: "./action-data-request.component.html",
+    styleUrls: ["./action-data-request.component.scss"],
 })
-export class ActionDataRequestComponent implements OnInit {
-
+export class ActionDataRequestComponent implements OnInit, OnDestroy {
     panelOpenState = false;
 
     questions: Question[];
@@ -22,7 +21,8 @@ export class ActionDataRequestComponent implements OnInit {
     form: FormGroup;
     mode: "create" | "update" = "create";
 
-    question : Question;
+    question: Question;
+    action: string;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public defaults: any,
@@ -31,37 +31,35 @@ export class ActionDataRequestComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        this.action = "noaction";
 
-        this.questions = [];
-
-         this.question = {
+        this.question = {
             id: 0,
             question: "",
             error_message: "",
-            response_type: ""
-         };
+            response_type: "",
+        };
 
-        // if (messages.length >= 1) {
-        //     this.mode = "update";
-        // }
-        // else {
-        //     messages = {} as Message;
-        // }
+        if (this.defaults.id) {
+            this.mode = "update";
+            this.action = "update";
+            this.questions = this.defaults.configuration.quizes[this.defaults.id].questions;
+        } else {
+            this.questions = [];
+        }
 
-        this.mode = "create";
-
-        this.form = this.fb.group({
-            id: this.question.id,
-            message: this.question.question,
-        });
+        // this.form = this.fb.group({
+        //     id: this.question.id,
+        //     message: this.question.question,
+        // });
     }
 
-    addQuestion(){
+    addQuestion() {
         this.questions.push({
             id: this.question.id++,
-            question: '',
-            response_type: '',
-            error_message: ''
+            question: "",
+            response_type: "",
+            error_message: "",
         });
     }
 
@@ -79,17 +77,21 @@ export class ActionDataRequestComponent implements OnInit {
         // this.defaults.messages.push(message);
         this.defaults.configuration.quizes.push({
             id: this.defaults.configuration.quizes.length,
-            questions: this.questions
+            questions: this.questions,
         });
 
-        this.dialogRef.close(this.defaults.configuration);
+        this.action = "create";
+
+        this.dialogRef.close([this.defaults.configuration, this.action]);
     }
 
     updateMessage() {
-        const message = this.form.value;
-        message.id = this.defaults.id;
-
-        this.dialogRef.close(message);
+        // const message = this.form.value;
+        // message.id = this.defaults.id;
+        console.log(this.defaults.id)
+        this.action = "update";
+        this.defaults.configuration.quizes[this.defaults.id].questions = this.questions;
+        this.dialogRef.close([this.defaults.configuration, this.action]);
     }
 
     isCreateMode() {
@@ -100,17 +102,20 @@ export class ActionDataRequestComponent implements OnInit {
         return this.mode === "update";
     }
 
-    fillQuestion(question: Question,id: number){
+    fillQuestion(question: Question, id: number) {
         this.questions[id] = {
             id: this.questions[id].id,
             question: question.question,
             response_type: question.response_type,
-            error_message: question.error_message
-        }
+            error_message: question.error_message,
+        };
     }
 
+    deleteQuestion(i: number) {
+        this.questions.splice(i, 1);
+    }
 
-    deleteQuestion(i: number){
-        this.questions.splice(i,1);
+    ngOnDestroy(): void {
+        this.dialogRef.close([this.defaults.configuration, this.action]);
     }
 }

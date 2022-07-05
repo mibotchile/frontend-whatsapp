@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { Menu } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
+import { Option } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
 import { MenuOption } from "../menu-option.interface";
 
 @Component({
@@ -9,10 +9,10 @@ import { MenuOption } from "../menu-option.interface";
 })
 export class OptionsMenuContainerComponent implements OnInit {
     @Input()
-    data: MenuOption[];
+    data: Option[];
 
     @Output()
-    newDataEventEmitter = new EventEmitter<MenuOption[]>();
+    newDataEventEmitter = new EventEmitter<Option[]>();
 
     toggle = {};
 
@@ -28,8 +28,8 @@ export class OptionsMenuContainerComponent implements OnInit {
         if (element.length>0) {
             this.data.push({
                 id: this.data.length,
-                title: element,
-                options: [],
+                value: element,
+                action: '',
             });
             //this.state = false;
             this.addNewData();
@@ -45,9 +45,9 @@ export class OptionsMenuContainerComponent implements OnInit {
         this.addNewData();
     }
 
-    updateItem(item: MenuOption, newTitle: string) {
+    updateItem(item: Option, newTitle: string) {
         let updatedItem = item;
-        updatedItem.title = newTitle;
+        updatedItem.value = newTitle;
         this.data.splice(this.data.indexOf(this.data.filter((n) => n.id === item.id)[0]), 0, updatedItem);
         this.addNewData();
     }
@@ -56,7 +56,8 @@ export class OptionsMenuContainerComponent implements OnInit {
         this.newDataEventEmitter.emit(this.data);
     }
 
-    addNewDataInner(innerItem: MenuOption, item: MenuOption){
-
+    addNewDataInner(innerItem: Option, item: Option){
+        console.log(innerItem);
+        console.log(item);
     }
 }

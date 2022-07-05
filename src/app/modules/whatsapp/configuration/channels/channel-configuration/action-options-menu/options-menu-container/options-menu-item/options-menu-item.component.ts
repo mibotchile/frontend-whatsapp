@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { Menu } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
+import { MatDialog } from "@angular/material/dialog";
+import { Option } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
+import { ActionRedirectionComponent } from "../../../action-redirection/action-redirection.component";
 import { MenuOption } from "../../menu-option.interface";
 
 @Component({
@@ -10,7 +12,7 @@ import { MenuOption } from "../../menu-option.interface";
 export class OptionsMenuItemComponent implements OnInit {
 
     @Input()
-    element: MenuOption;
+    element: Option;
 
     @Output()
     addItemEventEmitter = new EventEmitter<void>();
@@ -26,7 +28,7 @@ export class OptionsMenuItemComponent implements OnInit {
 
     status: boolean;
 
-    constructor() {
+    constructor(private dialog: MatDialog) {
         this.status = false;
     }
 
@@ -41,7 +43,7 @@ export class OptionsMenuItemComponent implements OnInit {
     }
 
     sendEditItem(){
-        this.editItemEventEmitter.emit(this.element.title);
+        this.editItemEventEmitter.emit(this.element.value);
     }
 
     editItem(){
@@ -50,6 +52,10 @@ export class OptionsMenuItemComponent implements OnInit {
 
     deleteItem(){
         this.deleteItemEventEmitter.emit();
+    }
+
+    openRedirectionDialog(){
+        this.dialog.open(ActionRedirectionComponent);
     }
 
 }
