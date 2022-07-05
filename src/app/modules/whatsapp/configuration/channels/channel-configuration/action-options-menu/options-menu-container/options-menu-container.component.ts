@@ -25,13 +25,15 @@ export class OptionsMenuContainerComponent implements OnInit {
     ngOnInit(): void {}
 
     addNewElement(element: string) {
-        this.data.push({
-            id: this.data.length,
-            title: element,
-            options: [],
-        });
-        //this.state = false;
-        this.addNewData();
+        if (element.length>0) {
+            this.data.push({
+                id: this.data.length,
+                title: element,
+                options: [],
+            });
+            //this.state = false;
+            this.addNewData();
+        }
     }
 
     changeState() {

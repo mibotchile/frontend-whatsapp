@@ -23,6 +23,10 @@
         <mat-icon>subdirectory_arrow_right</mat-icon>
         <span>Nuevo nivel</span>
     </button> -->
+    <button mat-menu-item [matMenuTriggerFor]="submenu">
+        <mat-icon>fork_right</mat-icon>
+        <span>Transferir</span>
+    </button>
     <button mat-menu-item (click)="editItem()">
         <mat-icon>edit</mat-icon>
         <span>Editar</span>
@@ -30,5 +34,16 @@
     <button mat-menu-item (click)="deleteItem()">
         <mat-icon>delete</mat-icon>
         <span>Eliminar</span>
+    </button>
+</mat-menu>
+
+<mat-menu #submenu="matMenu">
+    <button mat-menu-item>
+        <mat-icon>person</mat-icon>
+        <span>Usuario</span>
+    </button>
+    <button mat-menu-item>
+        <mat-icon>group</mat-icon>
+        <span>Grupo</span>
     </button>
 </mat-menu>

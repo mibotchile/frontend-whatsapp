@@ -69,7 +69,7 @@ export class ActionMessageComponent implements OnInit, OnDestroy {
     updateMessage() {
         const message = this.form.value;
         //message.id = this.defaults.id;
-
+        this.defaults.configuration.messages.splice(this.defaults.id,0,message);
         this.dialogRef.close(this.defaults.configuration);
     }
 

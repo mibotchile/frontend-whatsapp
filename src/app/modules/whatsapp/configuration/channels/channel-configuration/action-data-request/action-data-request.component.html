@@ -3,7 +3,7 @@
         <h2 *ngIf="form.get('id').value" class="headline m-0" fxFlex="auto">
             {{ form.get("id").value }}
         </h2>
-        <h2 *ngIf="!form.get('id').value" class="headline m-0" fxFlex="auto">Nueva Petición de Datos</h2>
+        <h2 *ngIf="!form.get('id').value" class="headline m-0" fxFlex="auto">Petición de Datos</h2>
 
         <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
             <mat-icon [icIcon]="icClose"></mat-icon>
@@ -23,7 +23,7 @@
 
         <mat-accordion class="mb-5">
 
-            <frontend-whatsapp-data-request-panel *ngFor="let question of questions,index as i" [questionNumber]="i + 1" (deleteQuestionEvent)="deleteQuestion(i)" (createQuestionEvent)="fillQuestion($event,i)"></frontend-whatsapp-data-request-panel>
+            <frontend-whatsapp-data-request-panel *ngFor="let question of questions,index as i" [questionNumber]="i + 1" [data]="question" (deleteQuestionEvent)="deleteQuestion(i)" (createQuestionEvent)="fillQuestion($event,i)"></frontend-whatsapp-data-request-panel>
 
         </mat-accordion>
     </mat-dialog-content>
