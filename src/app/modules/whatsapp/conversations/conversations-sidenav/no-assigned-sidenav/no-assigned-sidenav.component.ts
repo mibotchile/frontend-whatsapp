@@ -1,166 +1,224 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
 
 import arrowLeft from "@iconify/icons-ic/baseline-arrow-back-ios";
-import { conversation } from "../../../interfaces/conversations.interface";
+import { Observable, Subscription } from "rxjs";
+import { ConversationsService } from "src/app/services/conversations.service";
+import { conversation } from "../../../Models/conversation.model";
+import { Group } from "../../../models/group.model";
 
 @Component({
     selector: "frontend-whatsapp-no-assigned-sidenav",
     templateUrl: "./no-assigned-sidenav.component.html",
     styleUrls: ["./no-assigned-sidenav.component.scss"],
 })
-export class NoAssignedSidenavComponent implements OnInit {
+export class NoAssignedSidenavComponent implements OnInit, OnDestroy {
     arrowLeft = arrowLeft;
 
     @Input()
     isConversationsPanelShowing: boolean = false;
     @Input()
-    selectedGroup: string = "";
+    selectedGroupChanges: Observable<Group>;
+    selectedGroupChangesSubscription: Subscription;
     @Output()
     closeConversationPanelEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-    conversations: conversation[] = [
-        {
-            user: {
-                status: 2,
-                id: 5,
-                uid: "123",
-                name: "Lucía margarita de la plata",
-                groups_id: [123, 345],
-                email: "max.fsmy@gmail.com",
-                role_id: 2,
-            },
-            lastMessageData: {
-                id: 1,
-                message: "Llámame llegando por favor!!",
-                date: new Date(2020, 11, 17, 17, 23, 12).toISOString(),
-            },
-            newMessagesCount: 5,
-        },
-        {
-            user: {
-                status: 2,
-                id: 5,
-                uid: "123",
-                name: "Jose Luis Perez De los Angeles",
-                groups_id: [123, 345],
-                email: "max.fsmy@gmail.com",
-                role_id: 2,
-            },
-            lastMessageData: {
-                id: 1,
-                message: "www.youtube.com/videos?id=1239584",
-                date: new Date(2020, 11, 17).toISOString(),
-            },
-            newMessagesCount: 5,
-        },
-        {
-            user: {
-                status: 2,
-                id: 5,
-                uid: "123",
-                name: "Joaquin",
-                groups_id: [123, 345],
-                email: "max.fsmy@gmail.com",
-                role_id: 2,
-            },
-            lastMessageData: {
-                id: 1,
-                message: "vamos a la playa?",
-                date: new Date(2020, 11, 17, 12, 23, 12).toISOString(),
-            },
-            newMessagesCount: 5,
-        },
-        {
-            user: {
-                status: 2,
-                id: 5,
-                uid: "123",
-                name: "max",
-                groups_id: [123, 345],
-                email: "max.fsmy@gmail.com",
-                role_id: 2,
-            },
-            lastMessageData: {
-                id: 1,
-                message: "Hasta mañana.",
-                date: new Date(2020, 11, 17, 19, 43, 12).toISOString(),
-            },
-            newMessagesCount: 5,
-        },
-        {
-            user: {
-                status: 2,
-                id: 5,
-                uid: "123",
-                name: "Roberto nuñez anderson",
-                groups_id: [123, 345],
-                email: "max.fsmy@gmail.com",
-                role_id: 2,
-            },
-            lastMessageData: {
-                id: 1,
-                message: "Hola Carlos, recibi tu solicitud ",
-                date: new Date(2020, 11, 17, 9, 12, 12).toISOString(),
-            },
-            newMessagesCount: 5,
-        },
-        {
-            user: {
-                status: 2,
-                id: 5,
-                uid: "123",
-                name: "Karma",
-                groups_id: [123, 345],
-                email: "max.fsmy@gmail.com",
-                role_id: 2,
-            },
-            lastMessageData: {
-                id: 1,
-                message: "lorem ipsum dolor sit amet",
-                date: new Date(2020, 11, 17, 1, 2, 12).toISOString(),
-            },
-            newMessagesCount: 5,
-        },
-        {
-            user: {
-                status: 2,
-                id: 5,
-                uid: "123",
-                name: "Alejandro De la ruiz",
-                groups_id: [123, 345],
-                email: "max.fsmy@gmail.com",
-                role_id: 2,
-            },
-            lastMessageData: {
-                id: 1,
-                message: "La base de datos ha sido actualizada",
-                date: new Date(2020, 11, 17).toISOString(),
-            },
-            newMessagesCount: 5,
-        },
-    ];
+    selectedConversationId: number | string;
+    selectedGroup: Group;
 
-    constructor() {}
+    conversations: conversation[] = [];
 
-    ngOnInit(): void {}
+    constructor(private conversationService: ConversationsService) {}
+
+    ngOnInit(): void {
+        this.selectedGroupChangesSubscription = this.selectedGroupChanges.subscribe((group) => {
+            this.selectedGroup = group;
+            if (this.selectedGroup?.name.toLocaleLowerCase().trim() === "mis conversaciones" || !group) {
+                this.conversationService
+                    .getUserConversations(this.selectedGroup.id)
+                    .subscribe((res: conversation[]) => {
+                        this.conversations = res;
+                        console.log(res);
+                    });
+            } else {
+                this.conversationService.getConversationsByGroupId(this.selectedGroup?.id).subscribe((res: any) => {
+                    this.conversations = res;
+                    console.log(this.selectedGroup.id);
+                    console.log(res, "----");
+                });
+            }
+        });
+    }
 
     closeConversationsPanel() {
         this.isConversationsPanelShowing = false;
         this.closeConversationPanelEmitter.emit(false);
     }
+    openConversation(conversation) {
+        this.conversationService.changeConversation(conversation);
+        this.selectedConversationId = conversation.id;
+    }
     sortByDate(criteria: string) {
         if (criteria.toLocaleLowerCase() === "desc") {
-            console.log(this.conversations);
             return console.log(
                 this.conversations.sort((conversation1: conversation, conversation2: conversation) =>
-                    conversation1.lastMessageData.date.localeCompare(conversation2.lastMessageData.date)
+                    conversation1.lastMessage.created_at.localeCompare(conversation2.lastMessage.created_at)
                 )
             );
         }
         if (criteria.toLocaleLowerCase() === "asc") {
             return this.conversations.sort((conversation1: conversation, conversation2: conversation) =>
-                conversation2.lastMessageData.date.localeCompare(conversation1.lastMessageData.date)
+                conversation2.lastMessage.created_at.localeCompare(conversation1.lastMessage.created_at)
             );
         }
     }
+    ngOnDestroy() {
+        this.selectedGroupChangesSubscription.unsubscribe();
+    }
 }
+
+const CONVERSATIONS_PLACEHOLDER = [
+    {
+        manager: "2",
+        id: 1,
+        client_number: "943554023",
+        name_client: "Lucía margarita de la plata",
+        lastMessage: {
+            id: 1,
+            message: "Llámame llegando por favor!!",
+            created_at: new Date(2020, 11, 17, 17, 23, 12).toISOString(),
+            conversation_id: 5,
+            content_type: "image",
+            media_url: "www.youtbe.com/'asda",
+            from_client: "PROVIDA",
+            created_by: "Juan Carlos",
+            status: 1,
+        },
+        newMessagesCount: 5,
+    },
+    {
+        manager: "3",
+        id: 2,
+        client_number: "943554023",
+        name_client: "Pepe le fontiu di la amor",
+        lastMessage: {
+            id: 1,
+            message: "vamos a salir al parque",
+            created_at: new Date(2020, 11, 17, 17, 23, 12).toISOString(),
+            conversation_id: 5,
+            content_type: "image",
+            media_url: "www.youtbe.com/'asda",
+            from_client: "PROVIDA",
+            created_by: "Juan Carlos",
+            status: 1,
+        },
+        newMessagesCount: 5,
+    },
+    {
+        manager: "4",
+        id: 3,
+        client_number: "943554023",
+        name_client: "Joaquin villalobos del salvador",
+        lastMessage: {
+            id: 1,
+            message: "por favor pido ayuda con mi negocio",
+            created_at: new Date(2020, 11, 17, 17, 23, 12).toISOString(),
+            conversation_id: 5,
+            content_type: "image",
+            media_url: "www.youtbe.com/'asda",
+            from_client: "PROVIDA",
+            created_by: "Juan Carlos",
+            status: 1,
+        },
+        newMessagesCount: 5,
+    },
+    {
+        manager: "123",
+        id: 4,
+        client_number: "943554023",
+        name_client: "carlos capo ernesto",
+        lastMessage: {
+            id: 1,
+            message: "Muchas gracias por elegirnos",
+            created_at: new Date(2020, 11, 17, 17, 23, 12).toISOString(),
+            conversation_id: 5,
+            content_type: "image",
+            media_url: "www.youtbe.com/'asda",
+            from_client: "PROVIDA",
+            created_by: "Juan Carlos",
+            status: 1,
+        },
+        newMessagesCount: 5,
+    },
+    {
+        manager: "765",
+        id: 6,
+        client_number: "943554023",
+        name_client: "Lorena villanueva ramirez",
+        lastMessage: {
+            id: 1,
+            message: "La unión hace la fuerza !",
+            created_at: new Date(2020, 11, 17, 17, 23, 12).toISOString(),
+            conversation_id: 5,
+            content_type: "image",
+            media_url: "www.youtbe.com/'asda",
+            from_client: "PROVIDA",
+            created_by: "Juan Carlos",
+            status: 1,
+        },
+        newMessagesCount: 5,
+    },
+    {
+        manager: "4567",
+        id: 7,
+        client_number: "943554023",
+        name_client: "Jose Luis Perez De los Angeles",
+        lastMessage: {
+            id: 1,
+            message: "esperamos tu solicitud ánimo!",
+            created_at: new Date(2020, 11, 17, 17, 23, 12).toISOString(),
+            conversation_id: 5,
+            content_type: "image",
+            media_url: "www.youtbe.com/'asda",
+            from_client: "PROVIDA",
+            created_by: "Juan Carlos",
+            status: 1,
+        },
+        newMessagesCount: 5,
+    },
+    {
+        manager: "1231",
+        id: 5,
+        client_number: "943554023",
+        name_client: "Pipo jeréz",
+        lastMessage: {
+            id: 1,
+            message: "tuturuturuturu",
+            created_at: new Date(2020, 11, 17, 17, 23, 12).toISOString(),
+            conversation_id: 5,
+            content_type: "image",
+            media_url: "www.youtbe.com/'asda",
+            from_client: "PROVIDA",
+            created_by: "Juan Carlos",
+            status: 1,
+        },
+        newMessagesCount: 5,
+    },
+    {
+        manager: "0987",
+        id: 8,
+        client_number: "943554023",
+        name_client: "Juan carlos rodriguez",
+        lastMessage: {
+            id: 1,
+            message: "Lorem ipsum dolor sit amet!!",
+            created_at: new Date(2020, 11, 17, 17, 23, 12).toISOString(),
+            conversation_id: 5,
+            content_type: "image",
+            media_url: "www.youtbe.com/'asda",
+            from_client: "PROVIDA",
+            created_by: "Juan Carlos",
+            status: 1,
+        },
+        newMessagesCount: 5,
+    },
+];

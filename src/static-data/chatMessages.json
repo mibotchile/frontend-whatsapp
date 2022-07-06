@@ -2,37 +2,43 @@
     {
         "id": 1,
         "message": "asi nisi sapiente iste! Aperiam, ipsa a quae sint eveniet vero ut?",
-        "date": "",
-        "ownerId": 3
+        "created_at": "01/02/03 17:50:13",
+        "from_client": true,
+        "created_by": ""
     },
     {
         "id": 1,
         "message": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum pariatur fuga assumenda nihil odit, esse dolor at quisquam, quasi nisi sapiente iste! Aperiam, ipsa a quae sint eveniet vero ut?",
-        "date": "",
-        "ownerId": 1
+        "created_at": "01/02/21 17:50:13",
+        "from_client": true,
+        "created_by": ""
     },
     {
         "id": 1,
         "message": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum pariatur fuga assumenda nihil odit, esse dolor at quisquam, quasi nisi sapiente iste! Aperiam, ipsa a quae sint eveniet vero ut?",
-        "date": "",
-        "ownerId": 3
+        "created_at": "06/07/22 14:50:13",
+        "from_client": 3,
+        "created_by": ""
     },
     {
         "id": 1,
         "message": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum pariatur fuga assumenda nihil odit, esse dolor at quisquam, quasi nisi sapiente iste! Aperiam, ipsa a quae sint eveniet vero ut?",
-        "date": "",
-        "ownerId": 3
+        "created_at": "06/07/22 14:50:13",
+        "from_client": true,
+        "created_by": ""
     },
     {
         "id": 1,
         "message": "atur fuga assumenda nihil odit",
-        "date": "",
-        "ownerId": 1
+        "created_at": "05/07/22 12:50:13",
+        "from_client": 1,
+        "created_by": ""
     },
     {
         "id": 1,
         "message": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum pariatur fuga assumenda nihil odit, esse dolor at quisquam, quasi nisi sapiente iste! Aperiam, ipsa a quae sint eveniet vero ut?",
-        "date": "",
-        "ownerId": 1
+        "created_at": "05/07/22 12:50:13",
+        "from_client": true,
+        "created_by": ""
     }
 ]

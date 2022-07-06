@@ -1,6 +1,20 @@
 <div fxLayout="column" fxLayoutAlign="space-between start" class="w-full chat relative h-full">
-    <div class="chatWallpaper absolute left-0 right-0"></div>
-    <header fxLayoutAlign="space-between center" fxFlex="60px" class="w-full bg-gray-light border border-amber-light">
+    <div *ngIf="!selectedConversation" class="w-full h-full p-5">
+        <img src="./../../../../../assets//img//illustrations/chatPlaceholder.svg" alt="" />
+    </div>
+    <div *ngIf="selectedConversation" class="chatWallpaper absolute left-0 right-0"></div>
+    <!-- <div
+        *ngIf="!isScrollPosAtTheEnd"
+        class="absolute left-0 right-0 z-20 bg-white mt-16 w-fit text-black py-1 px-3 mx-auto rounded-lg shadow-1"
+    >
+        sábado
+    </div> -->
+    <header
+        *ngIf="selectedConversation"
+        fxLayoutAlign="space-between center"
+        fxFlex="60px"
+        class="w-full bg-gray-light border border-amber-light"
+    >
         <section fxLayout="row" class="h-full">
             <div fxLayoutAlign="center center" class="h-full p-5">
                 <img
@@ -12,8 +26,10 @@
                 />
             </div>
             <div fxLayoutAlign="center left" fxLayoutGap="4px" fxLayout="column">
-                <h6 class="font-normal text-sm leading-none">Carlos Enrique Cueva</h6>
-                <span class="font-light text-xs leading-none text-gray">Toca aquí para editar o ver más</span>
+                <h6 class="font-normal text-sm leading-none">
+                    {{ selectedConversation?.client_name || "Carlos enrique Cueva" }}
+                </h6>
+                <span class="font-light text-xs leading-none text-gray">{{ selectedConversation?.client_number }}</span>
             </div>
         </section>
         <div fxLayout="row nowrap" fxLayoutAlign="end center" class="px-4">
@@ -22,7 +38,9 @@
                 asignar a
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item *ngFor="let user of usersToAssign">{{ user.name }}</button>
+                <button mat-menu-item (click)="redirectConversation()" *ngFor="let user of usersToAssign">
+                    {{ user.name }}
+                </button>
             </mat-menu>
             <a
                 (click)="toggleFullscreenChat($event)"
@@ -30,79 +48,75 @@
                 [queryParams]="{ fullscreenChat: 'enabled' }"
                 fxLayoutAlign="center center"
                 class="hover:bg-gray-light w-8 h-8"
+                matTooltipPosition="above"
+                matTooltip="pantalla completa"
             >
                 <mat-icon color="primary" [icIcon]="fullscreen"></mat-icon>
             </a>
         </div>
     </header>
     <div
+        *ngIf="selectedConversation"
         fxFlex="calc(100%- 120px)"
-        class="overflow-y-scroll overflow-x-hidden w-full messages border-l z-10 border-gray-light"
+        class="overflow-y-scroll relative overflow-x-hidden w-full messages border-l z-10 border-gray-light"
         #messagesContainer
     >
-        <div fxLayoutAlign="center center" class="my-6" *ngIf="isLoadingMessages">
+        <div fxLayoutAlign="center center" class="relative left-0 right-0 my-6 mx-auto" *ngIf="isLoadingMessages">
             <mat-spinner diameter="30"></mat-spinner>
         </div>
-        <div fxLayout="row" fxLayoutAlign="end center" class="px-4 mt-3">
-            <p
-                fxLayout="row"
-                style="max-width: 80%"
-                class="py-2 text-left bg-primary text-white rounded-lg px-4 shadow-1"
-            >
-                asi nisi sapiente iste! Aperiam, ipsa a quae sint eveniet vero ut?
-            </p>
+        <div
+            fxLayoutAlign="center center"
+            class="w-full min-h-full absolute top-0 left-0 right-0 bottom-0"
+            *ngIf="isConversationLoading"
+        >
+            <mat-spinner diameter="30"></mat-spinner>
         </div>
-        <div fxLayout="row" fxLayoutAlign="end center" class="px-4 mt-3">
-            <p
-                fxLayout="row"
-                style="max-width: 80%"
-                class="py-2 text-left bg-primary text-white rounded-lg px-4 shadow-1"
+        <div
+            *ngFor="let messageData of chatMessages; let i = index"
+            fxLayout="column"
+            [fxLayoutAlign]="!messageData.from_client ? 'center end' : 'center start'"
+            class="px-4 mt-3"
+        >
+            <div
+                *ngIf="
+                    (chatMessages[i + 1] &&
+                        (chatMessages[i + 1].created_at | date: 'shortDate') !=
+                            (chatMessages[i].created_at | date: 'shortDate')) ||
+                    i === 0
+                "
+                class="relative left-0 right-0 z-20 bg-white mt-0 mb-4 w-fit text-black py-1 px-3 mx-auto rounded-lg shadow-1"
             >
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum pariatur fuga assumenda nihil odit, esse
-                dolor at quisquam, quasi nisi sapiente iste! Aperiam, ipsa a quae sint eveniet vero ut?
-            </p>
-        </div>
-        <div fxLayout="row" fxLayoutAlign="start center" class="px-4 mt-6">
-            <p
-                fxLayout="row"
-                style="max-width: 80%"
-                class="py-2 text-left bg-white text-black rounded-lg px-4 shadow-1"
+                {{ chatMessages[i + 1].created_at | date: "dd/MM/yyyy" }}
+            </div>
+            <div
+                fxLayout="column"
+                fxLayoutAlign="center start"
+                style="max-width: 80%; margin-bottom: 0px"
+                [ngClass]="{
+                    'bg-white text-left rounded-lg shadow-1': true,
+                    'bg-primary text-white': !messageData.from_client
+                }"
             >
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum pariatur fuga assumenda nihil odit, esse
-                dolor at quisquam, quasi nisi sapiente iste! Aperiam, ipsa a quae sint eveniet vero ut?
-            </p>
-        </div>
-        <div fxLayout="row" fxLayoutAlign="end center" class="px-4 mt-6">
-            <p
-                fxLayout="row"
-                style="max-width: 80%"
-                class="py-2 text-left bg-primary text-white rounded-lg px-4 shadow-1"
-            >
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum pariatur fuga assumenda nihil odit, esse
-                dolor at quisquam, quasi nisi sapiente iste! Aperiam, ipsa a quae sint eveniet vero ut?
-            </p>
-        </div>
-        <div fxLayout="row" fxLayoutAlign="start center" class="px-4 mt-6">
-            <p
-                fxLayout="row"
-                style="max-width: 80%"
-                class="py-2 text-left bg-white text-black rounded-lg px-4 shadow-1"
-            >
-                atur fuga assumenda nihil odit,
-            </p>
-        </div>
+                <p class="pt-2 px-4">{{ messageData.message }}</p>
 
-        <div *ngFor="let messageData of chatMessages" fxLayout="row" fxLayoutAlign="end center" class="px-4 mt-3">
-            <p
-                fxLayout="row"
-                style="max-width: 80%"
-                class="py-2 text-left bg-primary text-white rounded-lg px-4 shadow-1"
-            >
-                {{ messageData.message }}
-            </p>
+                <span
+                    fxLayoutAlign="end center"
+                    [ngClass]="{
+                        'text-xs ml-4 mr-6 mt-0 mb-1 w-full': true,
+                        'text-white': !messageData.from_client,
+                        'text-gray': messageData.from_client
+                    }"
+                >
+                    {{ messageData.created_at | date: "h:mm a" }}
+                    <span fxLayoutAlign="center center" class="h-full ml-1 mr-4">
+                        <mat-icon width="16" [icIcon]="doubleCheck"></mat-icon
+                    ></span>
+                </span>
+            </div>
         </div>
     </div>
     <form
+        *ngIf="selectedConversation"
         fxFlex="60px"
         (ngSubmit)="sendMessage()"
         fxLayoutAlign="justify-between center"
