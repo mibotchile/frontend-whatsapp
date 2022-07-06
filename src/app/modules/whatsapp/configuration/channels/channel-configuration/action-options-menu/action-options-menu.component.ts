@@ -21,6 +21,7 @@ export class ActionOptionsMenuComponent implements OnInit, OnDestroy {
     menus: Menu[];
     menu: Menu;
     action: string;
+    menusToSend: Menu[];
 
     form: FormGroup;
     mode: "create" | "update" = "create";
@@ -33,6 +34,7 @@ export class ActionOptionsMenuComponent implements OnInit, OnDestroy {
         private fb: FormBuilder
     ) {
         this.elements = [];
+        this.menusToSend = [];
     }
 
     ngOnInit(): void {
@@ -56,7 +58,7 @@ export class ActionOptionsMenuComponent implements OnInit, OnDestroy {
     }
 
     addNewData(event: Event){
-        console.log(event)
+        console.log(event);
     }
 
     save() {
