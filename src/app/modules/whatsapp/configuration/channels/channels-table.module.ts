@@ -29,6 +29,9 @@ import { ActionOptionsMenuComponent } from './channel-configuration/action-optio
 import { ActionAttentionComponent } from './channel-configuration/action-attention/action-attention.component';
 import { OptionsMenuItemComponent } from './channel-configuration/action-options-menu/options-menu-container/options-menu-item/options-menu-item.component';
 import { OptionsMenuContainerComponent } from './channel-configuration/action-options-menu/options-menu-container/options-menu-container.component';
+import { ActionRedirectionComponent } from './channel-configuration/action-redirection/action-redirection.component';
+import {MatRadioModule} from '@angular/material/radio';
+
 
 @NgModule({
   declarations: [
@@ -43,6 +46,7 @@ import { OptionsMenuContainerComponent } from './channel-configuration/action-op
     ActionAttentionComponent,
     OptionsMenuItemComponent,
     OptionsMenuContainerComponent,
+    ActionRedirectionComponent,
   ],
   imports: [
     CommonModule,
@@ -63,7 +67,8 @@ import { OptionsMenuContainerComponent } from './channel-configuration/action-op
     MatInputModule,
     MatExpansionModule,
     MatSelectModule,
-    FormsModule
+    FormsModule,
+    MatRadioModule
   ]
 })
 export class ChannelsTableModule { }

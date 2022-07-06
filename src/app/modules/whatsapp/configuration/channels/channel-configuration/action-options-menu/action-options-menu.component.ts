@@ -1,9 +1,10 @@
-import { Component, Inject, OnInit } from "@angular/core";
+import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import icClose from "@iconify/icons-ic/twotone-close";
 import icPeople from "@iconify/icons-ic/people";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Menu } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
+import { Option } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
 import { MenuOption } from "./menu-option.interface";
 
 @Component({
@@ -11,14 +12,15 @@ import { MenuOption } from "./menu-option.interface";
     templateUrl: "./action-options-menu.component.html",
     styleUrls: ["./action-options-menu.component.scss"],
 })
-export class ActionOptionsMenuComponent implements OnInit {
+export class ActionOptionsMenuComponent implements OnInit, OnDestroy {
     icClose = icClose;
     icPeople = icPeople;
 
     status: boolean;
 
-    menus: MenuOption[];
-    menu: MenuOption;
+    menus: Menu[];
+    menu: Menu;
+    action: string;
 
     form: FormGroup;
     mode: "create" | "update" = "create";
@@ -34,6 +36,9 @@ export class ActionOptionsMenuComponent implements OnInit {
     }
 
     ngOnInit(): void {
+
+        this.action = 'noaction';
+
         this.menus = [];
 
         this.menu = {
@@ -51,7 +56,7 @@ export class ActionOptionsMenuComponent implements OnInit {
     }
 
     addNewData(event: Event){
-        //console.log(event);
+        console.log(event)
     }
 
     save() {
@@ -82,5 +87,9 @@ export class ActionOptionsMenuComponent implements OnInit {
 
     isUpdateMode() {
         return this.mode === "update";
+    }
+
+    ngOnDestroy(): void {
+        this.dialogRef.close([this.defaults.configuration,this.action]);
     }
 }

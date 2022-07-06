@@ -1,0 +1,40 @@
+<form (ngSubmit)="save()">
+    <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+        <h2 class="headline m-0" fxFlex="auto">Redirección</h2>
+
+        <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+            <mat-icon [icIcon]="icClose"></mat-icon>
+        </button>
+    </div>
+
+    <mat-divider class="-mx-6 text-border"></mat-divider>
+
+    <mat-dialog-content fxLayout="column">
+        <mat-radio-group class="my-5">
+            <mat-radio-button
+                color="primary"
+                *ngFor="let option of options"
+                (change)="fillList(option.value)"
+                [value]="option.value"
+                [checked]="option.value === selectedOption"
+                >{{ option.viewValue }}</mat-radio-button
+            >
+        </mat-radio-group>
+
+        <mat-form-field>
+            <mat-label>Asignar a</mat-label>
+            <mat-select [(value)]="selected">
+                <mat-option *ngFor="let item of items" [value]="item.value">
+                    {{ item.viewValue }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close type="button">CANCELAR</button>
+        <button *ngIf="isCreateMode()" color="primary" mat-button type="submit">CREAR REDIRECCIÓN</button>
+        <button *ngIf="isUpdateMode()" color="primary" mat-button type="submit">ACTUALIZAR REDIRECCIÓN</button>
+    </mat-dialog-actions>
+</form>
+

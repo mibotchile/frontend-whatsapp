@@ -19,6 +19,9 @@ export class DataRequestPanelComponent implements OnInit, OnDestroy {
     @Input()
     questionNumber: number;
 
+    @Input()
+    data: Question;
+
     @Output()
     deleteQuestionEvent = new EventEmitter<void>();
 
@@ -44,6 +47,13 @@ export class DataRequestPanelComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+
+        console.log(this.data);
+
+        this.question = this.data.question;
+        this.error = this.data.error_message;
+        this.selected = Number(this.data.response_type);
+
         this.subscription = new Subscription();
         this.subscription = this.channelService.getResponseValidator().subscribe((response: any) => {
             this.types = [];
@@ -67,6 +77,7 @@ export class DataRequestPanelComponent implements OnInit, OnDestroy {
             response_type: this.selected.toString(),
             error_message: this.error
         }
+
         this.createQuestionEvent.emit(questionObject);
     }
 

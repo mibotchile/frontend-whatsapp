@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { Menu } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
+import { Option } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
 import { MenuOption } from "../menu-option.interface";
 
 @Component({
@@ -25,13 +25,15 @@ export class OptionsMenuContainerComponent implements OnInit {
     ngOnInit(): void {}
 
     addNewElement(element: string) {
-        this.data.push({
-            id: this.data.length,
-            title: element,
-            options: [],
-        });
-        //this.state = false;
-        this.addNewData();
+        if (element.length>0) {
+            this.data.push({
+                id: this.data.length,
+                title: element,
+                options: [],
+            });
+            //this.state = false;
+            this.addNewData();
+        }
     }
 
     changeState() {
@@ -55,6 +57,7 @@ export class OptionsMenuContainerComponent implements OnInit {
     }
 
     addNewDataInner(innerItem: MenuOption, item: MenuOption){
-
+        console.log(innerItem);
+        console.log(item);
     }
 }

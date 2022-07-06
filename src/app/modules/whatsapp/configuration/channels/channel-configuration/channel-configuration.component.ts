@@ -10,6 +10,12 @@ import { Item } from "./item.interface";
 import { ActionDataRequestComponent } from "./action-data-request/action-data-request.component";
 import { ActionOptionsMenuComponent } from "./action-options-menu/action-options-menu.component";
 import { ActionAttentionComponent } from "./action-attention/action-attention.component";
+import { ActionRedirectionComponent } from "./action-redirection/action-redirection.component";
+
+export interface ActionConfig {
+    config: ChannelConfiguration,
+    action: string
+}
 
 @Component({
     selector: "frontend-whatsapp-channel-configuration",
@@ -20,7 +26,8 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
     items: Item[] = [
         { action: "message", value: "Mensaje" },
         { action: "quiz", value: "Petición de Datos" },
-        { action: "menu", value: "Menu de Opciones" },
+        { action: "menu", value: "Guía de Respuestas y Transferencias" },
+        { action: "redirect", value: "Redirección" },
         // { action: "attention", value: "Valoración de la Atención" },
     ];
 
@@ -38,6 +45,7 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
     dataRequestId: number;
     optionsMenuId: number;
     attentionId: number;
+    redirectId: number;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public defaults: any,
@@ -50,6 +58,7 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
         this.dataRequestId = 0;
         this.optionsMenuId = 0;
         this.attentionId = 0;
+        this.redirectId = 0;
     }
 
     ngOnInit(): void {
@@ -72,6 +81,39 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                             value: this.items.filter((n) => n.action === e.action.split(".")[0])[0].value,
                         });
                     });
+                    this.steps = response.data.steps;
+                    if (response.data.messages.length > 0) {
+                        this.messageId =
+                            Math.max(
+                                ...response.data.steps
+                                    .filter((n) => n.action.split(".")[0] === "message")
+                                    .map((x) => x.action.split(".")[1])
+                            ) + 1;
+                    }
+                    if (response.data.quizes.length > 0) {
+                        this.dataRequestId =
+                            Math.max(
+                                ...response.data.steps
+                                    .filter((n) => n.action.split(".")[0] === "quiz")
+                                    .map((x) => x.action.split(".")[1])
+                            ) + 1;
+                    }
+                    if (response.data.menus.length > 0) {
+                        this.optionsMenuId =
+                            Math.max(
+                                ...response.data.steps
+                                    .filter((n) => n.action.split(".")[0] === "menu")
+                                    .map((x) => x.action.split(".")[1])
+                            ) + 1;
+                    }
+                    if (response.data.redirects.length > 0) {
+                        this.optionsMenuId =
+                            Math.max(
+                                ...response.data.steps
+                                    .filter((n) => n.action.split(".")[0] === "redirect")
+                                    .map((x) => x.action.split(".")[1])
+                            ) + 1;
+                    }
                 } else {
                     this.config = {
                         id: null,
@@ -81,6 +123,7 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                         messages: [],
                         quizes: [],
                         steps: [],
+                        redirects: []
                     };
                     this.status = "create";
                 }
@@ -112,6 +155,10 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                 actionStep += `.${this.optionsMenuId}`;
                 this.optionsMenuId++;
                 break;
+            case "redirect":
+                actionStep += `.${this.redirectId}`;
+                this.redirectId++;
+                break;
             case "attention":
                 actionStep += `.${this.attentionId}`;
                 this.attentionId++;
@@ -129,7 +176,7 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
             e.step = i + 1;
         });
 
-        this.basket[this.basket.length - 1] = {
+        this.basket[step] = {
             action: actionStep,
             value: this.items.filter((n) => n.action === actionStep.split(".")[0])[0].value,
         };
@@ -151,6 +198,9 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
             case "menu":
                 value = ActionOptionsMenuComponent;
                 break;
+            case "redirect":
+                value = ActionRedirectionComponent;
+                break;
             case "attention":
                 value = ActionAttentionComponent;
                 break;
@@ -167,17 +217,18 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                     dataRequestId: this.dataRequestId,
                     optionsMenuId: this.optionsMenuId,
                     attentionId: this.attentionId,
+                    redirectId: this.redirectId
                 },
             })
             .afterClosed()
-            .subscribe((config: ChannelConfiguration) => {
-                if (!config || config.messages.length === 0) {
+            .subscribe((config: ActionConfig) => {
+                if (config[1] === 'noaction') {
                     this.basket.splice(this.basket.length - 1, 1);
                 } else {
                     if (actionAndId[1]) {
-                        this.config = { ...config };
+                        this.config = { ...config[0] };
                     } else {
-                        this.config = { ...config };
+                        this.config = { ...config[0] };
                         this.createStepsObject(index, action);
                     }
                 }
@@ -186,7 +237,6 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
 
     onCreate() {
         this.config.steps = this.steps;
-
         this.subscription = new Subscription();
         this.subscription = this.channelService.setChannelConfig(this.config).subscribe(() => {
             this.dialogRef.close();
@@ -203,8 +253,35 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
     }
 
     deleteConfig(i: number) {
+        let action = this.steps[i].action.split(".");
+
+        switch (action[0]) {
+            case "message":
+                this.config.messages.splice(i, 1);
+                break;
+            case "quiz":
+                this.config.quizes.splice(i, 1);
+                break;
+            case "menu":
+                this.config.menus.splice(i, 1);
+                break;
+            case "redirect":
+                this.config.redirects.splice(i, 1);
+                break;
+
+            default:
+                break;
+        }
+
+        console.log(this.config.messages)
+
         this.basket.splice(i, 1);
+
+        console.log(this.basket)
+
         this.steps.splice(i, 1);
+
+        console.log(this.steps)
         this.steps.forEach((e, i) => {
             e.step = i + 1;
         });
