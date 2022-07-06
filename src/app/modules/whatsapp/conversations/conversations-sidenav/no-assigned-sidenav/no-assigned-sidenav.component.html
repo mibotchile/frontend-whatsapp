@@ -14,7 +14,7 @@
             class="cursor-pointer pt-1"
             [icIcon]="arrowLeft"
         ></mat-icon>
-        <h3 class="text-base font-medium mb-2 pt-2">{{ selectedGroup }}</h3>
+        <h3 class="text-base font-medium mb-2 pt-2">{{ selectedGroup?.name }}</h3>
     </header>
     <div class="text-right actions px-3 border-b">
         <button class="text-xs outline-none bg-none text-gray cursor-pointer" [matMenuTriggerFor]="menu">
@@ -30,7 +30,11 @@
             *ngFor="let conversation of conversations"
             fxLayout="row"
             fxLayoutAlign="center center"
-            class="hover:bg-gray-light border-b py-3"
+            [class]="
+                'hover:bg-gray-light border-b py-3 ' +
+                (selectedConversationId === conversation.id ? ' bg-gray-light' : '')
+            "
+            (click)="openConversation(conversation)"
         >
             <div fxFlex="18%" fxLayoutAlign="center center" class="px-3 avatarContainer">
                 <img
@@ -40,20 +44,20 @@
                 />
             </div>
             <div fxFlex="65%">
-                <p class="text-xs">{{ conversation.user.name }} +519433554</p>
+                <p class="text-xs">{{ conversation.client_name }} +{{ conversation.client_number }}</p>
                 <p
-                    [title]="conversation.lastMessageData.message"
+                    [title]="conversation.lastMessage?.message"
                     class="text-ellipsis whitespace-nowrap overflow-hidden text-secondary text-xs font-medium"
                 >
-                    {{ conversation.lastMessageData.message }}
+                    {{ conversation.lastMessage?.message }}
                 </p>
             </div>
             <div fxFlex="17%">
                 <p class="text-center text-xs">
                     {{
-                        conversation.lastMessageData.date.substring(
-                            conversation.lastMessageData.date.indexOf("T") + 1,
-                            conversation.lastMessageData.date.lastIndexOf(":")
+                        conversation.created_at.substring(
+                            conversation.created_at.indexOf("T") + 1,
+                            conversation.created_at.lastIndexOf(":")
                         )
                     }}
                 </p>

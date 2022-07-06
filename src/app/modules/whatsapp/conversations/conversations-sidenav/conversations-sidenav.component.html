@@ -7,34 +7,10 @@
         <vex-scrollbar fxLayout="column" class="bg-white z-10 h-full min-w-56 w-56">
             <div
                 fxLayoutAlign="space-between center"
-                class="hover:bg-gray-light w-full px-4 py-3"
-                *ngFor="let group of conversationGroups"
-                (click)="openGroupConversations(group)"
-            >
-                <p class="text-xs">
-                    {{ group.name }}
-                </p>
-                <span fxLayoutAlign="center center" class="text-white bg-primary text-xs rounded-full h-5 w-5">
-                    {{ group.conversationsCount }}
-                </span>
-            </div>
-            <div
-                fxLayoutAlign="space-between center"
-                class="hover:bg-gray-light w-full px-4 py-3"
-                *ngFor="let group of conversationGroups"
-                (click)="openGroupConversations(group)"
-            >
-                <p class="text-xs">
-                    {{ group.name }}
-                </p>
-                <span fxLayoutAlign="center center" class="text-white bg-primary text-xs rounded-full h-5 w-5">
-                    {{ group.conversationsCount }}
-                </span>
-            </div>
-            <div
-                fxLayoutAlign="space-between center"
-                class="hover:bg-gray-light w-full px-4 py-3"
-                *ngFor="let group of conversationGroups"
+                [class]="
+                    'hover:bg-gray-light w-full px-4 py-3 ' + (selectedGroup.id === group.id ? ' bg-gray-light' : '')
+                "
+                *ngFor="let group of groups"
                 (click)="openGroupConversations(group)"
             >
                 <p class="text-xs">
@@ -47,7 +23,8 @@
         </vex-scrollbar>
     </section>
     <frontend-whatsapp-no-assigned-sidenav
-        [selectedGroup]="selectedGroup"
+        *ngIf="selectedGroup"
+        [selectedGroupChanges]="changeSelectedGroupSuscriber$"
         [isConversationsPanelShowing]="isConversationsPanelShowing"
         (closeConversationPanelEmitter)="isConversationsPanelShowing = $event"
     ></frontend-whatsapp-no-assigned-sidenav>

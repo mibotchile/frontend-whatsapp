@@ -19,7 +19,6 @@ export class ConversationsComponent implements OnInit {
             params.fullscreenChat === "enabled"
                 ? (this.isFullscreenChatEnabled = true)
                 : (this.isFullscreenChatEnabled = false);
-            console.log(this.isFullscreenChatEnabled);
 
             if (this.isFullscreenChatEnabled) {
                 return this.layoutService.closeSidenav();

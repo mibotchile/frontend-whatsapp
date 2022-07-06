@@ -18,6 +18,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { IconModule } from "@visurel/iconify-angular";
 import { MatBadgeModule } from "@angular/material/badge";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 import { ConversationsSidenavComponent } from "./conversations-sidenav/conversations-sidenav.component";
 import { ConversationsChatComponent } from "./conversations-chat/conversations-chat.component";
@@ -52,6 +53,7 @@ import { ConversationsComponent } from "./conversations.component";
         ScrollbarModule,
         FormsModule,
         MatProgressSpinnerModule,
+        MatTooltipModule,
     ],
 })
 export class ConversationsModule {}

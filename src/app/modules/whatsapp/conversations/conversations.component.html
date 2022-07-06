@@ -1,22 +1,30 @@
 <div fxLayout="column" class="h-full">
-    <vex-page-layout>
+    <vex-page-layout class="relative">
         <vex-secondary-toolbar current="WHATSAPP">
-            <vex-breadcrumbs [crumbs]="['Conversaciones']" fxFlex="auto"></vex-breadcrumbs>
+            <vex-breadcrumbs [crumbs]="['Conversaciones']"></vex-breadcrumbs>
         </vex-secondary-toolbar>
-        <mat-progress-bar
-            color="primary"
-            mode="indeterminate"
-            *ngIf="progressService.visibility | async"
-        ></mat-progress-bar>
+        <div ngClass="h-1 bg-transparent">
+            <mat-progress-bar
+                color="primary"
+                mode="indeterminate"
+                *ngIf="progressService.visibility | async"
+            ></mat-progress-bar>
+        </div>
     </vex-page-layout>
     <vex-page-layout fxLayout="column" class="h-full" fxFlex="100 100 auto" mode="card">
-        <div class="bg-primary w-full h-64 absolute top-0 left-0 right-0"></div>
+        <vex-page-layout-header class="h-6"></vex-page-layout-header>
         <div
             style="height: calc(100vh - calc(3rem) - var(--secondary-toolbar-height) - var(--toolbar-height))"
             fxLayout="row nowrap"
-            [class]="'relative z-10 card overflow-hidden mt-6 mx-6 ' + (isFullscreenChatEnabled ? 'fullscreen' : ' ')"
+            [class]="'relative z-10 card overflow-hidden mx-6 ' + (isFullscreenChatEnabled ? 'fullscreen' : ' ')"
             fxFlex="auto"
         >
+            <mat-progress-bar
+                ngClass="fixed top-0 left-0 z-50"
+                color="primary"
+                mode="indeterminate"
+                *ngIf="isFullscreenChatEnabled && progressService.visibility | async"
+            ></mat-progress-bar>
             <aside class="h-full">
                 <frontend-whatsapp-conversations-sidenav></frontend-whatsapp-conversations-sidenav>
             </aside>
