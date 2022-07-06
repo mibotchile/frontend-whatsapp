@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from "@angular/core";
+import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import icClose from "@iconify/icons-ic/twotone-close";
 import icPeople from "@iconify/icons-ic/people";
@@ -12,7 +12,7 @@ import { MenuOption } from "./menu-option.interface";
     templateUrl: "./action-options-menu.component.html",
     styleUrls: ["./action-options-menu.component.scss"],
 })
-export class ActionOptionsMenuComponent implements OnInit {
+export class ActionOptionsMenuComponent implements OnInit, OnDestroy {
     icClose = icClose;
     icPeople = icPeople;
 
@@ -20,11 +20,12 @@ export class ActionOptionsMenuComponent implements OnInit {
 
     menus: Menu[];
     menu: Menu;
+    action: string;
 
     form: FormGroup;
     mode: "create" | "update" = "create";
 
-    elements: Option[];
+    elements: MenuOption[];
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public defaults: any,
@@ -35,6 +36,9 @@ export class ActionOptionsMenuComponent implements OnInit {
     }
 
     ngOnInit(): void {
+
+        this.action = 'noaction';
+
         this.menus = [];
 
         this.menu = {
@@ -52,7 +56,7 @@ export class ActionOptionsMenuComponent implements OnInit {
     }
 
     addNewData(event: Event){
-
+        console.log(event)
     }
 
     save() {
@@ -83,5 +87,9 @@ export class ActionOptionsMenuComponent implements OnInit {
 
     isUpdateMode() {
         return this.mode === "update";
+    }
+
+    ngOnDestroy(): void {
+        this.dialogRef.close([this.defaults.configuration,this.action]);
     }
 }

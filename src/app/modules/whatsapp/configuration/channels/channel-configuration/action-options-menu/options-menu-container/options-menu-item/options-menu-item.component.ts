@@ -12,7 +12,7 @@ import { MenuOption } from "../../menu-option.interface";
 export class OptionsMenuItemComponent implements OnInit {
 
     @Input()
-    element: Option;
+    element: MenuOption;
 
     @Output()
     addItemEventEmitter = new EventEmitter<void>();
@@ -43,7 +43,7 @@ export class OptionsMenuItemComponent implements OnInit {
     }
 
     sendEditItem(){
-        this.editItemEventEmitter.emit(this.element.value);
+        this.editItemEventEmitter.emit(this.element.title);
     }
 
     editItem(){

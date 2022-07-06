@@ -9,10 +9,10 @@ import { MenuOption } from "../menu-option.interface";
 })
 export class OptionsMenuContainerComponent implements OnInit {
     @Input()
-    data: Option[];
+    data: MenuOption[];
 
     @Output()
-    newDataEventEmitter = new EventEmitter<Option[]>();
+    newDataEventEmitter = new EventEmitter<MenuOption[]>();
 
     toggle = {};
 
@@ -28,8 +28,8 @@ export class OptionsMenuContainerComponent implements OnInit {
         if (element.length>0) {
             this.data.push({
                 id: this.data.length,
-                value: element,
-                action: '',
+                title: element,
+                options: [],
             });
             //this.state = false;
             this.addNewData();
@@ -45,9 +45,9 @@ export class OptionsMenuContainerComponent implements OnInit {
         this.addNewData();
     }
 
-    updateItem(item: Option, newTitle: string) {
+    updateItem(item: MenuOption, newTitle: string) {
         let updatedItem = item;
-        updatedItem.value = newTitle;
+        updatedItem.title = newTitle;
         this.data.splice(this.data.indexOf(this.data.filter((n) => n.id === item.id)[0]), 0, updatedItem);
         this.addNewData();
     }
@@ -56,7 +56,7 @@ export class OptionsMenuContainerComponent implements OnInit {
         this.newDataEventEmitter.emit(this.data);
     }
 
-    addNewDataInner(innerItem: Option, item: Option){
+    addNewDataInner(innerItem: MenuOption, item: MenuOption){
         console.log(innerItem);
         console.log(item);
     }
