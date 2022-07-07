@@ -25,6 +25,29 @@
             </mat-menu>
         </button>
     </div>
+    <!-- <div *ngIf="!conversations[0]">
+        <div
+            *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9]"
+            fxLayout="row"
+            fxLayoutAlign="center center"
+            class="border-b py-3"
+        >
+            <div fxFlex="18%" fxLayoutAlign="center center" class="px-3 avatarContainer">
+                <div alt="placeholder" class="max-w-unset bg-gray-light avatar w-8 h-8"></div>
+            </div>
+            <div fxFlex="65%">
+                <p class="text-xs w-10/12 h-2"></p>
+                <p class="w-10/12 h-2 bg-gray-light overflow-hidden"></p>
+            </div>
+            <div fxFlex="17%">
+                <p class="w-10/12 h-2 bg-gray-light"></p>
+                <p fxLayoutAlign="center center">
+                    <span fxLayoutAlign="center center" class="ml-3 mr-4 w-100 bg-gray-light rounded-full h-5 w-5">
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div> -->
     <vex-scrollbar>
         <div
             *ngFor="let conversation of conversations"
@@ -49,17 +72,12 @@
                     [title]="conversation.lastMessage?.message"
                     class="text-ellipsis whitespace-nowrap overflow-hidden text-secondary text-xs font-medium"
                 >
-                    {{ conversation.lastMessage?.message }}
+                    {{ conversation.last_message?.message }}
                 </p>
             </div>
             <div fxFlex="17%">
                 <p class="text-center text-xs">
-                    {{
-                        conversation.created_at.substring(
-                            conversation.created_at.indexOf("T") + 1,
-                            conversation.created_at.lastIndexOf(":")
-                        )
-                    }}
+                    {{ conversation.last_message.created_at | date: "h:mm" }}
                 </p>
                 <p fxLayoutAlign="center center">
                     <span

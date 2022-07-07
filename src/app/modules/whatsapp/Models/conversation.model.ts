@@ -5,6 +5,6 @@ export interface conversation {
     client_number: string;
     client_name: string;
     manager: string;
-    lastMessage?: Message;
+    last_message?: Message;
     newMessagesCount?: string | number;
 }

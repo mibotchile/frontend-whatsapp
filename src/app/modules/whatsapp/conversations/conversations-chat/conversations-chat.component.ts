@@ -14,6 +14,8 @@ import { WebsocketsService } from "src/app/services/websockets.service";
 import { UserService } from "../../services/user.service";
 import { conversation } from "../../Models/conversation.model";
 import { Message } from "../../Models/Message.model";
+import { GroupService } from "../../services/group.service";
+import { Group } from "../../models/group.model";
 
 interface ownMessage {
     message: string;
@@ -39,7 +41,9 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
 
     messagesQuantityToLoad = 5;
     messagesQuantityLoaded = 0;
+
     selectedConversation: conversation;
+    selectedGroup: Group;
 
     usersToAssign: User[] = [];
 
@@ -57,7 +61,8 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
         private cd: ChangeDetectorRef,
         private websocketService: WebsocketsService,
         private userService: UserService,
-        private conversationsService: ConversationsService
+        private conversationsService: ConversationsService,
+        private groupService: GroupService
     ) {
         if (this.userService.userId) {
             this.userId = this.userService.userId;
@@ -66,6 +71,10 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
                 this.userId = userId;
             });
         }
+        this.groupService.groupChangesListener$.subscribe((group: Group) => {
+            if (!group) return;
+            this.selectedGroup = group;
+        });
         this.setupWebSockets();
         this.setupConversationsSockets();
         this.route.queryParams.subscribe((params) =>
@@ -76,12 +85,12 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
             this.usersToAssign = activeUsers.data.users;
         });
         this.conversationsService.conversationSelection$.subscribe((conversationInfo: conversation) => {
-            console.log(conversationInfo);
             if (!conversationInfo) {
                 if (this.messagesContainer?.nativeElement) this.removeChatScrollActions();
                 this.selectedConversation = undefined;
                 return (this.chatMessages = []);
             }
+            if (this.selectedConversation?.id === conversationInfo.id) return;
             this.chatMessages = [];
             this.selectedConversation = conversationInfo;
             this.conversationsService
@@ -92,9 +101,13 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
                 )
                 .subscribe((oldMessages: Message[]) => {
                     this.addChatScrollActions();
+                    console.log(oldMessages);
+                    oldMessages = oldMessages.map((message) => ({
+                        ...message,
+                        created_at: new Date(message.created_at).toISOString(),
+                    }));
                     this.chatMessages.push(...oldMessages);
                     this.sortMessagesByDate(this.chatMessages);
-                    console.log(this.chatMessages);
                     this.cd.detectChanges();
                     this.scrollChatToBottom();
                 });
@@ -119,13 +132,13 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
             clientNumber: this.selectedConversation.client_number,
             conversationId: this.selectedConversation?.id,
         };
-        this.appendMessageInChat({
-            id: "",
-            created_by: this.userId,
-            created_at: new Date().toISOString(),
-            message: this.message,
-        });
-        this.scrollChatToBottom();
+        // this.appendMessageInChat({
+        //     id: "",
+        //     created_by: this.userId,
+        //     created_at: new Date().toISOString(),
+        //     message: this.message,
+        // });
+        // this.scrollChatToBottom();
         this.message = "";
         this.websocketService.emit("send_message", MESSAGE_DATA);
     }
@@ -185,7 +198,15 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
         });
         this.websocketService.on("whatsapp_message_received").subscribe((receivedMessage: Message) => {
             console.log(receivedMessage);
-            if (!receivedMessage.from_client) return;
+            if (!receivedMessage.from_client && !(receivedMessage.created_by === "system")) return;
+            this.conversationsService.changeConversation({
+                ...this.selectedConversation,
+                last_message: {
+                    ...receivedMessage,
+                    message: !receivedMessage.from_client ? `Tú: ${receivedMessage.message}` : receivedMessage.message,
+                },
+            });
+            if (this.selectedConversation.id != receivedMessage.conversation_id) return;
             receivedMessage.created_at = receivedMessage.created_at.replace(" ", "T") + "Z";
             this.appendMessageInChat(receivedMessage);
             this.scrollChatToBottom();
