@@ -1,6 +1,14 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
-import { stagger40ms } from "src/@vex/animations/stagger.animation";
+import {
+    trigger,
+    state,
+    style,
+    animate,
+    transition,
+    keyframes,
+    // ...
+} from "@angular/animations";
+
 import { MatDrawer } from "@angular/material/sidenav";
 import { Group } from "../../models/group.model";
 import { UserService } from "../../services/user.service";
@@ -12,7 +20,19 @@ import { ConversationsService } from "src/app/services/conversations.service";
     selector: "frontend-whatsapp-conversations-sidenav",
     templateUrl: "./conversations-sidenav.component.html",
     styleUrls: ["./conversations-sidenav.component.scss"],
-    animations: [stagger40ms, fadeInUp400ms],
+    animations: [
+        trigger("loadingData", [
+            transition("void => *", [
+                animate(
+                    "2s",
+                    keyframes([
+                        style({ backgroundColor: "#EAEAEA", offset: 0 }),
+                        style({ backgroundColor: "#BDBDBD", offset: 1.0 }),
+                    ])
+                ),
+            ]),
+        ]),
+    ],
 })
 export class ConversationsSidenavComponent implements OnInit {
     groupsSubject$: BehaviorSubject<Group | null> = new BehaviorSubject<Group | null>(null);

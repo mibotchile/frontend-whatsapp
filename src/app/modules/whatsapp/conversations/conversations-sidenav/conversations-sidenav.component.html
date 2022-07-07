@@ -1,10 +1,20 @@
-<div @stagger fxLayout="row" class="h-full">
+<div fxLayout="row" class="h-full">
     <section fxLayout="column" class="bg-white z-10 h-full min-w-56 w-56">
         <header class="px-4">
-            <h3 @fadeInUp class="text-base font-medium mb-2 pt-2">Bandeja</h3>
-            <p @fadeInUp class="text-secondary text-xs font-medium border-b">CONVERSACIONES</p>
+            <h3 class="text-base font-medium mb-2 pt-2">Bandeja</h3>
+            <p class="text-secondary text-xs font-medium border-b">CONVERSACIONES</p>
         </header>
-        <vex-scrollbar fxLayout="column" class="bg-white z-10 h-full min-w-56 w-56">
+        <!-- <div *ngIf="!groups[0]" fxLayout="column" class="overflow-hidden bg-white z-10 h-full min-w-56 w-56">
+            <div
+                *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9]"
+                fxLayoutAlign="space-between center"
+                class="w-full px-4 py-3"
+            >
+                <p @loadingData class="rounded-full bg-gray bg-opacity-25 h-4 w-10/12"></p>
+                <span @loadingData class="avatar bg-gray bg-opacity-25 h-5 w-5"> </span>
+            </div>
+        </div> -->
+        <vex-scrollbar *ngIf="groups[0]" fxLayout="column" class="bg-white z-10 h-full min-w-56 w-56">
             <div
                 fxLayoutAlign="space-between center"
                 [class]="

@@ -1,6 +1,14 @@
 <div fxLayout="column" fxLayoutAlign="space-between start" class="w-full chat relative h-full">
-    <div *ngIf="!selectedConversation" class="w-full h-full p-5">
-        <img src="./../../../../../assets//img//illustrations/chatPlaceholder.svg" alt="" />
+    <div
+        fxLayoutAlign="center center"
+        *ngIf="!selectedConversation"
+        class="border-l bg-gray-light border-gray-light w-full h-full p-5"
+    >
+        <img
+            src="./../../../../../assets//img//illustrations/chatPlaceholder.svg"
+            class="w-3/4"
+            alt="chat placeholder"
+        />
     </div>
     <div *ngIf="selectedConversation" class="chatWallpaper absolute left-0 right-0"></div>
     <!-- <div

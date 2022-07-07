@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
 
 import arrowLeft from "@iconify/icons-ic/baseline-arrow-back-ios";
 import { Observable, Subscription } from "rxjs";
@@ -27,17 +27,18 @@ export class NoAssignedSidenavComponent implements OnInit, OnDestroy {
 
     conversations: conversation[] = [];
 
-    constructor(private conversationService: ConversationsService) {}
+    constructor(private conversationService: ConversationsService, private cd: ChangeDetectorRef) {}
 
     ngOnInit(): void {
         this.selectedGroupChangesSubscription = this.selectedGroupChanges.subscribe((group) => {
+            if (!group) return;
             this.selectedGroup = group;
             if (this.selectedGroup?.name.toLocaleLowerCase().trim() === "mis conversaciones" || !group) {
                 this.conversationService
                     .getUserConversations(this.selectedGroup.id)
                     .subscribe((res: conversation[]) => {
                         this.conversations = res;
-                        console.log(res);
+                        console.log(res, "----- conve");
                     });
             } else {
                 this.conversationService.getConversationsByGroupId(this.selectedGroup?.id).subscribe((res: any) => {
@@ -45,6 +46,16 @@ export class NoAssignedSidenavComponent implements OnInit, OnDestroy {
                     console.log(res, "----- conve");
                 });
             }
+        });
+        this.conversationService.conversationSelection$.subscribe((conversation: conversation) => {
+            console.log(conversation);
+            if (!conversation) return;
+            console.log(conversation.id, this.selectedConversationId);
+            if (conversation.id != this.selectedConversationId) return;
+            const CONVERSATION_INDEX = this.conversations.findIndex((con) => con.id === conversation.id);
+            console.log(CONVERSATION_INDEX);
+            this.conversations[CONVERSATION_INDEX].last_message.message = conversation.last_message.message;
+            console.log(this.conversations[CONVERSATION_INDEX].last_message.message);
         });
     }
 
@@ -60,13 +71,13 @@ export class NoAssignedSidenavComponent implements OnInit, OnDestroy {
         if (criteria.toLocaleLowerCase() === "desc") {
             return console.log(
                 this.conversations.sort((conversation1: conversation, conversation2: conversation) =>
-                    conversation1.lastMessage.created_at.localeCompare(conversation2.lastMessage.created_at)
+                    conversation1.last_message.created_at.localeCompare(conversation2.last_message.created_at)
                 )
             );
         }
         if (criteria.toLocaleLowerCase() === "asc") {
             return this.conversations.sort((conversation1: conversation, conversation2: conversation) =>
-                conversation2.lastMessage.created_at.localeCompare(conversation1.lastMessage.created_at)
+                conversation2.last_message.created_at.localeCompare(conversation1.last_message.created_at)
             );
         }
     }
