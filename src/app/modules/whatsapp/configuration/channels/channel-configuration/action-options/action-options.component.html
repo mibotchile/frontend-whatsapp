@@ -1,0 +1,22 @@
+<form (ngSubmit)="save()">
+    <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+
+        <h2 class="headline m-0" fxFlex="auto">Guía de <br/>Respuestas y Transferencias</h2>
+
+        <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+            <mat-icon [icIcon]="icClose"></mat-icon>
+        </button>
+    </div>
+
+    <mat-divider class="-mx-6 text-border"></mat-divider>
+
+    <mat-dialog-content fxLayout="column">
+        <frontend-whatsapp-options-container></frontend-whatsapp-options-container>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close type="button">CANCELAR</button>
+        <button *ngIf="isCreateMode()" color="primary" mat-button type="submit">CREAR GUÍA</button>
+        <button *ngIf="isUpdateMode()" color="primary" mat-button type="submit">ACTUALIZAR GUÍA</button>
+    </mat-dialog-actions>
+</form>

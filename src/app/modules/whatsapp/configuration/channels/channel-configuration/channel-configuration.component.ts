@@ -11,6 +11,7 @@ import { ActionDataRequestComponent } from "./action-data-request/action-data-re
 import { ActionOptionsMenuComponent } from "./action-options-menu/action-options-menu.component";
 import { ActionAttentionComponent } from "./action-attention/action-attention.component";
 import { ActionRedirectionComponent } from "./action-redirection/action-redirection.component";
+import { ActionOptionsComponent } from "./action-options/action-options.component";
 
 export interface ActionConfig {
     config: ChannelConfiguration,
@@ -196,7 +197,8 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                 value = ActionDataRequestComponent;
                 break;
             case "menu":
-                value = ActionOptionsMenuComponent;
+                //value = ActionOptionsMenuComponent;
+                value = ActionOptionsComponent;
                 break;
             case "redirect":
                 value = ActionRedirectionComponent;

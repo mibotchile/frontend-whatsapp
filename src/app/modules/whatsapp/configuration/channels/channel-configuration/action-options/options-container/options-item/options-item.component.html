@@ -1,0 +1,85 @@
+<div class="container">
+    <button *ngIf="menuOutput.options" (click)="toggle = !toggle" mat-icon-button type="button">
+        <mat-icon *ngIf="toggle">chevron_right</mat-icon>
+        <mat-icon *ngIf="!toggle">expand_more</mat-icon>
+    </button>
+    <mat-form-field *ngIf="status" appearance="legacy">
+        <input matInput [(ngModel)]="menuOutput.title" />
+        <button matSuffix mat-icon-button aria-label="Finalizar" (click)="status = false">
+            <mat-icon>check</mat-icon>
+        </button>
+    </mat-form-field>
+    <span *ngIf="!status">{{ menuOutput.title }}</span>
+    <div>
+        <button mat-icon-button [matMenuTriggerFor]="menu" type="button">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+    </div>
+</div>
+<div class="ml-12" *ngIf="!toggle">
+    <ul>
+        <li *ngFor="let option of menuOutput.options" class="container">
+            <mat-form-field *ngIf="status" appearance="legacy">
+                <input matInput [(ngModel)]="option.value" />
+                <button matSuffix mat-icon-button aria-label="Finalizar" (click)="status = false">
+                    <mat-icon>check</mat-icon>
+                </button>
+            </mat-form-field>
+            <span *ngIf="!status">{{ option.value }}</span>
+            <div>
+                <button mat-icon-button [matMenuTriggerFor]="menu" type="button">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+            </div>
+        </li>
+    </ul>
+    <div class="value-container">
+        <mat-form-field appearance="legacy">
+            <input matInput #newElement placeholder="Nuevo elemento" />
+        </mat-form-field>
+        <div>
+            <button
+                color="primary"
+                mat-icon-button
+                (click)="addNewElement(newElement.value); newElement.value = ''"
+                type="button"
+            >
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>
+
+<mat-menu #menu="matMenu">
+    <!-- <button mat-menu-item (click)="newItem()">
+        <mat-icon>add</mat-icon>
+        <span>Nuevo elemento</span>
+    </button>
+    <button mat-menu-item (click)="newLevel()">
+        <mat-icon>subdirectory_arrow_right</mat-icon>
+        <span>Nuevo nivel</span>
+    </button> -->
+    <button mat-menu-item>
+        <mat-icon>fork_right</mat-icon>
+        <span>Transferir</span>
+    </button>
+    <button mat-menu-item>
+        <mat-icon>edit</mat-icon>
+        <span>Editar</span>
+    </button>
+    <button mat-menu-item>
+        <mat-icon>delete</mat-icon>
+        <span>Eliminar</span>
+    </button>
+</mat-menu>
+
+<!-- <mat-menu #submenu="matMenu">
+    <button mat-menu-item >
+        <mat-icon>person</mat-icon>
+        <span>Usuario</span>
+    </button>
+    <button mat-menu-item>
+        <mat-icon>group</mat-icon>
+        <span>Grupo</span>
+    </button>
+</mat-menu> -->
