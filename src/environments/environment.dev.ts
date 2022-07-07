@@ -1,7 +1,7 @@
 export const environment = {
     production: false,
     url_api: "https://api-whatsapp-dev.mibot.cl/",
-    url_websockets: "https://api-whatsapp-dev.mibot.cl:8443",
+    url_websockets: "https://api-whatsapp-dev.mibot.cl:8443/",
 
     firebase: {
         apiKey: "AIzaSyDuzZlM_0DdP0DpmrqdQ_OJbywSphVp_Ko",
