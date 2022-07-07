@@ -4,9 +4,9 @@ import { Menu } from "src/app/modules/whatsapp/interfaces/channel-configuration.
 import { ActionRedirectionComponent } from "../../../action-redirection/action-redirection.component";
 
 export interface MenuOption {
-    id: number,
-    title: string,
-    menu?: MenuOption[]
+    id: number;
+    title: string;
+    menu?: MenuOption[];
 }
 
 @Component({
@@ -20,6 +20,7 @@ export class OptionsItemComponent implements OnInit {
 
     menu: Menu;
     menuOutput: Menu;
+    newMenu: MenuOption[];
 
     status: boolean;
 
@@ -30,6 +31,8 @@ export class OptionsItemComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.newMenu = [];
+
         this.menu = {
             id: 0,
             title: "root",
@@ -52,25 +55,15 @@ export class OptionsItemComponent implements OnInit {
             ],
         };
         this.menuOutput = { ...this.menu };
-        this.convertToMenuOption();
+        this.convertToMenuOption(this.menuList);
     }
 
-    convertToMenuOption(){
+    convertToMenuOption(menuList: Menu[]) {
         let menuArray = [...this.menuList];
-        let newArray = menuArray.reduce((previousValue, currentValue)=>this.reducerNewArray(previousValue, currentValue));
-        console.log(newArray);
-    }
 
-    reducerNewArray(previousValue, currentValue){
-        if (previousValue.options) {
-            previousValue.options.filter(n => Number(n.action.split('.')[1]) === currentValue.id);
-        }
-        let newObject: MenuOption = {
-            id: previousValue.id,
-            title: previousValue.title,
-            //menu: menuaux.length > 0? currentValue : undefined
-        }
-        return newObject;
+        let menuIds = menuArray[0].options.filter((n) => n.action.split(".")[0] === "menu").map((x) => x.action.split(".")[1]);
+        let newMenuArray = menuArray.filter(n => menuIds.includes(n.id.toString()));
+        console.log(newMenuArray)
     }
 
     addNewElement(element: string) {

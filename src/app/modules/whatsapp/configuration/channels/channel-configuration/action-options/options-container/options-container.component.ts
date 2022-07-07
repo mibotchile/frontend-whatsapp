@@ -71,8 +71,29 @@ export class OptionsContainerComponent implements OnInit {
                     },
                     {
                         id: 2,
+                        value: 'Menu 3',
+                        action: 'menu.3'
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: 'Menu 3',
+                options: [
+                    {
+                        id: 0,
                         value: 'Redirect 7',
                         action: 'redirect.7'
+                    },
+                    {
+                        id: 1,
+                        value: 'Redirect 8',
+                        action: 'redirect.8'
+                    },
+                    {
+                        id: 2,
+                        value: 'Redirect 9',
+                        action: 'redirect.9'
                     }
                 ]
             }
