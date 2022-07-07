@@ -42,8 +42,7 @@ export class NoAssignedSidenavComponent implements OnInit, OnDestroy {
             } else {
                 this.conversationService.getConversationsByGroupId(this.selectedGroup?.id).subscribe((res: any) => {
                     this.conversations = res;
-                    console.log(this.selectedGroup.id);
-                    console.log(res, "----");
+                    console.log(res, "----- conve");
                 });
             }
         });

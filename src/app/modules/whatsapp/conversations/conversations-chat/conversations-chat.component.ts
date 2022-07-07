@@ -76,7 +76,9 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
             this.usersToAssign = activeUsers.data.users;
         });
         this.conversationsService.conversationSelection$.subscribe((conversationInfo: conversation) => {
+            console.log(conversationInfo);
             if (!conversationInfo) {
+                if (this.messagesContainer?.nativeElement) this.removeChatScrollActions();
                 this.selectedConversation = undefined;
                 return (this.chatMessages = []);
             }
@@ -89,8 +91,10 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
                     this.messagesQuantityLoaded
                 )
                 .subscribe((oldMessages: Message[]) => {
-                    console.log(oldMessages);
-                    this.chatMessages.unshift(...oldMessages);
+                    this.addChatScrollActions();
+                    this.chatMessages.push(...oldMessages);
+                    this.sortMessagesByDate(this.chatMessages);
+                    console.log(this.chatMessages);
                     this.cd.detectChanges();
                     this.scrollChatToBottom();
                 });
@@ -106,12 +110,7 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
             // }, 2000);
         });
     }
-    ngAfterViewInit() {
-        this.messagesContainer.nativeElement.addEventListener("scroll", () => {
-            this.showOldMessagesOnScrollNearTop(this.messagesContainer.nativeElement);
-            this.showAttachedDateToTop(this.messagesContainer.nativeElement);
-        });
-    }
+    ngAfterViewInit() {}
     sendMessage() {
         if (!this.message.trim()) return;
         const MESSAGE_DATA = {
@@ -126,6 +125,7 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
             created_at: new Date().toISOString(),
             message: this.message,
         });
+        this.scrollChatToBottom();
         this.message = "";
         this.websocketService.emit("send_message", MESSAGE_DATA);
     }
@@ -139,8 +139,14 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
 
     appendMessageInChat(message: Message | ownMessage) {
         this.chatMessages.push(message);
+        this.sortMessagesByDate(this.chatMessages);
         this.cd.detectChanges();
-        this.scrollChatToBottom();
+    }
+
+    sortMessagesByDate(array: Array<Message | ownMessage>) {
+        return array.sort((currentMessage: Message, nextMessage: Message) =>
+            currentMessage.created_at.localeCompare(nextMessage.created_at)
+        );
     }
     showOldMessagesOnScrollNearTop(scrollableElement: HTMLElement) {
         if (scrollableElement.scrollTop < 100) {
@@ -180,7 +186,9 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
         this.websocketService.on("whatsapp_message_received").subscribe((receivedMessage: Message) => {
             console.log(receivedMessage);
             if (!receivedMessage.from_client) return;
+            receivedMessage.created_at = receivedMessage.created_at.replace(" ", "T") + "Z";
             this.appendMessageInChat(receivedMessage);
+            this.scrollChatToBottom();
         });
     }
     setupConversationsSockets() {
@@ -206,11 +214,20 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        this.removeChatScrollActions();
+        this.conversationsService.disconnect();
+        this.websocketService.disconnect();
+    }
+    addChatScrollActions() {
+        this.messagesContainer.nativeElement.addEventListener("scroll", () => {
+            this.showOldMessagesOnScrollNearTop(this.messagesContainer.nativeElement);
+            this.showAttachedDateToTop(this.messagesContainer.nativeElement);
+        });
+    }
+    removeChatScrollActions() {
         this.messagesContainer.nativeElement.removeEventListener("scroll", () => {
             this.showOldMessagesOnScrollNearTop(this.messagesContainer.nativeElement);
             this.showAttachedDateToTop(this.messagesContainer.nativeElement);
         });
-
-        this.websocketService.disconnect();
     }
 }

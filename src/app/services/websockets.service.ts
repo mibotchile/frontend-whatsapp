@@ -7,7 +7,7 @@ import { environment } from "src/environments/environment";
     providedIn: "root",
 })
 export class WebsocketsService {
-    private url = environment.url_websockets + "messages";
+    private url = environment.url_websockets;
     private socket;
 
     constructor() {}
