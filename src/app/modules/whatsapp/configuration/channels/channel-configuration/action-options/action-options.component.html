@@ -11,7 +11,7 @@
     <mat-divider class="-mx-6 text-border"></mat-divider>
 
     <mat-dialog-content fxLayout="column">
-        <frontend-whatsapp-options-menu></frontend-whatsapp-options-menu>
+        <frontend-whatsapp-options-menu *ngFor="let menu of menus" [menuData]="menu" (getMenuEventEmitter)="getMenuTitle($event)" (getRedirecObjectEventEmitter)="getRedirectObject($event)"></frontend-whatsapp-options-menu>
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">

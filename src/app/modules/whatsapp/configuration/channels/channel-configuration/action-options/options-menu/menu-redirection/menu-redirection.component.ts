@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { Subscription } from "rxjs";
+import { Redirect } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
 import { GroupService } from "src/app/modules/whatsapp/services/group.service";
 import { UserService } from "src/app/modules/whatsapp/services/user.service";
 
@@ -18,7 +19,7 @@ export class MenuRedirectionComponent implements OnInit {
     cancelEventEmitter = new EventEmitter<void>();
 
     @Output()
-    acceptEventEmiiter = new EventEmitter<void>();
+    acceptEventEmitter = new EventEmitter<Redirect>();
 
     subscription: Subscription;
     target: string;
@@ -27,6 +28,7 @@ export class MenuRedirectionComponent implements OnInit {
     selectedOption: string;
     options: Item[];
     option: string;
+    redirectToSend: Redirect;
 
     constructor(private groupService: GroupService, private userService: UserService) {}
 
@@ -65,6 +67,15 @@ export class MenuRedirectionComponent implements OnInit {
                 });
             });
         }
+    }
+
+    acceptRedirection(){
+        this.redirectToSend = {
+            id: 0,
+            to: `${this.target}.${this.selected}`
+        };
+
+        this.acceptEventEmitter.emit(this.redirectToSend);
     }
 
     cancelRedirection(){

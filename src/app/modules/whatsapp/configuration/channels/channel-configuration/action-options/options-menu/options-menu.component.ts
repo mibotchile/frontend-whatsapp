@@ -1,88 +1,88 @@
-import { Component, OnInit } from '@angular/core';
-import { Menu, Option } from 'src/app/modules/whatsapp/interfaces/channel-configuration.interface';
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Menu, Option, Redirect } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
 
 @Component({
-  selector: 'frontend-whatsapp-options-menu',
-  templateUrl: './options-menu.component.html',
-  styleUrls: ['./options-menu.component.scss']
+    selector: "frontend-whatsapp-options-menu",
+    templateUrl: "./options-menu.component.html",
+    styleUrls: ["./options-menu.component.scss"],
 })
 export class OptionsMenuComponent implements OnInit {
 
-  toggle: boolean;
-  status: boolean;
-  optionStatus: boolean[];
-  redirectionStatus: boolean;
-  menuStatus: boolean;
-  title: string;
+    @Input()
+    menuData: Menu;
 
-  menu: Menu;
-  options: Option[];
+    @Output()
+    getMenuEventEmitter = new EventEmitter<string>();
 
-  constructor() { 
-    this.menu = {
-      id: 0,
-      title: 'Menu Principal',
-      options: [
-        {
-          id: 0,
-          value: 'Opcion 1',
-          action: 'opcion.1'
-        },
-        {
-          id: 1,
-          value: 'Opcion 2',
-          action: 'opcion.2'
-        }
-      ]
+    @Output()
+    getRedirecObjectEventEmitter = new EventEmitter<Redirect>()
+
+    toggle: boolean;
+    status: boolean;
+    optionStatus: boolean[];
+    redirectionStatus: boolean;
+    menuStatus: boolean;
+    title: string;
+
+    menu: Menu;
+    options: Option[];
+
+    constructor() {}
+
+    ngOnInit(): void {
+        this.menu = this.menuData;
+        this.title = this.menu.title;
+        this.options = this.menu.options;
+        this.optionStatus = [];
+        this.menuStatus = false;
+        this.redirectionStatus = false;
+
+        this.optionStatus = this.options.map((x) => false);
     }
 
-    this.title = this.menu.title;
-    this.options = this.menu.options;
-    this.optionStatus = [];
-    this.menuStatus = false;
-    this.redirectionStatus = false;
-  }
+    addOption(id: number) {
+        this.options.splice(id + 1, 0, {
+            id: 0,
+            action: "action",
+            value: "Opción",
+        });
 
-  ngOnInit(): void {
-    this.optionStatus = this.options.map(x=>false);
-  }
+        this.options.forEach((e, i) => {
+            e.id = i;
+        });
+        console.log(this.menu);
+    }
 
-  addOption(id: number){
-    this.options.splice(id+1,0,{
-      id: 0,
-      action: 'action',
-      value: 'Opción'
-    });
+    updateOption(id: number) {
+        this.optionStatus[id] = true;
+    }
 
-    this.options.forEach((e,i)=>{
-      e.id = i;
-    });
-    console.log(this.options)
-  }
+    deleteOption(id: number) {
+        this.options.splice(id, 1);
 
-  updateOption(id: number){
-    this.optionStatus[id] = true;
-  }
+        this.options.forEach((e, i) => {
+            e.id = i;
+        });
+        console.log(this.options);
+    }
 
-  deleteOption(id: number){
-    this.options.splice(id,1);
+    openRedirection(id: number) {
+        this.redirectionStatus = true;
+        this.menu.options[id].action = 'redirect';
+    }
 
-    this.options.forEach((e,i)=>{
-      e.id = i;
-    });
-    console.log(this.options)
-  }
+    openMenu(id: number) {
+        this.menuStatus = true;
+        this.menu.options[id].action = 'menu';
+    }
 
-  openRedirection(id: number){
-    this.redirectionStatus = true;
-  }
+    getMenuTitle(title: string) {
+        this.menuStatus = false;
+        this.getMenuEventEmitter.emit(title);
+    }
 
-  openMenu(id: number){
-    this.menuStatus = true;
-  }
-
-  getMenuTitle(title: string){
-    console.log(title)
-  }
-
+    getRedirecObject(redirect: Redirect){
+        this.redirectionStatus = false;
+        this.getRedirecObjectEventEmitter.emit(redirect);
+    }
 }
