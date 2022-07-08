@@ -16,6 +16,7 @@ export class ActionOptionsComponent implements OnInit {
 
     mode: "create" | "update" = "create";
     action: string;
+    reference : string[];
 
     menus: Menu[];
     redirects: Redirect[];
@@ -29,19 +30,29 @@ export class ActionOptionsComponent implements OnInit {
     ) {
         this.menuId = 0;
         this.redirectId = 0;
-        this.menus = [{
-            id: this.defaults.optionsMenuId,
-            title: "Menu Principal",
-            options: [
-
-            ],
-        }];
 
         this.redirects = [];
+        this.reference = [''];
     }
 
     ngOnInit(): void {
         this.action = 'noaction';
+
+        if (this.defaults.id) {
+            this.mode = 'update';
+            this.action = 'update';
+            this.menus = this.defaults.configuration.menus;
+            console.log(this.menus)
+        } else {
+
+            this.menus = [{
+                id: this.defaults.optionsMenuId,
+                title: "Menu Principal",
+                options: [
+
+                ],
+            }];
+        }
 
     }
 
@@ -56,17 +67,15 @@ export class ActionOptionsComponent implements OnInit {
     createMenu() {
         this.action = 'create';
         this.menus.forEach(e=>{
-            // e.options.forEach(e1=>{
-            //     if (e1.action === 'menu') {
-            //         e1.id = this.menuId;
-            //         e1.action = `menu.${this.menuId+1}`;
-            //         this.menuId++;
-            //     }else{
-            //         e1.id = this.redirectId;
-            //         e1.action = `redirect.${this.redirectId+1}`;
-            //         this.redirectId++;
-            //     }
-            // });
+            e.options.forEach(e1=>{
+                if (e1.action === 'menu') {
+                    e1.action = `menu.${this.menuId+1}`;
+                    this.menuId++;
+                }else{
+                    e1.action = `redirect.${this.redirectId}`;
+                    this.redirectId++;
+                }
+            });
             this.defaults.configuration.menus.push(e);
         });
 
@@ -107,6 +116,10 @@ export class ActionOptionsComponent implements OnInit {
             id: this.defaults.redirectId++,
             to: redirect.to
         });
+    }
+
+    getOptionName(value: string){
+        this.reference.push(value);
     }
 
     ngOnDestroy(): void {

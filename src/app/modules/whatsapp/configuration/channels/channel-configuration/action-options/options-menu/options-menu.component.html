@@ -10,6 +10,7 @@
             <mat-icon>check</mat-icon>
         </button>
     </mat-form-field>
+    <span style="color: gainsboro;" class="text-xs ml-3">(Ref. {{ref}})</span>
     <button class="ml-3" *ngIf="options.length === 0" mat-flat-button color="primary" (click)="addOption(0)">
         Agregar Opción
     </button>
@@ -36,7 +37,7 @@
                     <mat-icon>fork_right</mat-icon>
                     <span>Transferir</span>
                 </button>
-                <button mat-menu-item (click)="openMenu(option)">
+                <button mat-menu-item (click)="openMenu(option.id)">
                     <mat-icon>menu</mat-icon>
                     <span>Menu</span>
                 </button>

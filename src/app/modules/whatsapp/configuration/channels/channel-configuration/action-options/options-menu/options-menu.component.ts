@@ -11,6 +11,12 @@ export class OptionsMenuComponent implements OnInit {
     @Input()
     menuData: Menu;
 
+    @Input()
+    ref: string;
+
+    @Output()
+    sendReferenceEmitter = new EventEmitter<string>();
+
     @Output()
     getMenuEventEmitter = new EventEmitter<string>();
 
@@ -27,7 +33,9 @@ export class OptionsMenuComponent implements OnInit {
     menu: Menu;
     options: Option[];
 
-    constructor() {}
+    constructor() {
+        this.ref = '';
+    }
 
     ngOnInit(): void {
         this.menu = this.menuData;
@@ -68,12 +76,13 @@ export class OptionsMenuComponent implements OnInit {
 
     openRedirection(id: number) {
         this.redirectionStatus = true;
-        this.menu.options[id].action = 'redirect';
+        this.options[id].action = 'redirect';
     }
 
     openMenu(id: number) {
         this.menuStatus = true;
-        this.menu.options[id].action = 'menu';
+        this.options[id].action = 'menu';
+        this.sendReferenceEmitter.emit(this.options[id].value);
     }
 
     getMenuTitle(title: string) {
