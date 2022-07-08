@@ -1,4 +1,4 @@
-<div class="title">
+<div class="title mt-2">
     <button *ngIf="options.length !== 0" (click)="toggle = !toggle" mat-icon-button type="button">
         <mat-icon *ngIf="!toggle">chevron_right</mat-icon>
         <mat-icon *ngIf="toggle">expand_more</mat-icon>
@@ -10,12 +10,13 @@
             <mat-icon>check</mat-icon>
         </button>
     </mat-form-field>
+    <span style="color: gainsboro;" class="text-xs ml-3">(Ref. {{ref}})</span>
     <button class="ml-3" *ngIf="options.length === 0" mat-flat-button color="primary" (click)="addOption(0)">
         Agregar Opción
     </button>
 </div>
 <div class="ml-14">
-    <ul *ngIf="toggle" class="list-disc">
+    <ul *ngIf="toggle">
         <li class="base flex items-center" *ngFor="let option of options; index as i">
             <p *ngIf="!optionStatus[i]">{{ option.value }}</p>
             <mat-form-field *ngIf="optionStatus[i]" appearance="legacy">
@@ -59,6 +60,14 @@
     </ul>
 </div>
 
-<frontend-whatsapp-menu-element (acceptEventEmitter)="menuStatus = false; getMenuTitle($event)" (cancelEventEmitter)="menuStatus = false" *ngIf="menuStatus"></frontend-whatsapp-menu-element>
-<frontend-whatsapp-menu-redirection (cancelEventEmitter)="redirectionStatus = false" *ngIf="redirectionStatus"></frontend-whatsapp-menu-redirection>
-
+<frontend-whatsapp-menu-element
+    (acceptEventEmitter)="getMenuTitle($event)"
+    (cancelEventEmitter)="menuStatus = false"
+    *ngIf="menuStatus"
+></frontend-whatsapp-menu-element>
+<frontend-whatsapp-menu-redirection
+    (acceptEventEmitter)="getRedirecObject($event)"
+    (cancelEventEmitter)="redirectionStatus = false"
+    *ngIf="redirectionStatus"
+></frontend-whatsapp-menu-redirection>
+<span *ngIf="menu.options.length === 0" class="text-red">El menu {{menu.title}} no tiene opciones. </span>

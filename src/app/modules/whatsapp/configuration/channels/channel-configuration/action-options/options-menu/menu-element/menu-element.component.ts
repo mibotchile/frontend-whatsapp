@@ -1,29 +1,32 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Option } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
 
 @Component({
-  selector: 'frontend-whatsapp-menu-element',
-  templateUrl: './menu-element.component.html',
-  styleUrls: ['./menu-element.component.scss']
+    selector: "frontend-whatsapp-menu-element",
+    templateUrl: "./menu-element.component.html",
+    styleUrls: ["./menu-element.component.scss"],
 })
 export class MenuElementComponent implements OnInit {
 
-  @Output()
-  cancelEventEmitter = new EventEmitter<void>();
+    @Output()
+    cancelEventEmitter = new EventEmitter<void>();
 
-  @Output()
-  acceptEventEmiiter = new EventEmitter<string>();
+    @Output()
+    acceptEventEmitter = new EventEmitter<string>();
 
-  constructor() { }
+    title: string;
 
-  ngOnInit(): void {
-  }
+    constructor() {
+        this.title = "";
+    }
 
-  cancelMenu(){
-    this.cancelEventEmitter.emit();
-  }
+    ngOnInit(): void {}
 
-  acceptMenu(title: string){
-    this.acceptEventEmiiter.emit(title);
-  }
+    cancelMenu() {
+        this.cancelEventEmitter.emit();
+    }
 
+    acceptMenu() {
+        this.acceptEventEmitter.emit(this.title);
+    }
 }
