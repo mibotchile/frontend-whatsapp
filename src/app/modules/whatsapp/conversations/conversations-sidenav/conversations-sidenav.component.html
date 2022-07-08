@@ -18,16 +18,16 @@
             <div
                 fxLayoutAlign="space-between center"
                 [class]="
-                    'hover:bg-gray-light w-full px-4 py-3 ' + (selectedGroup.id === group.id ? ' bg-gray-light' : '')
+                    'hover:bg-gray-light w-full px-4 py-3 ' + (selectedGroup?.id === group?.id ? ' bg-gray-light' : '')
                 "
                 *ngFor="let group of groups"
                 (click)="openGroupConversations(group)"
             >
                 <p class="text-xs">
-                    {{ group.name }}
+                    {{ group?.name }}
                 </p>
                 <span fxLayoutAlign="center center" class="text-white bg-primary text-xs rounded-full h-5 w-5">
-                    {{ group.conversationsCount }}
+                    {{ group?.conversationsCount || "0" }}
                 </span>
             </div>
         </vex-scrollbar>
