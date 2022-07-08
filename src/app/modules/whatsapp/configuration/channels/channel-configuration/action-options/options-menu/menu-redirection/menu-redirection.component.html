@@ -1,0 +1,28 @@
+<div class="flex flex-col items-stretch border-2 border-primary rounded px-6 pb-3 mt-2">
+    <mat-radio-group class="my-5">
+        <mat-radio-button
+            color="primary"
+            *ngFor="let option of options"
+            (change)="fillList(option.value)"
+            [value]="option.value"
+            [checked]="option.value === selectedOption"
+            >{{ option.viewValue }}</mat-radio-button
+        >
+    </mat-radio-group>
+
+    <mat-form-field>
+        <mat-label>Asignar a</mat-label>
+        <mat-select [(value)]="selected">
+            <mat-option *ngFor="let item of items" [value]="item.value">
+                {{ item.viewValue }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+   <div class="flex justify-end">
+    <button mat-flat-button class="mr-2" (click)="cancelRedirection()">Cancelar</button>
+    <button mat-flat-button color="primary">Aceptar</button>
+   </div>
+
+</div>
+
