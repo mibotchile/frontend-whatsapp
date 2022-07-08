@@ -32,8 +32,9 @@ import { OptionsMenuContainerComponent } from './channel-configuration/action-op
 import { ActionRedirectionComponent } from './channel-configuration/action-redirection/action-redirection.component';
 import {MatRadioModule} from '@angular/material/radio';
 import { ActionOptionsComponent } from './channel-configuration/action-options/action-options.component';
-import { OptionsContainerComponent } from './channel-configuration/action-options/options-container/options-container.component';
-import { OptionsItemComponent } from './channel-configuration/action-options/options-container/options-item/options-item.component';
+import { OptionsMenuComponent } from './channel-configuration/action-options/options-menu/options-menu.component';
+import { MenuElementComponent } from './channel-configuration/action-options/options-menu/menu-element/menu-element.component';
+import { MenuRedirectionComponent } from './channel-configuration/action-options/options-menu/menu-redirection/menu-redirection.component';
 
 
 @NgModule({
@@ -51,8 +52,9 @@ import { OptionsItemComponent } from './channel-configuration/action-options/opt
     OptionsMenuContainerComponent,
     ActionRedirectionComponent,
     ActionOptionsComponent,
-    OptionsContainerComponent,
-    OptionsItemComponent,
+    OptionsMenuComponent,
+    MenuElementComponent,
+    MenuRedirectionComponent,
   ],
   imports: [
     CommonModule,

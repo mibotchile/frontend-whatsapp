@@ -11,15 +11,15 @@ import { RoleService } from "./role.service";
     providedIn: "root",
 })
 export class UserService {
-    myUserId$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
-    onMyUserIdChanges$: Observable<number> = this.myUserId$.asObservable();
-    userId: number;
+    myUserId$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+    onMyUserIdChanges$: Observable<User> = this.myUserId$.asObservable();
+    user: User;
 
     constructor(private http: HttpClient, private groupService: GroupService, private roleService: RoleService) {}
 
-    setMyUserId(userId: number) {
-        this.myUserId$.next(userId);
-        this.userId = userId;
+    setMyUserId(user: User) {
+        this.myUserId$.next(user);
+        this.user = user;
     }
 
     getUsers(page?: number, pageSize?: number): Observable<UserView[]> {

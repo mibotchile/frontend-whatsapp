@@ -1,7 +1,6 @@
 <form (ngSubmit)="save()">
     <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
-
-        <h2 class="headline m-0" fxFlex="auto">Guía de <br/>Respuestas y Transferencias</h2>
+        <h2 class="headline m-0" fxFlex="auto">Guía de <br />Respuestas y Transferencias</h2>
 
         <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
             <mat-icon [icIcon]="icClose"></mat-icon>
@@ -11,7 +10,14 @@
     <mat-divider class="-mx-6 text-border"></mat-divider>
 
     <mat-dialog-content fxLayout="column">
-        <frontend-whatsapp-options-container></frontend-whatsapp-options-container>
+        <frontend-whatsapp-options-menu
+            [ref]="reference[i]"
+            *ngFor="let menu of menus; index as i"
+            [menuData]="menu"
+            (getMenuEventEmitter)="getMenuTitle($event)"
+            (getRedirecObjectEventEmitter)="getRedirectObject($event)"
+            (sendReferenceEmitter)="getOptionName($event)"
+        ></frontend-whatsapp-options-menu>
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">

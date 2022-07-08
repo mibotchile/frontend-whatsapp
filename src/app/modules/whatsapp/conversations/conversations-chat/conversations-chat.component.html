@@ -35,18 +35,34 @@
             </div>
             <div fxLayoutAlign="center left" fxLayoutGap="4px" fxLayout="column">
                 <h6 class="font-normal text-sm leading-none">
-                    {{ selectedConversation?.client_name || "Carlos enrique Cueva" }}
+                    {{ selectedConversation?.client_name || "Nombre del cliente" }}
                 </h6>
                 <span class="font-light text-xs leading-none text-gray">{{ selectedConversation?.client_number }}</span>
             </div>
         </section>
         <div fxLayout="row nowrap" fxLayoutAlign="end center" class="px-4">
-            <button mat-button fxLayout="center center" class="text-xs text-primary" [matMenuTriggerFor]="menu">
+            <button
+                *ngIf="user.role_id === 3"
+                (click)="redirectConversation(user.id)"
+                mat-button
+                fxLayout="center center"
+                class="text-xs text-primary"
+            >
+                <mat-icon size="20px" color="primary" [icIcon]="asign"></mat-icon>
+                Tomar Conversacion
+            </button>
+            <button
+                *ngIf="user.role_id === 2"
+                mat-button
+                fxLayout="center center"
+                class="text-xs text-primary"
+                [matMenuTriggerFor]="menu"
+            >
                 <mat-icon size="20px" color="primary" [icIcon]="asign"></mat-icon>
                 asignar a
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="redirectConversation()" *ngFor="let user of usersToAssign">
+                <button mat-menu-item (click)="redirectConversation(user.id)" *ngFor="let user of usersToAssign">
                     {{ user.name }}
                 </button>
             </mat-menu>

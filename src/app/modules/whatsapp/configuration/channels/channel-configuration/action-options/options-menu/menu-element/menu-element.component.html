@@ -1,0 +1,13 @@
+<div class="flex flex-col items-stretch border-2 border-primary rounded px-6 pb-3 pt-3 mt-2">
+    <div>
+        <mat-form-field appearance="legacy">
+            <mat-label>Titulo</mat-label>
+            <input matInput [(ngModel)]="title"/>
+        </mat-form-field>
+    </div>
+    <div class="flex justify-end">
+        <button mat-flat-button class="mr-2" (click)="cancelMenu()">Cancelar</button>
+        <button mat-flat-button color="primary" (click)="acceptMenu()">Aceptar</button>
+       </div>
+</div>
+

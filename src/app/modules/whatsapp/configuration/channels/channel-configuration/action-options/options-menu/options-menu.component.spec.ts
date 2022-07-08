@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OptionsItemComponent } from './options-item.component';
+import { OptionsMenuComponent } from './options-menu.component';
 
-describe('OptionsItemComponent', () => {
-  let component: OptionsItemComponent;
-  let fixture: ComponentFixture<OptionsItemComponent>;
+describe('OptionsMenuComponent', () => {
+  let component: OptionsMenuComponent;
+  let fixture: ComponentFixture<OptionsMenuComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OptionsItemComponent ]
+      declarations: [ OptionsMenuComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OptionsItemComponent);
+    fixture = TestBed.createComponent(OptionsMenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

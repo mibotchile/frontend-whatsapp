@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { LayoutService } from "src/@vex/services/layout.service";
 import { ProgressService } from "src/app/services/progress.service";
+import { WebsocketsService } from "src/app/services/websockets.service";
 
 @Component({
     selector: "frontend-whatsapp-conversations",
@@ -13,8 +14,10 @@ export class ConversationsComponent implements OnInit {
     constructor(
         public progressService: ProgressService,
         private route: ActivatedRoute,
-        private layoutService: LayoutService
+        private layoutService: LayoutService,
+        private webSocketsService: WebsocketsService
     ) {
+        this.webSocketsService.connect();
         this.route.queryParams.subscribe((params) => {
             params.fullscreenChat === "enabled"
                 ? (this.isFullscreenChatEnabled = true)

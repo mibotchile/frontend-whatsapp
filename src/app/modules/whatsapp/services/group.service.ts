@@ -13,6 +13,8 @@ export class GroupService {
 
     constructor(private http: HttpClient) {}
     changeGroup(group: Group) {
+        console.log(group);
+
         this.groupSubject$.next(group);
     }
 
