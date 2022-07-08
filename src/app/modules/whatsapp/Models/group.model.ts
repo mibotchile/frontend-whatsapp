@@ -6,7 +6,7 @@ export class Group extends General {
     description: string;
     tags: Array<string>;
     default: boolean;
-    conversationsCount?: string | number;
+    conversationsCount?: number;
 
     constructor(group) {
         super(group);

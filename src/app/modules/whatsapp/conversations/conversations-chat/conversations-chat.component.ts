@@ -37,7 +37,7 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
     isConversationLoading = false;
     isLoadingMessages = false;
 
-    userId: number;
+    user: User;
 
     messagesQuantityToLoad = 5;
     messagesQuantityLoaded = 0;
@@ -64,14 +64,16 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
         private conversationsService: ConversationsService,
         private groupService: GroupService
     ) {
-        if (this.userService.userId) {
-            this.userId = this.userService.userId;
+        if (this.userService.user?.id) {
+            this.user = this.userService.user;
         } else {
-            this.userService.onMyUserIdChanges$.subscribe((userId) => {
-                this.userId = userId;
+            this.userService.onMyUserIdChanges$.subscribe((user) => {
+                console.log(user, "--asd");
+                this.user = user;
             });
         }
         this.groupService.groupChangesListener$.subscribe((group: Group) => {
+            console.log(group);
             if (!group) return;
             this.selectedGroup = group;
         });
@@ -134,11 +136,11 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
         };
         // this.appendMessageInChat({
         //     id: "",
-        //     created_by: this.userId,
+        //     created_by: this.user.id,
         //     created_at: new Date().toISOString(),
         //     message: this.message,
         // });
-        // this.scrollChatToBottom();
+        this.scrollChatToBottom();
         this.message = "";
         this.websocketService.emit("send_message", MESSAGE_DATA);
     }
@@ -192,21 +194,12 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
     }
 
     setupWebSockets() {
-        this.websocketService.connect();
         this.websocketService.on("connect").subscribe(() => {
             console.log("websockets connection established");
         });
         this.websocketService.on("whatsapp_message_received").subscribe((receivedMessage: Message) => {
-            console.log(receivedMessage);
             if (!receivedMessage.from_client && !(receivedMessage.created_by === "system")) return;
-            this.conversationsService.changeConversation({
-                ...this.selectedConversation,
-                last_message: {
-                    ...receivedMessage,
-                    message: !receivedMessage.from_client ? `Tú: ${receivedMessage.message}` : receivedMessage.message,
-                },
-            });
-            if (this.selectedConversation.id != receivedMessage.conversation_id) return;
+            if (this.selectedConversation?.id != receivedMessage.conversation_id) return;
             receivedMessage.created_at = receivedMessage.created_at.replace(" ", "T") + "Z";
             this.appendMessageInChat(receivedMessage);
             this.scrollChatToBottom();
@@ -217,18 +210,20 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
         this.conversationsService.on("connect").subscribe(() => {
             console.log("websockets connection established");
         });
-        this.conversationsService.on("new_conversation").subscribe((conversation) => {
-            console.log(conversation);
-        });
     }
-    redirectConversation() {
-        if (!this.selectedConversation?.id || !this.userId) return;
+    redirectConversation(managerId: number) {
+        console.log(managerId);
+        if (!this.selectedConversation?.id || !managerId) return;
         const PAYLOAD = {
             conversationId: this.selectedConversation.id,
             manager: "user",
-            managerId: this.userId,
+            managerId: managerId,
         };
-        this.conversationsService.emit("redirect_conversation", PAYLOAD);
+        this.websocketService.emit("redirect_conversation", PAYLOAD);
+        console.log(this.selectedGroup, "---conversation-chat");
+        // this.groupService.changeGroup(this.selectedGroup);
+        this.selectedConversation = null;
+        this.conversationsService.changeConversation(null);
     }
     scrollChatToBottom() {
         this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;

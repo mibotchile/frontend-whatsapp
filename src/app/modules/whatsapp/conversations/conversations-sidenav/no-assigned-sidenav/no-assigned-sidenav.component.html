@@ -79,12 +79,13 @@
                 <p class="text-center text-xs">
                     {{ conversation.last_message.created_at | date: "h:mm" }}
                 </p>
-                <p fxLayoutAlign="center center">
+                <p class="h-5" fxLayoutAlign="center center">
                     <span
+                        *ngIf="conversation.newMessagesCount"
                         fxLayoutAlign="center center"
                         class="ml-3 mr-4 w-100 text-white bg-primary text-xs rounded-full h-5 w-5"
                     >
-                        15
+                        {{ conversation.newMessagesCount || "0" }}
                     </span>
                 </p>
             </div>
