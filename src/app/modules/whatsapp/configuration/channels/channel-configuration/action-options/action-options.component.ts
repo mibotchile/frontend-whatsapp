@@ -27,18 +27,18 @@ export class ActionOptionsComponent implements OnInit {
 
     save() {
         if (this.mode === "create") {
-            this.createMessage();
+            this.createMenu();
         } else if (this.mode === "update") {
-            this.updateMessage();
+            this.updateMenu();
         }
     }
 
-    createMessage() {
+    createMenu() {
         // this.defaults.configuration.messages.push(message);
         // this.dialogRef.close([this.defaults.configuration,this.action]);
     }
 
-    updateMessage() {
+    updateMenu() {
         // this.action = 'update'
         // this.defaults.configuration.messages.splice(this.defaults.id,0,message);
         // this.dialogRef.close([this.defaults.configuration,this.action]);
