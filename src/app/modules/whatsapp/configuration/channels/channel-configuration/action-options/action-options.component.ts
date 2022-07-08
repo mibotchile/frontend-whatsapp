@@ -42,6 +42,14 @@ export class ActionOptionsComponent implements OnInit {
             this.mode = 'update';
             this.action = 'update';
             this.menus = this.defaults.configuration.menus;
+
+            this.defaults.configuration.menus.forEach(e=>{
+                e.options.forEach(e1 => {
+                    if (e1.action.split('.')[0] === 'menu') {
+                        this.reference.push(e1.value);
+                    }
+                });
+            });
             console.log(this.menus)
         } else {
 
