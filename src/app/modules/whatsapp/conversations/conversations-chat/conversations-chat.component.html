@@ -43,7 +43,7 @@
         <div fxLayout="row nowrap" fxLayoutAlign="end center" class="px-4">
             <button
                 *ngIf="user.role.id === 3"
-                (click)="redirectConversation(user.id)"
+                (click)="redirectConversation()"
                 mat-button
                 fxLayout="center center"
                 class="text-xs text-primary"
@@ -64,7 +64,7 @@
             <mat-menu #menu="matMenu">
                 <button
                     mat-menu-item
-                    (click)="redirectConversation(userToAssign.id)"
+                    (click)="redirectConversation(userToAssign)"
                     *ngFor="let userToAssign of usersToAssign"
                 >
                     {{ userToAssign.name }}
@@ -151,18 +151,13 @@
         class="z-10 w-full bg-primary-light"
     >
         <input
-            [disabled]="
-                selectedGroup.name.toLowerCase().trim() !== 'mis conversaciones' &&
-                (user.role.id === 2 || user.role.id === 3)
-            "
+            [disabled]="selectedGroup.name.toLowerCase().trim() !== 'mis conversaciones'"
             [(ngModel)]="message"
             autocomplete="off"
             name="message"
             [ngClass]="{
                 'flex-grow m-2 py-2 px-4 mr-1 rounded-full border border-gray-300 bg-gray-200 resize-none': true,
-                'bg-gray-light':
-                    selectedGroup.name.toLowerCase().trim() !== 'mis conversaciones' &&
-                    (user.role.id === 2 || user.role.id === 3)
+                'bg-gray-light': selectedGroup.name.toLowerCase().trim() !== 'mis conversaciones'
             }"
             rows="1"
             placeholder="escribe un mensaje..."
