@@ -8,4 +8,5 @@ export class Message {
     created_at: string;
     created_by: string;
     status: string | number;
+    message_status: string;
 }
