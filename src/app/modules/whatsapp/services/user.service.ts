@@ -110,7 +110,7 @@ export class UserService {
         param = param.append("name", value.name);
         param = param.append("email", value.email);
         param = param.append("groups_id", value.groups_id.toString());
-        param = param.append("role_id", value.role_id.toString());
+        param = param.append("role_id", value.role.id.toString());
 
         return this.http.post(`${environment.url_api}user`, param, {
             headers: headers,
@@ -129,7 +129,7 @@ export class UserService {
         param = param.append("name", value.name);
         param = param.append("email", value.email);
         param = param.append("groups_id", value.groups_id.toString());
-        param = param.append("role_id", value.role_id);
+        param = param.append("role_id", value.role.id);
 
         return this.http.put(`${environment.url_api}user/${value.id}`, value, {
             headers: headers,

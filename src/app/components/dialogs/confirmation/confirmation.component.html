@@ -1,0 +1,12 @@
+<h1 mat-dialog-title class="text-sm"><strong> Confirmar asignación</strong></h1>
+<div mat-dialog-content class="text-sm">
+    {{
+        userNameToAssign
+            ? "Desea asignar conversación a " + userNameToAssign
+            : "¿Estás seguro de tomar la conversación?"
+    }}
+</div>
+<div fxLayoutAlign="end center" class="mt-2" mat-dialog-actions>
+    <button mat-button (click)="closeDialog(false)" mat-dialog-close>No</button>
+    <button mat-button color="warn" mat-dialog-close (click)="closeDialog(true)" cdkFocusInitial>Sí</button>
+</div>
