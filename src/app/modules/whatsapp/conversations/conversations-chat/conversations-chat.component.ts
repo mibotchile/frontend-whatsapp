@@ -6,6 +6,7 @@ import send from "@iconify/icons-ic/twotone-send";
 import asign from "@iconify/icons-ic/twotone-person-pin";
 import fullscreen from "@iconify/icons-ic/round-open-in-new";
 import doubleCheck from "@iconify/icons-ic/baseline-done-all";
+import check from "@iconify/icons-ic/baseline-check";
 
 import { User } from "../../models/user.model";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -16,12 +17,15 @@ import { conversation } from "../../Models/conversation.model";
 import { Message } from "../../Models/Message.model";
 import { GroupService } from "../../services/group.service";
 import { Group } from "../../models/group.model";
+import { MatDialog } from "@angular/material/dialog";
+import { ConfirmationComponent } from "src/app/components/dialogs/confirmation/confirmation.component";
 
 interface ownMessage {
     message: string;
     created_at: string | number;
     created_by: string | number;
     id: string | number;
+    message_status: string;
 }
 
 @Component({
@@ -51,6 +55,7 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
     asign = asign;
     fullscreen = fullscreen;
     doubleCheck = doubleCheck;
+    check = check;
 
     message: string = "";
     chatMessages: Array<ownMessage | Message> = [];
@@ -62,7 +67,8 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
         private websocketService: WebsocketsService,
         private userService: UserService,
         private conversationsService: ConversationsService,
-        private groupService: GroupService
+        private groupService: GroupService,
+        public dialog: MatDialog
     ) {
         if (this.userService.user?.id) {
             this.user = this.userService.user;
@@ -134,12 +140,13 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
             clientNumber: this.selectedConversation.client_number,
             conversationId: this.selectedConversation?.id,
         };
-        // this.appendMessageInChat({
-        //     id: "",
-        //     created_by: this.user.id,
-        //     created_at: new Date().toISOString(),
-        //     message: this.message,
-        // });
+        this.appendMessageInChat({
+            id: "",
+            created_by: this.user.id,
+            created_at: new Date().toISOString(),
+            message: this.message,
+            message_status: null,
+        });
         this.scrollChatToBottom();
         this.message = "";
         this.websocketService.emit("send_message", MESSAGE_DATA);
@@ -198,9 +205,23 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
             console.log("websockets connection established");
         });
         this.websocketService.on("whatsapp_message_received").subscribe((receivedMessage: Message) => {
-            if (!receivedMessage.from_client && !(receivedMessage.created_by === "system")) return;
+            console.log(receivedMessage, "receivedMessage");
             if (this.selectedConversation?.id != receivedMessage.conversation_id) return;
+
             receivedMessage.created_at = receivedMessage.created_at.replace(" ", "T") + "Z";
+            if (!receivedMessage.from_client) {
+                const LAST_MESSAGE_INDEX = this.chatMessages.findIndex(
+                    (message) => message.message === receivedMessage.message && !message.message_status
+                );
+                if (LAST_MESSAGE_INDEX < 0) {
+                    this.appendMessageInChat(receivedMessage);
+                    return this.scrollChatToBottom();
+                }
+                console.log(LAST_MESSAGE_INDEX, "--------- LAST MESSAGE INDEX");
+                this.chatMessages[LAST_MESSAGE_INDEX] = receivedMessage;
+
+                return this.scrollChatToBottom();
+            }
             this.appendMessageInChat(receivedMessage);
             this.scrollChatToBottom();
         });
@@ -212,18 +233,25 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
         });
     }
     redirectConversation(managerId: number) {
-        console.log(managerId);
         if (!this.selectedConversation?.id || !managerId) return;
-        const PAYLOAD = {
-            conversationId: this.selectedConversation.id,
-            manager: "user",
-            managerId: managerId,
-        };
-        this.websocketService.emit("redirect_conversation", PAYLOAD);
-        console.log(this.selectedGroup, "---conversation-chat");
-        // this.groupService.changeGroup(this.selectedGroup);
-        this.selectedConversation = null;
-        this.conversationsService.changeConversation(null);
+        let userToAssignName = this.usersToAssign.find((userToAssign) => userToAssign.id === managerId);
+        this.openConfirmationDialog(userToAssignName.name)
+            .afterClosed()
+            .subscribe((didUserConfirm) => {
+                if (didUserConfirm) {
+                    console.log(didUserConfirm);
+                    const PAYLOAD = {
+                        conversationId: this.selectedConversation.id,
+                        manager: "user",
+                        managerId: managerId,
+                    };
+                    this.websocketService.emit("redirect_conversation", PAYLOAD);
+                    console.log(this.selectedGroup, "---conversation-chat");
+                    // this.groupService.changeGroup(this.selectedGroup);
+                    this.selectedConversation = null;
+                    this.conversationsService.changeConversation(null);
+                }
+            });
     }
     scrollChatToBottom() {
         this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
@@ -244,6 +272,13 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
         this.messagesContainer.nativeElement.removeEventListener("scroll", () => {
             this.showOldMessagesOnScrollNearTop(this.messagesContainer.nativeElement);
             this.showAttachedDateToTop(this.messagesContainer.nativeElement);
+        });
+    }
+
+    openConfirmationDialog(userToAssignName: string) {
+        return this.dialog.open(ConfirmationComponent, {
+            width: "350px",
+            data: userToAssignName,
         });
     }
 }
