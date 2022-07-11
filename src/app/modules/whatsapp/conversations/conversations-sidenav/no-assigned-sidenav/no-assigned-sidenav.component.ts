@@ -41,6 +41,7 @@ export class NoAssignedSidenavComponent implements OnInit, OnDestroy {
     ) {
         this.userService.onMyUserIdChanges$.subscribe((user: User) => {
             this.webSocketsService.on("new_conversation").subscribe((conversation: conversation) => {
+                console.log(user);
                 const CONVERSATION_GROUP_ID = Number(conversation.manager.replace(/^\D+/g, ""));
                 if (
                     this.lastRemovedConversationId === conversation.id ||
@@ -98,17 +99,17 @@ export class NoAssignedSidenavComponent implements OnInit, OnDestroy {
         });
         this.webSocketsService.on("whatsapp_message_received").subscribe((message: Message) => {
             const CONVERSATION_INDEX = this.conversations.findIndex((con) => con.id === message.conversation_id);
-            console.log(CONVERSATION_INDEX);
             if (CONVERSATION_INDEX === -1) return;
             this.conversations[CONVERSATION_INDEX].last_message.message = message.message;
-            console.log(this.conversations[CONVERSATION_INDEX].newMessagesCount);
             if (message.conversation_id != this.selectedConversationId) {
-                this.conversations[CONVERSATION_INDEX].newMessagesCount = this.conversations[CONVERSATION_INDEX]
-                    .newMessagesCount
-                    ? 1
-                    : this.conversations[CONVERSATION_INDEX].newMessagesCount + 1;
+                console.log(this.conversations[CONVERSATION_INDEX].newMessagesCount);
+                this.conversations[CONVERSATION_INDEX].newMessagesCount =
+                    this.conversations[CONVERSATION_INDEX].newMessagesCount < 1 ||
+                    this.conversations[CONVERSATION_INDEX].newMessagesCount === undefined
+                        ? 1
+                        : this.conversations[CONVERSATION_INDEX].newMessagesCount + 1;
+                console.log(this.conversations[CONVERSATION_INDEX].newMessagesCount);
             }
-            console.log(this.conversations[CONVERSATION_INDEX].newMessagesCount);
         });
     }
 
@@ -140,150 +141,3 @@ export class NoAssignedSidenavComponent implements OnInit, OnDestroy {
         this.selectedGroupChangesSubscription.unsubscribe();
     }
 }
-
-const CONVERSATIONS_PLACEHOLDER = [
-    {
-        manager: "2",
-        id: 1,
-        client_number: "943554023",
-        name_client: "Lucía margarita de la plata",
-        lastMessage: {
-            id: 1,
-            message: "Llámame llegando por favor!!",
-            created_at: new Date(2020, 11, 17, 17, 23, 12).toISOString(),
-            conversation_id: 5,
-            content_type: "image",
-            media_url: "www.youtbe.com/'asda",
-            from_client: "PROVIDA",
-            created_by: "Juan Carlos",
-            status: 1,
-        },
-        newMessagesCount: 5,
-    },
-    {
-        manager: "3",
-        id: 2,
-        client_number: "943554023",
-        name_client: "Pepe le fontiu di la amor",
-        lastMessage: {
-            id: 1,
-            message: "vamos a salir al parque",
-            created_at: new Date(2020, 11, 17, 17, 23, 12).toISOString(),
-            conversation_id: 5,
-            content_type: "image",
-            media_url: "www.youtbe.com/'asda",
-            from_client: "PROVIDA",
-            created_by: "Juan Carlos",
-            status: 1,
-        },
-        newMessagesCount: 5,
-    },
-    {
-        manager: "4",
-        id: 3,
-        client_number: "943554023",
-        name_client: "Joaquin villalobos del salvador",
-        lastMessage: {
-            id: 1,
-            message: "por favor pido ayuda con mi negocio",
-            created_at: new Date(2020, 11, 17, 17, 23, 12).toISOString(),
-            conversation_id: 5,
-            content_type: "image",
-            media_url: "www.youtbe.com/'asda",
-            from_client: "PROVIDA",
-            created_by: "Juan Carlos",
-            status: 1,
-        },
-        newMessagesCount: 5,
-    },
-    {
-        manager: "123",
-        id: 4,
-        client_number: "943554023",
-        name_client: "carlos capo ernesto",
-        lastMessage: {
-            id: 1,
-            message: "Muchas gracias por elegirnos",
-            created_at: new Date(2020, 11, 17, 17, 23, 12).toISOString(),
-            conversation_id: 5,
-            content_type: "image",
-            media_url: "www.youtbe.com/'asda",
-            from_client: "PROVIDA",
-            created_by: "Juan Carlos",
-            status: 1,
-        },
-        newMessagesCount: 5,
-    },
-    {
-        manager: "765",
-        id: 6,
-        client_number: "943554023",
-        name_client: "Lorena villanueva ramirez",
-        lastMessage: {
-            id: 1,
-            message: "La unión hace la fuerza !",
-            created_at: new Date(2020, 11, 17, 17, 23, 12).toISOString(),
-            conversation_id: 5,
-            content_type: "image",
-            media_url: "www.youtbe.com/'asda",
-            from_client: "PROVIDA",
-            created_by: "Juan Carlos",
-            status: 1,
-        },
-        newMessagesCount: 5,
-    },
-    {
-        manager: "4567",
-        id: 7,
-        client_number: "943554023",
-        name_client: "Jose Luis Perez De los Angeles",
-        lastMessage: {
-            id: 1,
-            message: "esperamos tu solicitud ánimo!",
-            created_at: new Date(2020, 11, 17, 17, 23, 12).toISOString(),
-            conversation_id: 5,
-            content_type: "image",
-            media_url: "www.youtbe.com/'asda",
-            from_client: "PROVIDA",
-            created_by: "Juan Carlos",
-            status: 1,
-        },
-        newMessagesCount: 5,
-    },
-    {
-        manager: "1231",
-        id: 5,
-        client_number: "943554023",
-        name_client: "Pipo jeréz",
-        lastMessage: {
-            id: 1,
-            message: "tuturuturuturu",
-            created_at: new Date(2020, 11, 17, 17, 23, 12).toISOString(),
-            conversation_id: 5,
-            content_type: "image",
-            media_url: "www.youtbe.com/'asda",
-            from_client: "PROVIDA",
-            created_by: "Juan Carlos",
-            status: 1,
-        },
-        newMessagesCount: 5,
-    },
-    {
-        manager: "0987",
-        id: 8,
-        client_number: "943554023",
-        name_client: "Juan carlos rodriguez",
-        lastMessage: {
-            id: 1,
-            message: "Lorem ipsum dolor sit amet!!",
-            created_at: new Date(2020, 11, 17, 17, 23, 12).toISOString(),
-            conversation_id: 5,
-            content_type: "image",
-            media_url: "www.youtbe.com/'asda",
-            from_client: "PROVIDA",
-            created_by: "Juan Carlos",
-            status: 1,
-        },
-        newMessagesCount: 5,
-    },
-];

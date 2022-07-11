@@ -70,21 +70,35 @@ export class ConversationsSidenavComponent implements OnInit {
                             status: 1,
                         };
                         this.groups.push(MIS_CONVERSACIONES, ...res.data);
-                        this.changeGroup(MIS_CONVERSACIONES);
+                        this.openGroupConversations(MIS_CONVERSACIONES);
                     }
                 });
             }
         });
         this.webSocketsService.on("new_conversation").subscribe((conversation: conversation) => {
-            console.log(conversation, "------ new conversation");
             const GROUP_CONVERSATION_ID = Number(conversation.manager.replace(/^\D+/g, ""));
             if (this.selectedGroup?.id != GROUP_CONVERSATION_ID) {
+                console.log(GROUP_CONVERSATION_ID, this.groups, conversation);
                 const GROUP_INDEX = this.groups.findIndex((group) => GROUP_CONVERSATION_ID === group.id);
-                console.log(GROUP_INDEX, GROUP_CONVERSATION_ID, conversation);
                 if (GROUP_INDEX < 0) return;
-                this.groups[GROUP_INDEX].conversationsCount = this.groups[GROUP_INDEX].conversationsCount
-                    ? 1
-                    : this.groups[GROUP_INDEX].conversationsCount + 1;
+                if (conversation.manager.includes("user")) {
+                    if (this.groups[GROUP_INDEX].name.toLowerCase().trim() === "mis conversaciones") {
+                        this.groups[GROUP_INDEX].conversationsCount =
+                            this.groups[GROUP_INDEX].conversationsCount < 1 ||
+                            this.groups[GROUP_INDEX].conversationsCount === undefined
+                                ? 1
+                                : this.groups[GROUP_INDEX].conversationsCount + 1;
+                    }
+                }
+                if (conversation.manager.includes("group")) {
+                    if (this.groups[GROUP_INDEX].name.toLowerCase().trim() !== "mis conversaciones") {
+                        this.groups[GROUP_INDEX].conversationsCount =
+                            this.groups[GROUP_INDEX].conversationsCount < 1 ||
+                            this.groups[GROUP_INDEX].conversationsCount === undefined
+                                ? 1
+                                : this.groups[GROUP_INDEX].conversationsCount + 1;
+                    }
+                }
             }
         });
     }
@@ -92,12 +106,18 @@ export class ConversationsSidenavComponent implements OnInit {
     ngOnInit(): void {}
     openGroupConversations(group: Group) {
         this.selectedGroup = group;
+
         this.isConversationsPanelShowing = true;
         this.changeGroup(group);
     }
 
     changeGroup(group: Group) {
+        this.cleanConversationsCounter(group.id);
         this.groupService.changeGroup(group);
         this.conversationsService.changeConversation(null);
+    }
+    cleanConversationsCounter(groupId: number) {
+        const GROUP_INDEX = this.groups.findIndex((group) => group.id === groupId);
+        this.groups[GROUP_INDEX].conversationsCount = 0;
     }
 }

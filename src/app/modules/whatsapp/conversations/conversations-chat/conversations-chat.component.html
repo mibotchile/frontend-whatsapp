@@ -42,7 +42,7 @@
         </section>
         <div fxLayout="row nowrap" fxLayoutAlign="end center" class="px-4">
             <button
-                *ngIf="user.role_id === 3"
+                *ngIf="user.role.id === 3"
                 (click)="redirectConversation(user.id)"
                 mat-button
                 fxLayout="center center"
@@ -52,7 +52,7 @@
                 Tomar Conversacion
             </button>
             <button
-                *ngIf="user.role_id != 3"
+                *ngIf="user.role.id != 3"
                 mat-button
                 fxLayout="center center"
                 class="text-xs text-primary"
@@ -62,8 +62,12 @@
                 asignar a
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="redirectConversation(user.id)" *ngFor="let user of usersToAssign">
-                    {{ user.name }}
+                <button
+                    mat-menu-item
+                    (click)="redirectConversation(userToAssign.id)"
+                    *ngFor="let userToAssign of usersToAssign"
+                >
+                    {{ userToAssign.name }}
                 </button>
             </mat-menu>
             <a
@@ -133,7 +137,7 @@
                 >
                     {{ messageData.created_at | date: "h:mm a" }}
                     <span fxLayoutAlign="center center" class="h-full ml-1 mr-4">
-                        <mat-icon width="16" [icIcon]="doubleCheck"></mat-icon
+                        <mat-icon width="16" [icIcon]="messageData.message_status ? doubleCheck : check"></mat-icon
                     ></span>
                 </span>
             </div>
@@ -147,10 +151,19 @@
         class="z-10 w-full bg-primary-light"
     >
         <input
+            [disabled]="
+                selectedGroup.name.toLowerCase().trim() !== 'mis conversaciones' &&
+                (user.role.id === 2 || user.role.id === 3)
+            "
             [(ngModel)]="message"
             autocomplete="off"
             name="message"
-            class="flex-grow m-2 py-2 px-4 mr-1 rounded-full border border-gray-300 bg-gray-200 resize-none"
+            [ngClass]="{
+                'flex-grow m-2 py-2 px-4 mr-1 rounded-full border border-gray-300 bg-gray-200 resize-none': true,
+                'bg-gray-light':
+                    selectedGroup.name.toLowerCase().trim() !== 'mis conversaciones' &&
+                    (user.role.id === 2 || user.role.id === 3)
+            }"
             rows="1"
             placeholder="escribe un mensaje..."
             style="outline: none"
