@@ -1,0 +1,23 @@
+<div class="box" *ngFor="let step of steps">
+    <div class="flex w-full">
+        <div class="position">{{ step.step }}</div>
+        <div>{{ step.action }}</div>
+    </div>
+    <div class="mt-2" *ngIf="step.action.includes('message')">
+        {{ configuration.messages[step.action.split(".")[1]].message }}
+    </div>
+    <div class="mt-2" *ngIf="step.action.includes('quiz')">
+        <ul>
+            <li *ngFor="let question of configuration.quizes[step.action.split('.')[1]].questions">
+                {{question.question}}
+            </li>
+        </ul>
+    </div>
+    <div class="mt-2" *ngIf="step.action.includes('menu')">
+        <ul>
+            <li *ngFor="let menu of configuration.menus">
+                {{menu.title}}
+            </li>
+        </ul>
+    </div>
+</div>

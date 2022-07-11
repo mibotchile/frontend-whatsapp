@@ -21,7 +21,13 @@ export class OptionsMenuComponent implements OnInit {
     getMenuEventEmitter = new EventEmitter<string>();
 
     @Output()
-    getRedirecObjectEventEmitter = new EventEmitter<Redirect>()
+    getRedirecObjectEventEmitter = new EventEmitter<Redirect>();
+
+    @Output()
+    deleteMenuEventEmitter = new EventEmitter<void>();
+
+    @Output()
+    changeReferenceEventEmitter = new EventEmitter<Option>();
 
     toggle: boolean;
     status: boolean;
@@ -33,8 +39,13 @@ export class OptionsMenuComponent implements OnInit {
     menu: Menu;
     options: Option[];
 
+    redirectionTitle: string;
+    menuTitle: string;
+
     constructor() {
         this.ref = '';
+        this.redirectionTitle = '';
+        this.menuTitle = '';
     }
 
     ngOnInit(): void {
@@ -74,12 +85,18 @@ export class OptionsMenuComponent implements OnInit {
         console.log(this.options);
     }
 
-    openRedirection(id: number) {
+    deleteMenu(){
+        this.deleteMenuEventEmitter.emit();
+    }
+
+    openRedirection(id: number,value: string) {
+        this.redirectionTitle = value;
         this.redirectionStatus = true;
         this.options[id].action = 'redirect';
     }
 
-    openMenu(id: number) {
+    openMenu(id: number,value: string) {
+        this.menuTitle = value;
         this.menuStatus = true;
         this.options[id].action = 'menu';
         this.sendReferenceEmitter.emit(this.options[id].value);
@@ -93,5 +110,9 @@ export class OptionsMenuComponent implements OnInit {
     getRedirecObject(redirect: Redirect){
         this.redirectionStatus = false;
         this.getRedirecObjectEventEmitter.emit(redirect);
+    }
+
+    changeReference(option: Option){
+        this.changeReferenceEventEmitter.emit(option);
     }
 }

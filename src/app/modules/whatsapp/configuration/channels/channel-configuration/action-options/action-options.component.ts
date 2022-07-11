@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import icClose from "@iconify/icons-ic/twotone-close";
 import icMessage from "@iconify/icons-ic/message";
-import { Menu, Redirect } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
+import { Menu, Option, Redirect } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
 
 @Component({
     selector: "frontend-whatsapp-action-options",
@@ -128,6 +128,18 @@ export class ActionOptionsComponent implements OnInit {
 
     getOptionName(value: string){
         this.reference.push(value);
+    }
+
+    changeReference(option: Option){
+        this.reference.splice(option.id+1,0,option.value);
+    }
+
+    deleteMenu(id: number){
+        this.menus.splice(id, 1);
+
+        this.menus.forEach((e, i) => {
+            e.id = i;
+        });
     }
 
     ngOnDestroy(): void {
