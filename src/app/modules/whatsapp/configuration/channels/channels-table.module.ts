@@ -35,6 +35,8 @@ import { ActionOptionsComponent } from './channel-configuration/action-options/a
 import { OptionsMenuComponent } from './channel-configuration/action-options/options-menu/options-menu.component';
 import { MenuElementComponent } from './channel-configuration/action-options/options-menu/menu-element/menu-element.component';
 import { MenuRedirectionComponent } from './channel-configuration/action-options/options-menu/menu-redirection/menu-redirection.component';
+import { ChannelViewComponent } from './channel-view/channel-view.component';
+import { MenuViewComponent } from './channel-view/menu-view/menu-view.component';
 
 
 @NgModule({
@@ -55,6 +57,8 @@ import { MenuRedirectionComponent } from './channel-configuration/action-options
     OptionsMenuComponent,
     MenuElementComponent,
     MenuRedirectionComponent,
+    ChannelViewComponent,
+    MenuViewComponent,
   ],
   imports: [
     CommonModule,

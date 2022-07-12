@@ -3,7 +3,7 @@
         <mat-icon *ngIf="!toggle">chevron_right</mat-icon>
         <mat-icon *ngIf="toggle">expand_more</mat-icon>
     </button>
-    <p class="base" *ngIf="!status" (click)="status = !status">{{ title }}</p>
+    <p class="base" *ngIf="!status">{{ title }}</p>
     <mat-form-field *ngIf="status" appearance="legacy">
         <input matInput [(ngModel)]="title" />
         <button matSuffix mat-icon-button (click)="status = false">
@@ -11,6 +11,12 @@
         </button>
     </mat-form-field>
     <span style="color: gainsboro;" class="text-xs ml-3">(Ref. {{ref}})</span>
+    <button mat-icon-button type="button" color="primary" (click)="status = !status">
+        <mat-icon>edit</mat-icon>
+    </button>
+    <button  mat-icon-button type="button" color="primary" (click)="deleteMenu()">
+        <mat-icon>delete</mat-icon>
+    </button>
     <button class="ml-3" *ngIf="options.length === 0" mat-flat-button color="primary" (click)="addOption(0)">
         Agregar Opción
     </button>
@@ -21,7 +27,7 @@
             <p *ngIf="!optionStatus[i]">{{ option.value }}</p>
             <mat-form-field *ngIf="optionStatus[i]" appearance="legacy">
                 <input matInput [(ngModel)]="option.value" />
-                <button matSuffix mat-icon-button (click)="optionStatus[i] = false">
+                <button matSuffix mat-icon-button (click)="optionStatus[i] = false;changeReference(option)">
                     <mat-icon>check</mat-icon>
                 </button>
             </mat-form-field>
@@ -33,11 +39,11 @@
                     <mat-icon>arrow_right_alt</mat-icon>
                     <span>Acciones</span>
                 </button>
-                <button mat-menu-item (click)="openRedirection(option.id)">
+                <button mat-menu-item (click)="openRedirection(option.id,option.value)">
                     <mat-icon>fork_right</mat-icon>
                     <span>Transferir</span>
                 </button>
-                <button mat-menu-item (click)="openMenu(option.id)">
+                <button mat-menu-item (click)="openMenu(option.id,option.value)">
                     <mat-icon>menu</mat-icon>
                     <span>Menu</span>
                 </button>
@@ -60,11 +66,13 @@
     </ul>
 </div>
 
+<h5 *ngIf="menuStatus" class="text-primary font-semibold">{{menuTitle}}</h5>
 <frontend-whatsapp-menu-element
     (acceptEventEmitter)="getMenuTitle($event)"
     (cancelEventEmitter)="menuStatus = false"
     *ngIf="menuStatus"
 ></frontend-whatsapp-menu-element>
+<h5 *ngIf="redirectionStatus" class="text-primary font-semibold">{{redirectionTitle}}</h5>
 <frontend-whatsapp-menu-redirection
     (acceptEventEmitter)="getRedirecObject($event)"
     (cancelEventEmitter)="redirectionStatus = false"

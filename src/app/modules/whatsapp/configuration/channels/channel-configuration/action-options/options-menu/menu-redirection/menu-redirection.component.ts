@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Subscription } from "rxjs";
 import { Redirect } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
 import { GroupService } from "src/app/modules/whatsapp/services/group.service";

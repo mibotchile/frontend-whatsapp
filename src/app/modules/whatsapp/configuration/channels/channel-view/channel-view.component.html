@@ -1,0 +1,35 @@
+<form>
+    <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+        <h2 class="headline m-0" fxFlex="auto">Ver Configuración</h2>
+
+        <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+            <mat-icon [icIcon]="icClose"></mat-icon>
+        </button>
+    </div>
+
+    <mat-divider class="-mx-6 text-border"></mat-divider>
+
+    <mat-dialog-content fxLayout="column">
+        <div class="box" *ngFor="let configuration of prettyConfiguration; index as i">
+            <div class="flex w-full">
+                <div class="position">{{ i + 1 }}</div>
+                <div *ngIf="configuration.type === 'message'">{{ configuration.data }}</div>
+                <div *ngIf="configuration.type === 'data_request'">
+                    <ul class="list-disc ml-5">
+                        <li *ngFor="let question of configuration.data">
+                            {{question}}
+                        </li>
+                    </ul>
+                </div>
+                <div *ngIf="configuration.type === 'menu'">
+                    <frontend-whatsapp-menu-view [data]="configuration.data"></frontend-whatsapp-menu-view>
+                </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close type="button">CANCELAR</button>
+        <button color="primary" (click)="openUpdateRedirection()" mat-button type="submit">EDITAR GUÍA</button>
+    </mat-dialog-actions>
+</form>

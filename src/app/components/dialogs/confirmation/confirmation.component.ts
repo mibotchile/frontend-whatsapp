@@ -7,10 +7,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
     styleUrls: ["./confirmation.component.scss"],
 })
 export class ConfirmationComponent implements OnInit {
-    constructor(
-        public dialogRef: MatDialogRef<ConfirmationComponent>,
-        @Inject(MAT_DIALOG_DATA) public userNameToAssign: any
-    ) {}
+    constructor(public dialogRef: MatDialogRef<ConfirmationComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {}
 
     ngOnInit(): void {}
     closeDialog(result: boolean) {

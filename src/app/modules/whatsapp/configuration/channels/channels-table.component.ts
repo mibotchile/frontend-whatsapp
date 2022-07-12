@@ -4,6 +4,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import icSearch from "@iconify/icons-ic/twotone-search";
 import icMoreHoriz from "@iconify/icons-ic/twotone-more-horiz";
 import icSettings from "@iconify/icons-ic/twotone-settings";
+import icEye from "@iconify/icons-ic/twotone-remove-red-eye";
 import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
 import { TableColumn } from "src/@vex/interfaces/table-column.interface";
@@ -13,6 +14,7 @@ import { ChannelService } from "../../services/channel.service";
 import { Channel } from "../../models/channel.model";
 import { ChannelConfigurationComponent } from "./channel-configuration/channel-configuration.component";
 import { MatDialog } from "@angular/material/dialog";
+import { ChannelViewComponent } from "./channel-view/channel-view.component";
 
 @Component({
     selector: "frontend-whatsapp-channels-table",
@@ -25,6 +27,7 @@ export class ChannelsTableComponent implements OnInit, OnDestroy {
     icSearch = icSearch;
     icMoreHoriz = icMoreHoriz;
     icSettings = icSettings;
+    icEye = icEye;
 
     //Inputs
     @Input()
@@ -89,6 +92,17 @@ export class ChannelsTableComponent implements OnInit, OnDestroy {
                 //         }
                 //     );
                 // }
+            });
+    }
+
+    viewChannel(channel: Channel) {
+        this.dialog
+            .open(ChannelViewComponent, {
+                data: channel,
+            })
+            .afterClosed()
+            .subscribe(() => {
+
             });
     }
 

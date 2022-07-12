@@ -1,0 +1,15 @@
+<ul>
+    <li>
+        {{data.title}}
+        <ul class="ml-10 list-decimal">
+            <li *ngFor="let option of data.options">
+                <div *ngIf="option.type === 'redirect'">
+                    {{option.data}}
+                </div>
+                <div *ngIf="option.type === 'menu'">
+                    <frontend-whatsapp-menu-view [data]="option.data"></frontend-whatsapp-menu-view>
+                </div>
+            </li>
+        </ul>
+    </li>
+</ul>
