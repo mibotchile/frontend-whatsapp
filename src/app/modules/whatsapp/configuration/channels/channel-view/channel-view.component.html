@@ -24,6 +24,9 @@
                 <div *ngIf="configuration.type === 'menu'">
                     <frontend-whatsapp-menu-view [data]="configuration.data"></frontend-whatsapp-menu-view>
                 </div>
+                <div *ngIf="configuration.type === 'redirect'">
+                    {{ configuration.data }}
+                </div>
             </div>
         </div>
     </mat-dialog-content>
