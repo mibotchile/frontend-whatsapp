@@ -72,4 +72,16 @@ export class ChannelService {
     });
   }
 
+  getPrettyConfiguration(number: string){
+    let headers = new HttpHeaders();
+    headers = headers.append(
+      "mibot_session",
+      '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
+    );
+
+    return this.http.get(`${environment.url_api}channel/prettyConfig/number/${number}`, {
+      headers: headers,
+    });
+  }
+
 }

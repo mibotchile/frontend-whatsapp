@@ -4,7 +4,10 @@ import { Subscription } from "rxjs";
 import { ChannelConfiguration, Step } from "../../../interfaces/channel-configuration.interface";
 import { ChannelService } from "../../../services/channel.service";
 import { Item } from "../channel-configuration/item.interface";
-
+import icClose from "@iconify/icons-ic/twotone-close";
+import { PrettyConfig } from "./pretty-config.interface";
+import { Channel } from "../../../models/channel.model";
+import { ChannelConfigurationComponent } from "../channel-configuration/channel-configuration.component";
 
 @Component({
     selector: "frontend-whatsapp-channel-view",
@@ -12,6 +15,8 @@ import { Item } from "../channel-configuration/item.interface";
     styleUrls: ["./channel-view.component.scss"],
 })
 export class ChannelViewComponent implements OnInit, OnDestroy {
+
+    icClose = icClose;
 
     items: Item[] = [
         { action: "message", value: "Mensaje" },
@@ -22,8 +27,7 @@ export class ChannelViewComponent implements OnInit, OnDestroy {
     ];
 
     subscription: Subscription;
-    configuration: ChannelConfiguration;
-    steps: Step[];
+    prettyConfiguration: PrettyConfig;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public defaults: any,
@@ -36,15 +40,23 @@ export class ChannelViewComponent implements OnInit, OnDestroy {
         this.subscription = new Subscription();
 
         this.subscription = this.channelService
-            .getChannelConfig(this.defaults.phoneNumber)
+            .getPrettyConfiguration(this.defaults.phoneNumber)
             .subscribe((response: any) => {
-                this.configuration = response.data;
-                this.steps = response.data.steps;
+                this.prettyConfiguration = response.data;
             });
 
     }
 
-
+    openUpdateRedirection(){
+        this.dialog
+            .open(ChannelConfigurationComponent, {
+                data: this.defaults,
+            })
+            .afterClosed()
+            .subscribe(() => {
+                this.dialogRef.close();
+            });
+    }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
