@@ -232,10 +232,13 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
             console.log("websockets connection established");
         });
     }
-    redirectConversation(managerId: number) {
-        if (!this.selectedConversation?.id || !managerId) return;
-        let userToAssignName = this.usersToAssign.find((userToAssign) => userToAssign.id === managerId);
-        this.openConfirmationDialog(userToAssignName.name)
+    redirectConversation(userToAssign: User = this.user) {
+        if (!this.selectedConversation?.id || !userToAssign.id) return;
+        const DIALOG_BODY =
+            userToAssign == this.user
+                ? "¿Está seguro de tomar esta conversación?"
+                : `¿Está seguro de asignar la conversación a ${this.user.name}?`;
+        this.openConfirmationDialog("Confirmar asignación", DIALOG_BODY)
             .afterClosed()
             .subscribe((didUserConfirm) => {
                 if (didUserConfirm) {
@@ -243,11 +246,9 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
                     const PAYLOAD = {
                         conversationId: this.selectedConversation.id,
                         manager: "user",
-                        managerId: managerId,
+                        managerId: userToAssign.id,
                     };
                     this.websocketService.emit("redirect_conversation", PAYLOAD);
-                    console.log(this.selectedGroup, "---conversation-chat");
-                    // this.groupService.changeGroup(this.selectedGroup);
                     this.selectedConversation = null;
                     this.conversationsService.changeConversation(null);
                 }
@@ -275,10 +276,14 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
         });
     }
 
-    openConfirmationDialog(userToAssignName: string) {
+    openConfirmationDialog(title: string, body: string) {
+        const DIALOG_DATA = {
+            title,
+            body,
+        };
         return this.dialog.open(ConfirmationComponent, {
             width: "350px",
-            data: userToAssignName,
+            data: DIALOG_DATA,
         });
     }
 }
