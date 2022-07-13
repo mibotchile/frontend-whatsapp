@@ -12,7 +12,7 @@
     <mat-dialog-content fxLayout="column">
         <div class="my-5 addQuestion">
             <h3>Ingrese una nueva pregunta</h3>
-            <button mat-icon-button class="ml-3" color="primary" (click)="addQuestion()" type="button">
+            <button mat-icon-button class="ml-3" color="primary" (click)="addQuestion()" type="button" [disabled]="deactivationStatus$ | async">
                 <mat-icon>add</mat-icon>
             </button>
         </div>
@@ -30,7 +30,7 @@
 
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close type="button">CANCELAR</button>
-        <button *ngIf="isCreateMode()" color="primary" mat-button type="submit">CREAR PETICIÓN DE DATOS</button>
-        <button *ngIf="isUpdateMode()" color="primary" mat-button type="submit">ACTUALIZAR MENSAJE</button>
+        <button *ngIf="isCreateMode()" color="primary" mat-button type="submit" [disabled]="deactivationStatus$ | async">CREAR PETICIÓN DE DATOS</button>
+        <button *ngIf="isUpdateMode()" color="primary" mat-button type="submit" [disabled]="deactivationStatus$ | async">ACTUALIZAR MENSAJE</button>
     </mat-dialog-actions>
 </form>

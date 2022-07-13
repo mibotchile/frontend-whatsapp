@@ -3,13 +3,10 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dial
 import { CdkDragDrop, copyArrayItem, moveItemInArray, transferArrayItem } from "@angular/cdk/drag-drop";
 import { ChannelService } from "../../../services/channel.service";
 import { Subscription } from "rxjs";
-import { ChannelConfiguration, Message, Step } from "../../../interfaces/channel-configuration.interface";
+import { ChannelConfiguration, Step } from "../../../interfaces/channel-configuration.interface";
 import { ActionMessageComponent } from "./action-message/action-message.component";
-import { Channel } from "../../../models/channel.model";
 import { Item } from "./item.interface";
 import { ActionDataRequestComponent } from "./action-data-request/action-data-request.component";
-import { ActionOptionsMenuComponent } from "./action-options-menu/action-options-menu.component";
-import { ActionAttentionComponent } from "./action-attention/action-attention.component";
 import { ActionRedirectionComponent } from "./action-redirection/action-redirection.component";
 import { ActionOptionsComponent } from "./action-options/action-options.component";
 
@@ -45,7 +42,6 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
     messageId: number;
     dataRequestId: number;
     optionsMenuId: number;
-    attentionId: number;
     redirectId: number;
 
     constructor(
@@ -58,7 +54,6 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
         this.messageId = 0;
         this.dataRequestId = 0;
         this.optionsMenuId = 0;
-        this.attentionId = 0;
         this.redirectId = 0;
     }
 
@@ -160,10 +155,6 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                 actionStep += `.${this.redirectId}`;
                 this.redirectId++;
                 break;
-            case "attention":
-                actionStep += `.${this.attentionId}`;
-                this.attentionId++;
-                break;
             default:
                 break;
         }
@@ -197,14 +188,10 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                 value = ActionDataRequestComponent;
                 break;
             case "menu":
-                //value = ActionOptionsMenuComponent;
                 value = ActionOptionsComponent;
                 break;
             case "redirect":
                 value = ActionRedirectionComponent;
-                break;
-            case "attention":
-                value = ActionAttentionComponent;
                 break;
             default:
                 break;
@@ -218,7 +205,6 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                     messageId: this.messageId,
                     dataRequestId: this.dataRequestId,
                     optionsMenuId: this.optionsMenuId,
-                    attentionId: this.attentionId,
                     redirectId: this.redirectId
                 },
             })

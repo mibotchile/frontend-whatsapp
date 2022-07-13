@@ -4,6 +4,8 @@ import icPeople from "@iconify/icons-ic/people";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Question, Quize } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { DataRequestStatusService } from "./data-request-status.service";
+import { Subscription } from "rxjs";
 
 @Component({
     selector: "frontend-whatsapp-action-data-request",
@@ -11,6 +13,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
     styleUrls: ["./action-data-request.component.scss"],
 })
 export class ActionDataRequestComponent implements OnInit, OnDestroy {
+
+    deactivationStatus$ = this.dataRequestStatusService.getStatusObs();
+
     panelOpenState = false;
 
     questions: Question[];
@@ -24,10 +29,13 @@ export class ActionDataRequestComponent implements OnInit, OnDestroy {
     question: Question;
     action: string;
 
+    subscription: Subscription;
+
     constructor(
         @Inject(MAT_DIALOG_DATA) public defaults: any,
         private dialogRef: MatDialogRef<ActionDataRequestComponent>,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private dataRequestStatusService: DataRequestStatusService
     ) {
 
     }
@@ -64,6 +72,7 @@ export class ActionDataRequestComponent implements OnInit, OnDestroy {
             error_message: "",
         });
 
+        this.dataRequestStatusService.setConfigObs(true);
     }
 
     save() {
@@ -119,6 +128,7 @@ export class ActionDataRequestComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.dataRequestStatusService.setConfigObs(false);
         this.dialogRef.close([this.defaults.configuration, this.action]);
     }
 }
