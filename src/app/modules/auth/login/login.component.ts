@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit {
           horizontalPosition: 'center',
           panelClass: ['green-snackbar']
         });
-        this.router.navigate(["dashboard"]);
+        this.router.navigate([""]);
       })
       .catch((error) => {
         this.snackbar.open(error.message, 'X', {
