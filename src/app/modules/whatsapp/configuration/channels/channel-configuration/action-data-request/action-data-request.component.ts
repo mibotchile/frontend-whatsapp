@@ -28,7 +28,9 @@ export class ActionDataRequestComponent implements OnInit, OnDestroy {
         @Inject(MAT_DIALOG_DATA) public defaults: any,
         private dialogRef: MatDialogRef<ActionDataRequestComponent>,
         private fb: FormBuilder
-    ) {}
+    ) {
+
+    }
 
     ngOnInit(): void {
         this.action = "noaction";
@@ -61,6 +63,7 @@ export class ActionDataRequestComponent implements OnInit, OnDestroy {
             response_type: "",
             error_message: "",
         });
+
     }
 
     save() {

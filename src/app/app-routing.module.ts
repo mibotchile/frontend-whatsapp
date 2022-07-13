@@ -13,6 +13,11 @@ const routes: Routes = [
         path: 'whatsapp',
         loadChildren: () => import('./modules/whatsapp/whatsapp.module').then(m => m.WhatsappModule),
       },
+      {
+        path: 'dashboard',
+        loadChildren: () =>
+          import('./modules/dashboard/dashboard.module').then((m) => m.DashboardModule),
+      },
     ]
   },
   {
@@ -20,6 +25,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/auth/login/login.module').then((m) => m.LoginModule),
   },
+
 ];
 
 @NgModule({

@@ -6,6 +6,7 @@ import icRadioButtonUnchecked from '@iconify/icons-ic/twotone-radio-button-unche
 import { LayoutService } from '../../services/layout.service';
 import { ConfigService } from '../../services/config.service';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'vex-sidenav',
@@ -42,5 +43,9 @@ export class SidenavComponent implements OnInit {
 
   toggleCollapse() {
     this.collapsed ? this.layoutService.expandSidenav() : this.layoutService.collapseSidenav();
+  }
+
+  redirectToWorkspace(){
+    window.location.href = environment.main_url;
   }
 }

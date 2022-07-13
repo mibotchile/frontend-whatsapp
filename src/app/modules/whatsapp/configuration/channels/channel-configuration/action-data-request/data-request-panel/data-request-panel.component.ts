@@ -48,8 +48,6 @@ export class DataRequestPanelComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
-        console.log(this.data);
-
         this.question = this.data.question;
         this.error = this.data.error_message;
         this.selected = Number(this.data.response_type);

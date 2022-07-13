@@ -22,6 +22,7 @@ import { PopoverRef } from '../../../../components/popover/popover-ref';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { MenuService } from 'src/app/services/menu.service';
+import { environment } from 'src/environments/environment';
 
 export interface OnlineStatus {
   id: 'online' | 'away' | 'dnd' | 'offline';
@@ -136,7 +137,8 @@ export class ToolbarUserDropdownComponent implements OnInit {
       .then(() => {
         localStorage.clear();
         this.menuService.setConfigObs([]);
-        this.router.navigate(['/login']);
+        //this.router.navigate(['/login']);
+        window.location.href = environment.main_url;
       })
       .catch((error) => console.log(error));
   }

@@ -12,4 +12,6 @@ export const environment = {
         messagingSenderId: "842101994443",
         appId: "1:842101994443:web:db05c175c514fec603bc4e",
     },
+
+    main_url: "https://valhalla.mibot.cl/",
 };
