@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OptionsMenuItemComponent } from './options-menu-item.component';
+import { WelcomeDashboardComponent } from './welcome-dashboard.component';
 
-describe('OptionsMenuItemComponent', () => {
-  let component: OptionsMenuItemComponent;
-  let fixture: ComponentFixture<OptionsMenuItemComponent>;
+describe('WelcomeDashboardComponent', () => {
+  let component: WelcomeDashboardComponent;
+  let fixture: ComponentFixture<WelcomeDashboardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OptionsMenuItemComponent ]
+      declarations: [ WelcomeDashboardComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OptionsMenuItemComponent);
+    fixture = TestBed.createComponent(WelcomeDashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

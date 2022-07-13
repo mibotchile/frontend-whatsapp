@@ -3,11 +3,12 @@ import { FormControl, FormGroup } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { Question } from "src/app/modules/whatsapp/interfaces/channel-configuration.interface";
 import { ChannelService } from "src/app/modules/whatsapp/services/channel.service";
+import { DataRequestStatusService } from "../data-request-status.service";
 
 interface Type {
     value: number;
     viewValue: string;
-  }
+}
 
 @Component({
     selector: "frontend-whatsapp-data-request-panel",
@@ -15,7 +16,6 @@ interface Type {
     styleUrls: ["./data-request-panel.component.scss"],
 })
 export class DataRequestPanelComponent implements OnInit, OnDestroy {
-
     @Input()
     questionNumber: number;
 
@@ -41,15 +41,12 @@ export class DataRequestPanelComponent implements OnInit, OnDestroy {
         { value: 2, viewValue: "Email" },
     ];
 
-    constructor(private channelService: ChannelService) {
-        this.question = '';
-        this.error = '';
+    constructor(private channelService: ChannelService, private dataRequestStatusService: DataRequestStatusService) {
+        this.question = "";
+        this.error = "";
     }
 
     ngOnInit(): void {
-
-        console.log(this.data);
-
         this.question = this.data.question;
         this.error = this.data.error_message;
         this.selected = Number(this.data.response_type);
@@ -57,26 +54,28 @@ export class DataRequestPanelComponent implements OnInit, OnDestroy {
         this.subscription = new Subscription();
         this.subscription = this.channelService.getResponseValidator().subscribe((response: any) => {
             this.types = [];
-            response.forEach(e=>{
+            response.forEach((e) => {
                 this.types.push({
                     value: e.id,
-                    viewValue: e.name
+                    viewValue: e.name,
                 });
             });
         });
     }
 
-    onDelete(){
+    onDelete() {
         this.deleteQuestionEvent.emit();
     }
 
-    onCreate(){
-        let questionObject : Question = {
+    onCreate() {
+        let questionObject: Question = {
             id: 0,
             question: this.question,
             response_type: this.selected.toString(),
-            error_message: this.error
-        }
+            error_message: this.error,
+        };
+
+        this.dataRequestStatusService.setConfigObs(false);
 
         this.createQuestionEvent.emit(questionObject);
     }
@@ -85,4 +84,3 @@ export class DataRequestPanelComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 }
-

@@ -25,10 +25,6 @@ import { ActionDataRequestComponent } from './channel-configuration/action-data-
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSelectModule} from '@angular/material/select';
 import { DataRequestPanelComponent } from './channel-configuration/action-data-request/data-request-panel/data-request-panel.component';
-import { ActionOptionsMenuComponent } from './channel-configuration/action-options-menu/action-options-menu.component';
-import { ActionAttentionComponent } from './channel-configuration/action-attention/action-attention.component';
-import { OptionsMenuItemComponent } from './channel-configuration/action-options-menu/options-menu-container/options-menu-item/options-menu-item.component';
-import { OptionsMenuContainerComponent } from './channel-configuration/action-options-menu/options-menu-container/options-menu-container.component';
 import { ActionRedirectionComponent } from './channel-configuration/action-redirection/action-redirection.component';
 import {MatRadioModule} from '@angular/material/radio';
 import { ActionOptionsComponent } from './channel-configuration/action-options/action-options.component';
@@ -48,10 +44,6 @@ import { MenuViewComponent } from './channel-view/menu-view/menu-view.component'
     ActionMessageComponent,
     ActionDataRequestComponent,
     DataRequestPanelComponent,
-    ActionOptionsMenuComponent,
-    ActionAttentionComponent,
-    OptionsMenuItemComponent,
-    OptionsMenuContainerComponent,
     ActionRedirectionComponent,
     ActionOptionsComponent,
     OptionsMenuComponent,

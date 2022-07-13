@@ -29,6 +29,8 @@ export class ChannelsTableComponent implements OnInit, OnDestroy {
     icSettings = icSettings;
     icEye = icEye;
 
+    visualizationStatus: boolean;
+
     //Inputs
     @Input()
     columns: TableColumn<any>[] = [
@@ -104,6 +106,19 @@ export class ChannelsTableComponent implements OnInit, OnDestroy {
             .subscribe(() => {
 
             });
+    }
+
+    validateVisualizationStatus(channel: Channel){
+        this.subscription = this.channelService.getPrettyConfiguration(channel.phoneNumber).subscribe(
+            (response: any)=>{
+                if (response && response.data.length>0) {
+                    this.visualizationStatus = true;
+                    console.log(response)
+                }else{
+                    this.visualizationStatus = false;
+                }
+            }
+        );
     }
 
     get visibleColumns() {
