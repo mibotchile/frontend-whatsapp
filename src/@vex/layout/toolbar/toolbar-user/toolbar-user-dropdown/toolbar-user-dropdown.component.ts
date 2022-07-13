@@ -138,7 +138,7 @@ export class ToolbarUserDropdownComponent implements OnInit {
         localStorage.clear();
         this.menuService.setConfigObs([]);
         //this.router.navigate(['/login']);
-        window.location.href = environment.main_url;
+        window.location.href = `${environment.main_url}/logout`;
       })
       .catch((error) => console.log(error));
   }
