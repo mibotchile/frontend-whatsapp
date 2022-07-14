@@ -15,151 +15,138 @@ import { ConfigName } from "../@vex/interfaces/config-name.model";
 import menu from "../static-data/menu.json";
 import { MenuService } from "./services/menu.service";
 import { Subscription } from "rxjs";
+import { environment } from "src/environments/environment";
 
 @Component({
-  selector: "vex-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"],
+    selector: "vex-root",
+    templateUrl: "./app.component.html",
+    styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = "vex";
+    title = "vex";
 
-  subscription: Subscription;
+    subscription: Subscription;
 
-  menuItems: any = {};
-  //menu: any = JSON.parse(localStorage.getItem('config'));
-  menu:any = menu;
-  newItems: any = {};
+    menuItems: any = {};
+    //menu: any = JSON.parse(localStorage.getItem('config'));
+    menu: any = menu;
+    newItems: any = {};
 
-  items: any = [
-    {
-      type: "dropdown",
-      label: "Whatsapp",
-      //route: '/',
-      icon: icHome,
-      //routerLinkActiveOptions: { exact: true },
-      children: [
+    items: any = [
         {
-          type: "link",
-          label: "Conversaciones",
-          name: "conversation",
-          route: "/apps/chat",
+            type: "dropdown",
+            label: "Whatsapp",
+            //route: '/',
+            icon: icHome,
+            //routerLinkActiveOptions: { exact: true },
+            children: [
+                {
+                    type: "link",
+                    label: "Conversaciones",
+                    name: "conversation",
+                    route: "/apps/chat",
+                },
+                {
+                    type: "link",
+                    label: "Configuracion",
+                    name: "settings",
+                    route: "/whatsapp/configuration",
+                },
+            ],
         },
-        {
-          type: "link",
-          label: "Configuracion",
-          name: "settings",
-          route: "/whatsapp/configuration",
-        },
-      ],
-    },
-  ];
+    ];
 
-  constructor(
-    private configService: ConfigService,
-    private styleService: StyleService,
-    private renderer: Renderer2,
-    private platform: Platform,
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(LOCALE_ID) private localeId: string,
-    private layoutService: LayoutService,
-    private route: ActivatedRoute,
-    //private navigationService: NavigationService,
-    private splashScreenService: SplashScreenService,
-    private menuService: MenuService
-  ) {
-    Settings.defaultLocale = this.localeId;
+    constructor(
+        private configService: ConfigService,
+        private styleService: StyleService,
+        private renderer: Renderer2,
+        private platform: Platform,
+        @Inject(DOCUMENT) private document: Document,
+        @Inject(LOCALE_ID) private localeId: string,
+        private layoutService: LayoutService,
+        private route: ActivatedRoute,
+        //private navigationService: NavigationService,
+        private splashScreenService: SplashScreenService,
+        private menuService: MenuService
+    ) {
+        Settings.defaultLocale = this.localeId;
 
-    if (this.platform.BLINK) {
-      this.renderer.addClass(this.document.body, "is-blink");
+        if (this.platform.BLINK) {
+            this.renderer.addClass(this.document.body, "is-blink");
+        }
+
+        /**
+         * Customize the template to your needs with the ConfigService
+         * Example:
+         *  this.configService.updateConfig({
+         *    sidenav: {
+         *      title: 'Custom App',
+         *      imageUrl: '//placehold.it/100x100',
+         *      showCollapsePin: false
+         *    },
+         *    showConfigButton: false,
+         *    footer: {
+         *      visible: false
+         *    }
+         *  });
+         */
+        console.log(environment);
+        this.configService.updateConfig({
+            sidenav: {
+                title: environment.production ? "workspace" : "valhalla",
+                imageUrl: "./../assets/img/logo.svg",
+                showCollapsePin: true,
+            },
+            footer: {
+                visible: false,
+            },
+        });
+
+        /**
+         * Config Related Subscriptions
+         * You can remove this if you don't need the functionality of being able to enable specific configs with queryParams
+         * Example: example.com/?layout=apollo&style=default
+         */
+        this.route.queryParamMap
+            .pipe(map((queryParamMap) => queryParamMap.has("rtl") && coerceBooleanProperty(queryParamMap.get("rtl"))))
+            .subscribe((isRtl) => {
+                this.document.body.dir = isRtl ? "rtl" : "ltr";
+                this.configService.updateConfig({
+                    rtl: isRtl,
+                });
+            });
+
+        this.route.queryParamMap
+            .pipe(filter((queryParamMap) => queryParamMap.has("layout")))
+            .subscribe((queryParamMap) => this.configService.setConfig(queryParamMap.get("layout") as ConfigName));
+
+        this.route.queryParamMap
+            .pipe(filter((queryParamMap) => queryParamMap.has("style")))
+            .subscribe((queryParamMap) => this.styleService.setStyle(queryParamMap.get("style") as Style));
+
+        this.menuNavigation();
     }
 
-    /**
-     * Customize the template to your needs with the ConfigService
-     * Example:
-     *  this.configService.updateConfig({
-     *    sidenav: {
-     *      title: 'Custom App',
-     *      imageUrl: '//placehold.it/100x100',
-     *      showCollapsePin: false
-     *    },
-     *    showConfigButton: false,
-     *    footer: {
-     *      visible: false
-     *    }
-     *  });
-     */
+    ngOnInit(): void {
+        // this.subscription = new Subscription();
+        //   this.subscription = this.menuService.getConfigObs().subscribe((response)=>{
+        //     //this.menu = response;
+        //     console.log(response)
+        //   });
+    }
 
-    this.configService.updateConfig({
-      sidenav: {
-        title: "WhatsApp",
-        imageUrl: "./../assets/img/logo.svg",
-        showCollapsePin: true,
-      },
-      footer: {
-        visible: false,
-      },
-    });
+    menuNavigation() {
+        this.menuItems = this.items[0].children.filter((childrenItem) =>
+            this.menu.map((menuItem) => menuItem.name).includes(childrenItem.label.toLowerCase())
+        );
 
-    /**
-     * Config Related Subscriptions
-     * You can remove this if you don't need the functionality of being able to enable specific configs with queryParams
-     * Example: example.com/?layout=apollo&style=default
-     */
-    this.route.queryParamMap
-      .pipe(
-        map(
-          (queryParamMap) =>
-            queryParamMap.has("rtl") &&
-            coerceBooleanProperty(queryParamMap.get("rtl"))
-        )
-      )
-      .subscribe((isRtl) => {
-        this.document.body.dir = isRtl ? "rtl" : "ltr";
-        this.configService.updateConfig({
-          rtl: isRtl,
-        });
-      });
+        this.newItems = this.items;
+        this.newItems[0].children = this.menuItems;
 
-    this.route.queryParamMap
-      .pipe(filter((queryParamMap) => queryParamMap.has("layout")))
-      .subscribe((queryParamMap) =>
-        this.configService.setConfig(queryParamMap.get("layout") as ConfigName)
-      );
+        //this.navigationService.items = this.newItems;
+    }
 
-    this.route.queryParamMap
-      .pipe(filter((queryParamMap) => queryParamMap.has("style")))
-      .subscribe((queryParamMap) =>
-        this.styleService.setStyle(queryParamMap.get("style") as Style)
-      );
-
-    this.menuNavigation();
-  }
-
-  ngOnInit(): void {
-    // this.subscription = new Subscription();
-    //   this.subscription = this.menuService.getConfigObs().subscribe((response)=>{
-    //     //this.menu = response;
-    //     console.log(response)
-    //   });
-  }
-
-  menuNavigation() {
-    this.menuItems = this.items[0].children.filter((childrenItem) =>
-      this.menu
-        .map((menuItem) => menuItem.name)
-        .includes(childrenItem.label.toLowerCase())
-    );
-
-    this.newItems = this.items;
-    this.newItems[0].children = this.menuItems;
-
-    //this.navigationService.items = this.newItems;
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
-  
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+    }
 }

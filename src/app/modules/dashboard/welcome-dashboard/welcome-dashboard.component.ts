@@ -1,17 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'frontend-whatsapp-welcome-dashboard',
-  templateUrl: './welcome-dashboard.component.html',
-  styleUrls: ['./welcome-dashboard.component.scss']
+    selector: "frontend-whatsapp-welcome-dashboard",
+    templateUrl: "./welcome-dashboard.component.html",
+    styleUrls: ["./welcome-dashboard.component.scss"],
 })
 export class WelcomeDashboardComponent implements OnInit {
+    constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-
-  }
-
+    ngOnInit(): void {}
 }
