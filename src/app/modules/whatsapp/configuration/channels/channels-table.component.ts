@@ -34,7 +34,7 @@ export class ChannelsTableComponent implements OnInit, OnDestroy {
     //Inputs
     @Input()
     columns: TableColumn<any>[] = [
-        { label: "Número Telefónico", property: "friendlyName", type: "text", visible: true },
+        { label: "Número Telefónico", property: "name", type: "text", visible: true },
         { label: "Acciones", property: "actions", type: "button", visible: true },
     ];
 
@@ -109,7 +109,8 @@ export class ChannelsTableComponent implements OnInit, OnDestroy {
     }
 
     validateVisualizationStatus(channel: Channel){
-        this.subscription = this.channelService.getPrettyConfiguration(channel.phoneNumber).subscribe(
+        debugger
+        this.subscription = this.channelService.getPrettyConfiguration(channel.phone_number).subscribe(
             (response: any)=>{
                 if (response && response.data.length>0) {
                     this.visualizationStatus = true;

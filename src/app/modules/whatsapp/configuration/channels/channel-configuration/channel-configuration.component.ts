@@ -65,7 +65,7 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
         this.subscription = new Subscription();
 
         this.subscription = this.channelService
-            .getChannelConfig(this.defaults.phoneNumber)
+            .getChannelConfig(this.defaults.phone_number)
             .subscribe((response: any) => {
                 if (response.data) {
                     this.config = response.data;
@@ -114,7 +114,7 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                     this.config = {
                         id: null,
                         channel_id: null,
-                        channel_number: this.defaults.phoneNumber,
+                        channel_number: this.defaults.phone_number,
                         menus: [],
                         messages: [],
                         quizes: [],

@@ -40,7 +40,7 @@ export class ChannelViewComponent implements OnInit, OnDestroy {
         this.subscription = new Subscription();
 
         this.subscription = this.channelService
-            .getPrettyConfiguration(this.defaults.phoneNumber)
+            .getPrettyConfiguration(this.defaults.phone_number)
             .subscribe((response: any) => {
                 this.prettyConfiguration = response.data;
             });
