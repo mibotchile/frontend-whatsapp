@@ -61,8 +61,8 @@ export class ConversationsSidenavComponent implements OnInit {
                 this.userService.setMyUserId(user.data);
                 this.userService.getGroups(user.data.id).subscribe((res: any) => {
                     if (res.success) {
-                        const MIS_CONVERSACIONES: Group = {
-                            id: user.data.id,
+                        const MIS_CONVERSACIONES: any = {
+                            id: "user_" + user.data.id,
                             name: "Mis conversaciones",
                             description: "mis conversaciones description",
                             tags: [],
@@ -71,6 +71,7 @@ export class ConversationsSidenavComponent implements OnInit {
                         };
                         this.groups.push(MIS_CONVERSACIONES, ...res.data);
                         this.openGroupConversations(MIS_CONVERSACIONES);
+                        console.log(this.groups);
                     }
                 });
             }

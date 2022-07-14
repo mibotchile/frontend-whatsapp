@@ -31,7 +31,7 @@ export class NoAssignedSidenavComponent implements OnInit, OnDestroy {
     closeConversationPanelEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     selectedConversationId: number;
-    selectedGroup: Group;
+    selectedGroup: any;
 
     conversations: conversation[] = [];
     lastRemovedConversationId: number;
@@ -87,7 +87,7 @@ export class NoAssignedSidenavComponent implements OnInit, OnDestroy {
             this.selectedGroup = group;
             if (this.selectedGroup?.name.toLowerCase().trim() === "mis conversaciones") {
                 this.conversationService
-                    .getUserConversations(this.selectedGroup.id)
+                    .getUserConversations(this.selectedGroup.id.replace("user_", ""))
                     .subscribe((res: conversation[]) => {
                         this.conversations = res;
                         console.log(res, "----- conve");
