@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { CustomLayoutComponent } from './custom-layout/custom-layout.component';
 import { canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 
@@ -34,7 +34,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, {
-    // preloadingStrategy: PreloadAllModules,
+    //preloadingStrategy: PreloadAllModules,
     scrollPositionRestoration: 'enabled',
     relativeLinkResolution: 'corrected',
     anchorScrolling: 'enabled'
