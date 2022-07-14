@@ -7,6 +7,11 @@ export const environment = {
     url_api: "http://localhost:3030/",
     url_websockets: "http://localhost:3003/",
 
+    aim: {
+        endpoint: "https://dev-apiaim.mibot.cl/v1/",
+        name: "aim-users-clients-billing-projects",
+    },
+
     firebase: {
         apiKey: "AIzaSyDuzZlM_0DdP0DpmrqdQ_OJbywSphVp_Ko",
         authDomain: "valhalla-onbotgo.firebaseapp.com",

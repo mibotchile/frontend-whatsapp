@@ -1,6 +1,8 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
 
 import arrowLeft from "@iconify/icons-ic/baseline-arrow-back-ios";
+import dropDownArrow from "@iconify/icons-ic/baseline-arrow-drop-down";
+
 import { Observable, Subscription } from "rxjs";
 import { ConversationsService } from "src/app/services/conversations.service";
 import { WebsocketsService } from "src/app/services/websockets.service";
@@ -18,6 +20,7 @@ import { UserService } from "../../../services/user.service";
 })
 export class NoAssignedSidenavComponent implements OnInit, OnDestroy {
     arrowLeft = arrowLeft;
+    dropDownArrow = dropDownArrow;
 
     @Input()
     isConversationsPanelShowing: boolean = false;
@@ -108,6 +111,7 @@ export class NoAssignedSidenavComponent implements OnInit, OnDestroy {
                     this.conversations[CONVERSATION_INDEX].newMessagesCount === undefined
                         ? 1
                         : this.conversations[CONVERSATION_INDEX].newMessagesCount + 1;
+                this.conversations[CONVERSATION_INDEX].last_message.created_at = message.created_at;
                 console.log(this.conversations[CONVERSATION_INDEX].newMessagesCount);
             }
         });

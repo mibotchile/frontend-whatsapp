@@ -19,6 +19,7 @@ import { GroupService } from "../../services/group.service";
 import { Group } from "../../models/group.model";
 import { MatDialog } from "@angular/material/dialog";
 import { ConfirmationComponent } from "src/app/components/dialogs/confirmation/confirmation.component";
+import { AuthService } from "src/app/services/auth.service";
 
 interface ownMessage {
     message: string;
@@ -59,6 +60,7 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
 
     message: string = "";
     chatMessages: Array<ownMessage | Message> = [];
+    clientAndProject;
 
     constructor(
         private router: Router,
@@ -68,8 +70,11 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
         private userService: UserService,
         private conversationsService: ConversationsService,
         private groupService: GroupService,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private authService: AuthService
     ) {
+        this.clientAndProject = this.authService.getClientAndProjectUid();
+        console.log(this.clientAndProject);
         if (this.userService.user?.id) {
             this.user = this.userService.user;
         } else {
@@ -139,6 +144,7 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
             channelNumber: "+9884522222",
             clientNumber: this.selectedConversation.client_number,
             conversationId: this.selectedConversation?.id,
+            projectUid: this.clientAndProject.project,
         };
         this.appendMessageInChat({
             id: "",
@@ -255,7 +261,7 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
             });
     }
     scrollChatToBottom() {
-        this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
+        this.messagesContainer.nativeElement.scrollTop = this.messagesContainer?.nativeElement?.scrollHeight;
     }
 
     ngOnDestroy() {
@@ -270,7 +276,7 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
         });
     }
     removeChatScrollActions() {
-        this.messagesContainer.nativeElement.removeEventListener("scroll", () => {
+        this.messagesContainer?.nativeElement?.removeEventListener("scroll", () => {
             this.showOldMessagesOnScrollNearTop(this.messagesContainer.nativeElement);
             this.showAttachedDateToTop(this.messagesContainer.nativeElement);
         });
