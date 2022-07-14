@@ -18,70 +18,40 @@ export class ChannelService {
       url+=`?page=${page}&pageSize=${pageSize}`
     }
 
-    let headers = new HttpHeaders();
-    headers = headers.append('mibot_session','{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}');
+
     return this.http.get<Channel[]>
-    (url, {headers: headers} );
+    (url);
   }
 
   setChannelConfig(value: ChannelConfiguration){
-    let headers = new HttpHeaders();
-    headers = headers.append(
-      "mibot_session",
-      '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
-    );
 
-    return this.http.post(`${environment.url_api}channel/config`, value, {
-      headers: headers,
-    });
+
+    return this.http.post(`${environment.url_api}channel/config`, value);
   }
 
   getChannelConfig(number: number){
-    let headers = new HttpHeaders();
-    headers = headers.append(
-      "mibot_session",
-      '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
-    );
 
-    return this.http.get(`${environment.url_api}channel/config/number/${number}`, {
-      headers: headers,
-    });
+
+
+    return this.http.get(`${environment.url_api}channel/config/number/${number}`);
   }
 
   updateChannelConfigs(value: ChannelConfiguration){
-    let headers = new HttpHeaders();
-    headers = headers.append(
-      "mibot_session",
-      '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
-    );
 
-    return this.http.put(`${environment.url_api}channel/config/${value.channel_number}`, value, {
-      headers: headers,
-    });
+
+    return this.http.put(`${environment.url_api}channel/config/${value.channel_number}`, value);
   }
 
   getResponseValidator(){
-    let headers = new HttpHeaders();
-    headers = headers.append(
-      "mibot_session",
-      '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
-    );
 
-    return this.http.get(`${environment.url_api}responseValidator`, {
-      headers: headers,
-    });
+
+    return this.http.get(`${environment.url_api}responseValidator`);
   }
 
   getPrettyConfiguration(number: string){
-    let headers = new HttpHeaders();
-    headers = headers.append(
-      "mibot_session",
-      '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
-    );
 
-    return this.http.get(`${environment.url_api}channel/prettyConfig/number/${number}`, {
-      headers: headers,
-    });
+
+    return this.http.get(`${environment.url_api}channel/prettyConfig/number/${number}`);
   }
 
 }

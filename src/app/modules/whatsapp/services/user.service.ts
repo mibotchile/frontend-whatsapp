@@ -28,14 +28,8 @@ export class UserService {
             url += `?page=${page}&pageSize=${pageSize}`;
         }
 
-        let headers = new HttpHeaders();
-        headers = headers.append(
-            "mibot_session",
-            '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
-        );
-        return this.http.get<UserView[]>(url, {
-            headers: headers,
-        });
+
+        return this.http.get<UserView[]>(url);
     }
 
     getActiveUsers(page?: number, pageSize?: number) {
@@ -44,12 +38,8 @@ export class UserService {
             url += `?page=${page}&pageSize=${pageSize}`;
         }
 
-        let headers = new HttpHeaders();
-        headers = headers.append(
-            "mibot_session",
-            '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
-        );
-        return this.http.get<UserView[]>(url, { headers: headers });
+
+        return this.http.get<UserView[]>(url);
     }
 
     getInactiveUsers(page?: number, pageSize?: number) {
@@ -58,52 +48,29 @@ export class UserService {
             url += `?page=${page}&pageSize=${pageSize}`;
         }
 
-        let headers = new HttpHeaders();
-        headers = headers.append(
-            "mibot_session",
-            '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
-        );
-        return this.http.get<UserView[]>(url, { headers: headers });
+
+        return this.http.get<UserView[]>(url);
     }
 
     searchUserByName(name: string) {
-        let headers = new HttpHeaders();
-        headers = headers.append(
-            "mibot_session",
-            '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
-        );
 
-        return this.http.get<UserView[]>(`${environment.url_api}user/search/?name=${name}`, { headers: headers });
+
+        return this.http.get<UserView[]>(`${environment.url_api}user/search/?name=${name}`);
     }
 
     getUserById(id: number) {
-        let headers = new HttpHeaders();
-        headers = headers.append(
-            "mibot_session",
-            '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
-        );
-        return this.http.get<any>(`${environment.url_api}user/${id}`, {
-            headers: headers,
-        });
+
+        return this.http.get<any>(`${environment.url_api}user/${id}`);
     }
 
     getUserByUid(uid: string) {
-        let headers = new HttpHeaders();
-        headers = headers.append(
-            "mibot_session",
-            '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
-        );
-        return this.http.get<any>(`${environment.url_api}user/uid/${uid}`, {
-            headers: headers,
-        });
+
+
+        return this.http.get<any>(`${environment.url_api}user/uid/${uid}`);
     }
 
     insertUser(value: User) {
-        let headers = new HttpHeaders();
-        headers = headers.append(
-            "mibot_session",
-            '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
-        );
+
 
         let param = new HttpParams();
         param = param.append("uid", value.uid);
@@ -112,17 +79,12 @@ export class UserService {
         param = param.append("groups_id", value.groups_id.toString());
         param = param.append("role_id", value.role.id.toString());
 
-        return this.http.post(`${environment.url_api}user`, param, {
-            headers: headers,
-        });
+        return this.http.post(`${environment.url_api}user`, param
+        );
     }
 
     updateUser(value: User) {
-        let headers = new HttpHeaders();
-        headers = headers.append(
-            "mibot_session",
-            '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
-        );
+
 
         let param = new HttpParams();
         param = param.append("uid", value.uid);
@@ -131,31 +93,17 @@ export class UserService {
         param = param.append("groups_id", value.groups_id.toString());
         param = param.append("role_id", value.role.id);
 
-        return this.http.put(`${environment.url_api}user/${value.id}`, value, {
-            headers: headers,
-        });
+        return this.http.put(`${environment.url_api}user/${value.id}`, value);
     }
 
     deleteUser(value: User) {
-        let headers = new HttpHeaders();
-        headers = headers.append(
-            "mibot_session",
-            '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
-        );
 
-        return this.http.delete(`${environment.url_api}user/${value.id}`, {
-            headers: headers,
-        });
+
+        return this.http.delete(`${environment.url_api}user/${value.id}`);
     }
 
     getGroups(userId: string) {
-        let headers = new HttpHeaders();
-        headers = headers.append(
-            "mibot_session",
-            '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}'
-        );
-        return this.http.get(`${environment.url_api}user/${userId}/groups`, {
-            headers: headers,
-        });
+
+        return this.http.get(`${environment.url_api}user/${userId}/groups`);
     }
 }
