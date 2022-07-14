@@ -21,43 +21,32 @@ export class ConversationsService {
     conversationEndpoint = environment.url_api + "conversation";
     messageEndpoint = environment.url_api + "message";
 
-    headers = new HttpHeaders({
-        mibot_session: '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}',
-    });
-
     constructor(private http: HttpClient) {}
     changeConversation(conversation: conversation) {
         this.conversationsSubject$.next(conversation);
     }
 
     getUserConversations(userId) {
-        return this.http.get<conversation[]>(`${this.conversationEndpoint}/user/${userId}`, { headers: this.headers });
+        return this.http.get<conversation[]>(`${this.conversationEndpoint}/user/${userId}`);
     }
 
     getConversationsByGroupId(groupId: number) {
-        return this.http.get<conversation[]>(`${this.conversationEndpoint}/group/${groupId}`, {
-            headers: this.headers,
-        });
+        return this.http.get<conversation[]>(`${this.conversationEndpoint}/group/${groupId}`, {});
     }
 
     getPaginatedMessages(conversationId: number, pageSize: number, page?: number) {
         return this.http.get<Message[]>(
             `${this.messageEndpoint}/conversation/${conversationId}?pageSize=${pageSize}${
                 page ? "&page=" + page : "&page=0"
-            }`,
-            { headers: this.headers }
+            }`
         );
     }
 
     getAllConversations() {
-        return this.http.get<conversation[]>(`${this.conversationEndpoint}`, {
-            headers: this.headers,
-        });
+        return this.http.get<conversation[]>(`${this.conversationEndpoint}`, {});
     }
     redirectToUser() {
-        return this.http.get<conversation[]>(`${this.conversationEndpoint}/redirectToUser`, {
-            headers: this.headers,
-        });
+        return this.http.get<conversation[]>(`${this.conversationEndpoint}/redirectToUser`, {});
     }
     connect() {
         this.socket = io(this.conversationSocketsUrl);

@@ -12,9 +12,6 @@ export class AuthService {
     private projectUid: string;
 
     endpoint = environment.aim.endpoint;
-    headers = new HttpHeaders({
-        mibot_session: '{"project_uid":"vnbLnzdM0b3BDClTPVPL","client_uid":"lEvxdkHyFXdOX4ieEMHs"}',
-    });
 
     constructor(private auth: Auth, private http: HttpClient) {}
 
@@ -51,6 +48,6 @@ export class AuthService {
     }
 
     getUserData() {
-        return this.http.get(`${this.endpoint}users/${this.getUid()}`, { headers: this.headers });
+        return this.http.get(`${this.endpoint}users/${this.getUid()}`);
     }
 }
