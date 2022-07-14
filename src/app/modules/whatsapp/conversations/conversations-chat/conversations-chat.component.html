@@ -1,15 +1,4 @@
 <div fxLayout="column" fxLayoutAlign="space-between start" class="w-full chat relative h-full">
-    <div
-        fxLayoutAlign="center center"
-        *ngIf="!selectedConversation"
-        class="border-l bg-gray-light border-gray-light w-full h-full p-5"
-    >
-        <img
-            src="./../../../../../assets//img//illustrations/chatPlaceholder.svg"
-            class="w-3/4"
-            alt="chat placeholder"
-        />
-    </div>
     <div *ngIf="selectedConversation" class="chatWallpaper absolute left-0 right-0"></div>
     <!-- <div
         *ngIf="!isScrollPosAtTheEnd"
@@ -21,7 +10,9 @@
         *ngIf="selectedConversation"
         fxLayoutAlign="space-between center"
         fxFlex="60px"
-        class="w-full bg-gray-light border border-amber-light"
+        [ngClass]="{
+            'w-full border bg-gray-light border-amber-light': true
+        }"
     >
         <section fxLayout="row" class="h-full">
             <div fxLayoutAlign="center center" class="h-full p-5">
@@ -40,7 +31,7 @@
                 <span class="font-light text-xs leading-none text-gray">{{ selectedConversation?.client_number }}</span>
             </div>
         </section>
-        <div fxLayout="row nowrap" fxLayoutAlign="end center" class="px-4">
+        <div fxLayout="row nowrap" fxLayoutAlign="end center" ngClass="px-4">
             <button
                 *ngIf="user.role.id === 3"
                 (click)="redirectConversation()"
@@ -79,10 +70,39 @@
                 matTooltipPosition="above"
                 matTooltip="pantalla completa"
             >
-                <mat-icon color="primary" [icIcon]="fullscreen"></mat-icon>
+                <button mat-mini-fab color="primary">
+                    <mat-icon color="primary" [icIcon]="fullscreen"></mat-icon>
+                </button>
             </a>
         </div>
     </header>
+
+    <div
+        fxLayout="column"
+        fxLayoutAlign="start center"
+        *ngIf="!selectedConversation"
+        class="border-l bg-gray-light border-gray-light w-full h-full p-5"
+    >
+        <div fxLayoutAlign="end center absolute right-0 top-0" class="w-full">
+            <a
+                routerLink="/whatsapp/conversations"
+                [queryParams]="{ fullscreenChat: 'enabled' }"
+                (click)="toggleFullscreenChat($event)"
+                fxLayoutAlign="end center"
+                class="w-8 h-8"
+                matTooltipPosition="above"
+                matTooltip="pantalla completa"
+            >
+                <mat-icon color="primary" [icIcon]="fullscreen"></mat-icon>
+            </a>
+        </div>
+        <img
+            src="./../../../../../assets//img//illustrations/chatPlaceholder.svg"
+            class="w-3/4 h-full"
+            alt="chat placeholder"
+        />
+    </div>
+
     <div
         *ngIf="selectedConversation"
         fxFlex="calc(100%- 120px)"

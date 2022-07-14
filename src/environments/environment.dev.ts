@@ -3,6 +3,11 @@ export const environment = {
     url_api: "https://api-whatsapp-dev.mibot.cl/",
     url_websockets: "https://api-whatsapp-dev.mibot.cl:8080/",
 
+    aim: {
+        endpoint: "https://dev-apiaim.mibot.cl/v1/",
+        name: "aim-users-clients-billing-projects",
+    },
+
     firebase: {
         apiKey: "AIzaSyDuzZlM_0DdP0DpmrqdQ_OJbywSphVp_Ko",
         authDomain: "valhalla-onbotgo.firebaseapp.com",

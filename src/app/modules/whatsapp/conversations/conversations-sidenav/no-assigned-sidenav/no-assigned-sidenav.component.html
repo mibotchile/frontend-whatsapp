@@ -18,7 +18,7 @@
     </header>
     <div class="text-right actions px-3 border-b">
         <button class="text-xs outline-none bg-none text-gray cursor-pointer" [matMenuTriggerFor]="menu">
-            Más nuevos
+            <span fxLayoutAlign="center end">Ordenar por<mat-icon [icIcon]="dropDownArrow"></mat-icon></span>
             <mat-menu #menu="matMenu">
                 <button (click)="sortByDate('asc')" mat-menu-item>Más nuevos</button>
                 <button (click)="sortByDate('desc')" mat-menu-item>Más antiguos</button>
