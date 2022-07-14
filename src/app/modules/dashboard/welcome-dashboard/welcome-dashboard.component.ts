@@ -8,12 +8,10 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class WelcomeDashboardComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-        console.log(params)
-    })
+
   }
 
 }

@@ -1,33 +1,46 @@
-import { Injectable } from '@angular/core';
-import { Auth , signInWithEmailAndPassword, signOut} from '@angular/fire/auth'
-import { Observable,from } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { Auth, signInWithEmailAndPassword, signOut } from "@angular/fire/auth";
+import { Observable, from } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: "root",
 })
 export class AuthService {
 
-  constructor(private auth:Auth) { 
-  }
+    private clientUid: string;
+    private projectUid: string;
 
-  login({email,password}:any){
-    return signInWithEmailAndPassword(this.auth,email,password);
-  }
+    constructor(private auth: Auth) {}
 
-  logout(){
-    return signOut(this.auth);
-  }
+    login({ email, password }: any) {
+        return signInWithEmailAndPassword(this.auth, email, password);
+    }
 
-  getUserIdToken() : Observable<string>{
-    return from( this.auth.currentUser.getIdToken() );
-  }
+    logout() {
+        return signOut(this.auth);
+    }
 
-  getUserName(){
-    return this.auth.currentUser.displayName;
-  }
+    getUserIdToken(): Observable<string> {
+        return from(this.auth.currentUser.getIdToken());
+    }
 
-  getUid(){
-    return this.auth.currentUser.uid;
-  }
+    getUserName() {
+        return this.auth.currentUser.displayName;
+    }
 
+    getUid() {
+        return this.auth.currentUser.uid;
+    }
+
+    setClientAndProjectUid(client: string, project: string){
+        this.clientUid = client;
+        this.projectUid = project;
+    }
+
+    getClientAndProjectUid(){
+        return {
+            client: this.clientUid,
+            project: this.projectUid
+        }
+    }
 }

@@ -6,13 +6,14 @@ import {
   OnInit,
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import icVisibility from "@iconify/icons-ic/twotone-visibility";
 import icVisibilityOff from "@iconify/icons-ic/twotone-visibility-off";
 import { fadeInUp400ms } from "../../../../@vex/animations/fade-in-up.animation";
 import { AuthService } from "src/app/services/auth.service";
 import { UserService } from "../../whatsapp/services/user.service";
+import { getAuth, signInWithCustomToken } from "@firebase/auth";
 
 @Component({
   selector: "vex-login",
@@ -35,7 +36,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private cd: ChangeDetectorRef,
     private snackbar: MatSnackBar,
-    private authService: AuthService
+    private authService: AuthService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -43,6 +45,28 @@ export class LoginComponent implements OnInit {
       email: ["", Validators.required],
       password: ["", Validators.required],
     });
+
+    this.route.queryParams.subscribe(params => {
+        console.log(params);
+        const auth = getAuth();
+        signInWithCustomToken(auth,params.token).then((response) => {
+            console.log(response);
+            this.snackbar.open('Bienvenido!!!', 'Completado', {
+              duration: 3000,
+              horizontalPosition: 'center',
+              panelClass: ['green-snackbar']
+            });
+            this.router.navigate([""]);
+            this.authService.setClientAndProjectUid(params.client_uid,params.project_uid);
+          })
+          .catch((error) => {
+            this.snackbar.open(error.message, 'X', {
+              duration: 3000,
+              horizontalPosition: 'center',
+              panelClass: ['red-snackbar']
+            });
+          });
+    })
   }
 
   send() {
@@ -60,6 +84,7 @@ export class LoginComponent implements OnInit {
     this.authService
       .login(this.form.value)
       .then((response) => {
+        console.log(response);
         this.snackbar.open('Bienvenido!!!', 'Completado', {
           duration: 3000,
           horizontalPosition: 'center',
