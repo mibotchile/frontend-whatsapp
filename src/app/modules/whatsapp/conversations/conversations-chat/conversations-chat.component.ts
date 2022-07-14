@@ -253,6 +253,7 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
                         conversationId: this.selectedConversation.id,
                         manager: "user",
                         managerId: userToAssign.id,
+                        projectUid: this.clientAndProject.project,
                     };
                     this.websocketService.emit("redirect_conversation", PAYLOAD);
                     this.selectedConversation = null;

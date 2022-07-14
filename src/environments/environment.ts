@@ -4,8 +4,8 @@
 
 export const environment = {
     production: false,
-    url_api: "http://localhost:3030/",
-    url_websockets: "http://localhost:3003/",
+    url_api: "https://api-whatsapp-dev.mibot.cl/",
+    url_websockets: "https://api-whatsapp-dev.mibot.cl:8080/",
 
     aim: {
         endpoint: "https://dev-apiaim.mibot.cl/v1/",
