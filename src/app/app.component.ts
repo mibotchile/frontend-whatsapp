@@ -93,7 +93,7 @@ export class AppComponent implements OnInit, OnDestroy {
         console.log(environment);
         this.configService.updateConfig({
             sidenav: {
-                title: environment.production ? "workspace" : "valhalla",
+                title: environment.production ? "Workspace" : "Valhalla",
                 imageUrl: "./../assets/img/logo.svg",
                 showCollapsePin: true,
             },

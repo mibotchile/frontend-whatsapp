@@ -28,7 +28,6 @@ export class UserService {
             url += `?page=${page}&pageSize=${pageSize}`;
         }
 
-
         return this.http.get<UserView[]>(url);
     }
 
@@ -37,7 +36,6 @@ export class UserService {
         if (page && pageSize) {
             url += `?page=${page}&pageSize=${pageSize}`;
         }
-
 
         return this.http.get<UserView[]>(url);
     }
@@ -48,30 +46,22 @@ export class UserService {
             url += `?page=${page}&pageSize=${pageSize}`;
         }
 
-
         return this.http.get<UserView[]>(url);
     }
 
     searchUserByName(name: string) {
-
-
         return this.http.get<UserView[]>(`${environment.url_api}user/search/?name=${name}`);
     }
 
     getUserById(id: number) {
-
         return this.http.get<any>(`${environment.url_api}user/${id}`);
     }
 
     getUserByUid(uid: string) {
-
-
         return this.http.get<any>(`${environment.url_api}user/uid/${uid}`);
     }
 
     insertUser(value: User) {
-
-
         let param = new HttpParams();
         param = param.append("uid", value.uid);
         param = param.append("name", value.name);
@@ -79,31 +69,25 @@ export class UserService {
         param = param.append("groups_id", value.groups_id.toString());
         param = param.append("role_id", value.role.id.toString());
 
-        return this.http.post(`${environment.url_api}user`, param
-        );
+        return this.http.post(`${environment.url_api}user`, param);
     }
 
     updateUser(value: User) {
-
-
-        let param = new HttpParams();
-        param = param.append("uid", value.uid);
-        param = param.append("name", value.name);
-        param = param.append("email", value.email);
-        param = param.append("groups_id", value.groups_id.toString());
-        param = param.append("role_id", value.role.id);
+        // let param = new HttpParams();
+        // param = param.append("uid", value.uid);
+        // param = param.append("name", value.name);
+        // param = param.append("email", value.email);
+        // param = param.append("groups_id", value.groups_id.toString());
+        // param = param.append("role_id", value.role.id);
 
         return this.http.put(`${environment.url_api}user/${value.id}`, value);
     }
 
     deleteUser(value: User) {
-
-
         return this.http.delete(`${environment.url_api}user/${value.id}`);
     }
 
     getGroups(userId: string) {
-
         return this.http.get(`${environment.url_api}user/${userId}/groups`);
     }
 }

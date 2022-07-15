@@ -28,6 +28,7 @@ import { MenuService } from "src/app/services/menu.service";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { AuthService } from "src/app/services/auth.service";
 import { Router } from "@angular/router";
+import { environment } from "src/environments/environment";
 
 @UntilDestroy()
 @Component({
@@ -183,7 +184,8 @@ showData() {
                   this.authService
                   .logout()
                   .then(() => {
-                    this.router.navigate(['/login']);
+                    //this.router.navigate(['/login']);
+                    window.location.href = `${environment.main_url}/logout`;
                   })
                   .catch((error) => console.log(error));
                 }

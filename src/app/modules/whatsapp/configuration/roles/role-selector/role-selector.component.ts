@@ -65,6 +65,8 @@ export class RoleSelectorComponent implements OnInit, ControlValueAccessor {
                 if (index !== -1) {
                     this.permissionsToSend[this.permissionsToSend.indexOf(toFind[0])].tabs[index] =
                         tabs[tabs.length - 1];
+                }else{
+                    this.permissionsToSend[this.permissionsToSend.indexOf(toFind[0])].tabs.push(tabs[tabs.length - 1]);
                 }
             } else {
                 this.permissionsToSend[this.permissionsToSend.indexOf(toFind[0])].tabs = tabs;
