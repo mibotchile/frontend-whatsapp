@@ -109,7 +109,6 @@ export class ChannelsTableComponent implements OnInit, OnDestroy {
     }
 
     validateVisualizationStatus(channel: Channel){
-        debugger
         this.subscription = this.channelService.getPrettyConfiguration(channel.phone_number).subscribe(
             (response: any)=>{
                 if (response && response.data.length>0) {

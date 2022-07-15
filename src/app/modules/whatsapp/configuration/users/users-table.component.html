@@ -126,7 +126,7 @@
       <mat-icon [icIcon]="icEdit"></mat-icon>
       <span>Modificar</span>
     </button>
-    <button (click)="deleteUser(user)" mat-menu-item *ngIf="menuVisibility('delete')">
+    <button (click)="deleteUser(user)" mat-menu-item *ngIf="menuVisibility('delete') && isChecked">
       <mat-icon [icIcon]="icDelete"></mat-icon>
       <span>Eliminar</span>
     </button>

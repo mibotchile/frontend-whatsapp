@@ -60,7 +60,7 @@ export class UserCreateUpdateComponent implements OnInit {
       name: this.defaults.name,
       email: this.defaults.email,
       groups_id: [this.defaults.groups_id],
-      role_id: this.defaults.role_id
+      role_id: this.defaults.role_id,
     });
 
   }

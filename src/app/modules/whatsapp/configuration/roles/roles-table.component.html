@@ -68,6 +68,7 @@
         [matMenuTriggerFor]="actionsMenu"
         mat-icon-button
         type="button"
+        *ngIf="row.id !== 1 && row.id !== 2 && row.id !== 3"
       >
         <mat-icon [icIcon]="icMoreHoriz"></mat-icon>
       </button>
@@ -97,7 +98,7 @@
       <mat-icon [icIcon]="icEdit"></mat-icon>
       <span>Modificar</span>
     </button>
-    <button (click)="deleteRole(role)" mat-menu-item *ngIf="menuVisibility('delete')">
+    <button (click)="deleteRole(role)" mat-menu-item *ngIf="menuVisibility('delete') && isChecked">
       <mat-icon [icIcon]="icDelete"></mat-icon>
       <span>Eliminar</span>
     </button>
