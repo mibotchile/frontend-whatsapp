@@ -14,6 +14,7 @@ import { RoleService } from "../modules/whatsapp/services/role.service";
 import { MenuService } from "../services/menu.service";
 import { NavigationService } from "src/@vex/services/navigation.service";
 import icHome from "@iconify/icons-ic/round-whatsapp";
+import { Auth } from "@angular/fire/auth";
 
 @UntilDestroy()
 @Component({
@@ -53,7 +54,8 @@ export class CustomLayoutComponent implements OnInit {
         private userService: UserService,
         private authService: AuthService,
         private menuService: MenuService,
-        private navigationService: NavigationService
+        private navigationService: NavigationService,
+        private auth: Auth
     ) {}
 
     ngOnInit() {
