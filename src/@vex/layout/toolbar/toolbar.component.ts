@@ -74,7 +74,7 @@ export class ToolbarComponent implements OnInit {
                 data: { user },
             } = res;
             const SELECTED_CLIENT = user.config.clients.find((client) => client.uid === CLIENT_UID);
-            this.project = SELECTED_CLIENT.projects.find((project) => (project.uid = PROJECT_UID)).name;
+            this.project = SELECTED_CLIENT.projects.find((project) => project.uid === PROJECT_UID).name;
             this.client = SELECTED_CLIENT.name;
         });
     }
