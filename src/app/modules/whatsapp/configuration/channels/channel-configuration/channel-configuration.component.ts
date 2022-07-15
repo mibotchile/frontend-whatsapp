@@ -24,7 +24,7 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
     items: Item[] = [
         { action: "message", value: "Mensaje" },
         { action: "quiz", value: "Petición de Datos" },
-        { action: "menu", value: "Guía de Respuestas y Transferencias" },
+        //{ action: "menu", value: "Guía de Respuestas y Transferencias" },
         { action: "redirect", value: "Redirección" },
         // { action: "attention", value: "Valoración de la Atención" },
     ];
@@ -175,6 +175,7 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
     }
 
     updateConfig(index: number) {
+
         let value: any;
 
         let action = this.basket[index].action;

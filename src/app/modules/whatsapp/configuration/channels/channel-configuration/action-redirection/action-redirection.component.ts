@@ -111,13 +111,15 @@ export class ActionRedirectionComponent implements OnInit, OnDestroy {
 
     createRedirection() {
         this.action = "create";
-        console.log(this.selected);
-        console.log(this.target);
         this.defaults.configuration.redirects.push(this.createObject(this.selected, this.target));
         this.dialogRef.close([this.defaults.configuration, this.action]);
     }
 
-    updateRedirection() {}
+    updateRedirection() {
+        this.action = 'update';
+        this.defaults.configuration.redirects.splice(this.defaults.id,1,this.createObject(this.selected, this.target));
+        this.dialogRef.close([this.defaults.configuration,this.action]);
+    }
 
     save() {
         if (this.mode === "create") {
