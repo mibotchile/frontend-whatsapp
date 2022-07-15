@@ -79,7 +79,7 @@ export class ConversationsSidenavComponent implements OnInit {
         this.webSocketsService.on("new_conversation").subscribe((conversation: conversation) => {
             const GROUP_CONVERSATION_ID = Number(conversation.manager.replace(/^\D+/g, ""));
             if (this.selectedGroup?.id != GROUP_CONVERSATION_ID) {
-                console.log(GROUP_CONVERSATION_ID, this.groups, conversation);
+                console.log(this.groups);
                 const GROUP_INDEX = this.groups.findIndex((group) => GROUP_CONVERSATION_ID === group.id);
                 if (GROUP_INDEX < 0) return;
                 if (conversation.manager.includes("user")) {
