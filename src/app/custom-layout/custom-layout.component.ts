@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { LayoutService } from "../../@vex/services/layout.service";
 import { filter, map, startWith, takeLast } from "rxjs/operators";
-import { NavigationEnd, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { checkRouterChildsData } from "../../@vex/utils/check-router-childs-data";
 import { BreakpointObserver } from "@angular/cdk/layout";
 import { ConfigService } from "../../@vex/services/config.service";
@@ -54,8 +54,7 @@ export class CustomLayoutComponent implements OnInit {
         private userService: UserService,
         private authService: AuthService,
         private menuService: MenuService,
-        private navigationService: NavigationService,
-        private auth: Auth
+        private navigationService: NavigationService
     ) {}
 
     ngOnInit() {
@@ -86,7 +85,9 @@ export class CustomLayoutComponent implements OnInit {
             },
         ];
 
-        this.layoutService.configpanelOpen$.pipe(untilDestroyed(this)).subscribe((open) => (open ? this.configpanel.open() : this.configpanel.close()));
+        this.layoutService.configpanelOpen$
+            .pipe(untilDestroyed(this))
+            .subscribe((open) => (open ? this.configpanel.open() : this.configpanel.close()));
 
         this.subscription = new Subscription();
         this.subscription = this.userService
@@ -95,18 +96,20 @@ export class CustomLayoutComponent implements OnInit {
             .subscribe((response) => {
                 this.menuService.setConfigObs(response);
             });
-
         this.subscription = new Subscription();
-        this.subscription = this.menuService.getConfigObs().pipe(filter(n=>n.length>0)).subscribe((response) => {
-            this.menu = response;
-            this.menuNavigation();
-        });
-        
+        this.subscription = this.menuService
+            .getConfigObs()
+            .pipe(filter((n) => n.length > 0))
+            .subscribe((response) => {
+                this.menu = response;
+                this.menuNavigation();
+            });
     }
 
     menuNavigation() {
-
-        this.menuItems = this.items[0].children.filter((childrenItem) => this.menu.map((menuItem) => menuItem.name).includes(childrenItem.name.toLowerCase()));
+        this.menuItems = this.items[0].children.filter((childrenItem) =>
+            this.menu.map((menuItem) => menuItem.name).includes(childrenItem.name.toLowerCase())
+        );
 
         this.newItems = [...this.items];
         this.newItems[0].children = this.menuItems;

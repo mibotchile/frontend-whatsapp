@@ -17,7 +17,6 @@ import { getAuth, signInWithCustomToken } from "@firebase/auth";
     animations: [fadeInUp400ms],
 })
 export class LoginComponent implements OnInit {
-
     windowWidth: string;
     showSplash = true;
 
@@ -50,6 +49,10 @@ export class LoginComponent implements OnInit {
             signInWithCustomToken(auth, params.token)
                 .then((response) => {
                     console.log(response);
+                    const MIBOT_SESSION = { client_uid: params.client_uid, project_uid: params.project_uid };
+                    sessionStorage.setItem("mibot_session", JSON.stringify(MIBOT_SESSION));
+                    sessionStorage.setItem("whatsapp_workspace_token", params.token);
+                    console.log(params.token, sessionStorage.getItem("whatsapp_workspace_token"));
                     //this.showSplash = !this.showSplash;
                     this.snackbar.open("Bienvenido!!!", "Completado", {
                         duration: 3000,
