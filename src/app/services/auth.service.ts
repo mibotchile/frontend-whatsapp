@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Auth, signInWithEmailAndPassword, signOut } from "@angular/fire/auth";
 import { Observable, from } from "rxjs";
 import { environment } from "src/environments/environment";
+import { getAuth, signInWithCustomToken } from "@firebase/auth";
 
 @Injectable({
     providedIn: "root",
@@ -40,6 +41,10 @@ export class AuthService {
         this.projectUid = project;
     }
 
+    getStoragedClientAndProjectUid() {
+        return JSON.parse(sessionStorage.getItem("mibot_session"));
+    }
+
     getClientAndProjectUid() {
         return {
             client: this.clientUid,
@@ -49,5 +54,12 @@ export class AuthService {
 
     getUserData() {
         return this.http.get(`${this.endpoint}users/${this.getUid()}`);
+    }
+
+    signInWithToken(auth, token: string) {
+        return signInWithCustomToken(auth, token);
+    }
+    getAuth() {
+        return getAuth;
     }
 }

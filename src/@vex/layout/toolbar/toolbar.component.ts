@@ -65,7 +65,7 @@ export class ToolbarComponent implements OnInit {
         private popoverService: PopoverService,
         private authService: AuthService
     ) {
-        const { client: CLIENT_UID, project: PROJECT_UID } = this.authService.getClientAndProjectUid();
+        const { client_uid: CLIENT_UID, project_uid: PROJECT_UID } = this.authService.getStoragedClientAndProjectUid();
         this.authService.getUserData().subscribe((res: any) => {
             if (!res.success) {
                 return;
