@@ -16,7 +16,6 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatTableModule } from "@angular/material/table";
-import { TreeModule } from "@circlon/angular-tree-component";
 import { RoleCreateUpdateComponent } from "./role-create-update/role-create-update.component";
 import { ButtonGroupComponent } from "./role-selector/button-group/button-group.component";
 import { RoleSelectorComponent } from "./role-selector/role-selector.component";
@@ -50,7 +49,6 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatInputModule,
     MatPaginatorModule,
     MatMenuModule,
-    TreeModule,
     MatCheckboxModule,
     MatListModule,
     IconModule,

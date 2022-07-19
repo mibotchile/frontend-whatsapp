@@ -33,6 +33,9 @@ import { MenuElementComponent } from './channel-configuration/action-options/opt
 import { MenuRedirectionComponent } from './channel-configuration/action-options/options-menu/menu-redirection/menu-redirection.component';
 import { ChannelViewComponent } from './channel-view/channel-view.component';
 import { MenuViewComponent } from './channel-view/menu-view/menu-view.component';
+import { ActionGuideComponent } from './channel-configuration/action-guide/action-guide.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import {MatTreeModule} from '@angular/material/tree';
 
 
 @NgModule({
@@ -51,6 +54,7 @@ import { MenuViewComponent } from './channel-view/menu-view/menu-view.component'
     MenuRedirectionComponent,
     ChannelViewComponent,
     MenuViewComponent,
+    ActionGuideComponent,
   ],
   imports: [
     CommonModule,
@@ -72,7 +76,9 @@ import { MenuViewComponent } from './channel-view/menu-view/menu-view.component'
     MatExpansionModule,
     MatSelectModule,
     FormsModule,
-    MatRadioModule
+    MatRadioModule,
+    MatCheckboxModule,
+    MatTreeModule
   ]
 })
 export class ChannelsTableModule { }

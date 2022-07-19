@@ -9,6 +9,7 @@ import { Item } from "./item.interface";
 import { ActionDataRequestComponent } from "./action-data-request/action-data-request.component";
 import { ActionRedirectionComponent } from "./action-redirection/action-redirection.component";
 import { ActionOptionsComponent } from "./action-options/action-options.component";
+import { ActionGuideComponent } from "./action-guide/action-guide.component";
 
 export interface ActionConfig {
     config: ChannelConfiguration,
@@ -133,7 +134,8 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
         if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
         } else {
-            if (event.previousContainer.data[event.previousIndex].action.includes('redirect')) {
+            let lastAction = event.previousContainer.data[event.previousIndex].action;
+            if (lastAction.includes('redirect') || lastAction.includes('menu')) {
                 this.isDisabled = true;
                 copyArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, this.basket.length);
                 this.updateConfig(this.basket.length - 1);
@@ -199,7 +201,8 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                 value = ActionDataRequestComponent;
                 break;
             case "menu":
-                value = ActionOptionsComponent;
+                //value = ActionOptionsComponent;
+                value = ActionGuideComponent;
                 break;
             case "redirect":
                 value = ActionRedirectionComponent;
@@ -224,6 +227,9 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                 if (config[1] === 'noaction') {
                     this.basket.splice(this.basket.length - 1, 1);
                     if (actionAndId[0]==='redirect') {
+                        this.isDisabled = false;
+                    }
+                    if (actionAndId[0]==='menu') {
                         this.isDisabled = false;
                     }
                 } else {
@@ -265,7 +271,8 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                 this.config.quizes.splice(i, 1);
                 break;
             case "menu":
-                this.config.menus.splice(i, 1);
+                this.config.redirects.splice(-1, 1);
+                this.isDisabled = false;
                 break;
             case "redirect":
                 this.config.redirects.splice(-1, 1);
