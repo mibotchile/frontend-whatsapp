@@ -12,6 +12,7 @@
             class="example-list"
             cdkDropListSortingDisabled
             (cdkDropListDropped)="drop($event)"
+            [cdkDropListDisabled]="isDisabled"
         >
             <frontend-whatsapp-action
                 class="example-box"
@@ -25,7 +26,7 @@
     <div class="example-container">
         <h3>Acciones seleccionadas</h3>
 
-        <div cdkDropList [cdkDropListData]="basket" class="example-list" (cdkDropListDropped)="drop($event)">
+        <div cdkDropList [cdkDropListData]="basket" class="example-list" (cdkDropListDropped)="drop($event)" [cdkDropListSortingDisabled]="isDisabled">
             <frontend-whatsapp-selected-action
                 class="example-box"
                 *ngFor="let item of basket; index as i"

@@ -44,6 +44,8 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
     optionsMenuId: number;
     redirectId: number;
 
+    isDisabled: boolean;
+
     constructor(
         @Inject(MAT_DIALOG_DATA) public defaults: any,
         private dialogRef: MatDialogRef<ChannelConfigurationComponent>,
@@ -58,6 +60,7 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.isDisabled = false;
         this.getData();
     }
 
@@ -126,12 +129,19 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
             });
     }
 
-    drop(event: CdkDragDrop<string[]>) {
+    drop(event: CdkDragDrop<Item[]>) {
         if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
         } else {
-            copyArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
-            this.updateConfig(event.currentIndex);
+            if (event.previousContainer.data[event.previousIndex].action.includes('redirect')) {
+                this.isDisabled = true;
+                copyArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, this.basket.length);
+                this.updateConfig(this.basket.length - 1);
+            }else {
+                console.log(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex)
+                copyArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+                this.updateConfig(event.currentIndex);
+            }
         }
     }
 
@@ -213,6 +223,9 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
             .subscribe((config: ActionConfig) => {
                 if (config[1] === 'noaction') {
                     this.basket.splice(this.basket.length - 1, 1);
+                    if (actionAndId[0]==='redirect') {
+                        this.isDisabled = false;
+                    }
                 } else {
                     if (actionAndId[1]) {
                         this.config = { ...config[0] };
@@ -255,7 +268,8 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                 this.config.menus.splice(i, 1);
                 break;
             case "redirect":
-                this.config.redirects.splice(i, 1);
+                this.config.redirects.splice(-1, 1);
+                this.isDisabled = false;
                 break;
 
             default:
