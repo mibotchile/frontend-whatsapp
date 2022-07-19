@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import * as io from "socket.io-client";
+import { io } from "socket.io-client";
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -12,7 +12,15 @@ export class WebsocketsService {
 
     constructor() {}
     connect() {
-        this.socket = io(this.url);
+        const MIBOT_SESSION = JSON.parse(sessionStorage.getItem("mibot_session"));
+        const WORKSPACE_TOKEN = sessionStorage.getItem("whatsapp_workspace_token");
+        console.log(MIBOT_SESSION, WORKSPACE_TOKEN);
+        this.socket = io(this.url, {
+            auth: {
+                token: WORKSPACE_TOKEN,
+                project_uid: MIBOT_SESSION.project_uid,
+            },
+        });
         this.socket.connect().on("connect_error", (err) => {
             console.log(err);
         });

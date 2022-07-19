@@ -56,7 +56,9 @@ export class ConversationsSidenavComponent implements OnInit {
         private groupService: GroupService
     ) {
         const USER_UID = this.authService.getUid();
+        console.log(USER_UID);
         this.userService.getUserByUid(USER_UID).subscribe((user) => {
+            console.log(user);
             if (user.success) {
                 this.userService.setMyUserId(user.data);
                 this.userService.getGroups(user.data.id).subscribe((res: any) => {

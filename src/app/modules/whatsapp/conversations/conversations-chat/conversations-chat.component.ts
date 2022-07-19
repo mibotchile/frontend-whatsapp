@@ -73,7 +73,7 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
         public dialog: MatDialog,
         private authService: AuthService
     ) {
-        this.clientAndProject = this.authService.getClientAndProjectUid();
+        this.clientAndProject = JSON.parse(sessionStorage.getItem("mibot_session"));
         console.log(this.clientAndProject);
         if (this.userService.user?.id) {
             this.user = this.userService.user;
@@ -89,7 +89,6 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
             this.selectedGroup = group;
         });
         this.setupWebSockets();
-        this.setupConversationsSockets();
         this.route.queryParams.subscribe((params) =>
             params.fullscreenChat === "enabled" ? (this.isFullscreenEnabled = true) : (this.isFullscreenEnabled = false)
         );
@@ -144,7 +143,7 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
             channelNumber: "+9884522222",
             clientNumber: this.selectedConversation.client_number,
             conversationId: this.selectedConversation?.id,
-            projectUid: this.clientAndProject.project,
+            projectUid: this.clientAndProject.project_uid,
         };
         this.appendMessageInChat({
             id: "",
@@ -253,7 +252,7 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
                         conversationId: this.selectedConversation.id,
                         manager: "user",
                         managerId: userToAssign.id,
-                        projectUid: this.clientAndProject.project,
+                        projectUid: this.clientAndProject.project_uid,
                     };
                     this.websocketService.emit("redirect_conversation", PAYLOAD);
                     this.selectedConversation = null;
