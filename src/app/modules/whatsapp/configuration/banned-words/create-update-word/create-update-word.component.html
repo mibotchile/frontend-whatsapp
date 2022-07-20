@@ -1,0 +1,23 @@
+<h2 class="text-sm">
+    <strong>{{ wordData?.id ? "Actualizar palabra o frase" : "Añadir palabra o frase" }}</strong>
+</h2>
+<form
+    fxLayout="column"
+    [formGroup]="updateOrCreateForm"
+    #formDirective="ngForm"
+    (ngSubmit)="wordData?.id ? updateWord(formDirective) : addWord(formDirective)"
+>
+    <mat-form-field>
+        <mat-label>Palabra o frase</mat-label>
+        <input cdkFocusInitial matInput autocomplete="off" formControlName="word" name="word" />
+        <mat-error *ngIf="updateOrCreateForm.get('word').hasError('required')"> La palabra es requerida </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Descripción</mat-label>
+        <input matInput formControlName="description" autocomplete="off" name="description" />
+        <mat-error *ngIf="updateOrCreateForm.get('description').hasError('required')">
+            La descripción es requerida
+        </mat-error>
+    </mat-form-field>
+    <button class="self-end" mat-raised-button color="primary">{{ wordData?.id ? "Actualizar" : "añadir" }}</button>
+</form>

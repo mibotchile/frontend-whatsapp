@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import { conversation } from "../modules/whatsapp/Models/conversation.model";
 import { Message } from "../modules/whatsapp/Models/Message.model";
-import * as io from "socket.io-client";
+import { io } from "socket.io-client";
 
 @Injectable({
     providedIn: "root",

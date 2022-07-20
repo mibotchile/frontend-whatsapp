@@ -94,6 +94,7 @@ export class CustomLayoutComponent implements OnInit {
             .getUserByUid(this.authService.getUid())
             .pipe(map((n) => n.data.role.config))
             .subscribe((response) => {
+                console.log(response);
                 this.menuService.setConfigObs(response);
             });
         this.subscription = new Subscription();

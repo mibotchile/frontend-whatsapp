@@ -17,13 +17,18 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     menu: any;
     subscription: Subscription;
 
-    constructor(public progressService: ProgressService, private menuService: MenuService, private authService: AuthService, private userService: UserService) {}
+    constructor(
+        public progressService: ProgressService,
+        private menuService: MenuService,
+        private authService: AuthService,
+        private userService: UserService
+    ) {}
 
     ngOnInit(): void {
-      this.subscription = new Subscription();
-      this.subscription = this.menuService.getConfigObs().subscribe((response)=>{
-        this.menu = response;
-      });
+        this.subscription = new Subscription();
+        this.subscription = this.menuService.getConfigObs().subscribe((response) => {
+            this.menu = response;
+        });
     }
 
     menuVisibility(value: string) {

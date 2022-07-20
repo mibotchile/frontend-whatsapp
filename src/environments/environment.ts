@@ -5,6 +5,7 @@
 export const environment = {
     production: false,
     url_api: "https://api-whatsapp-dev.mibot.cl/",
+    url_api_local: "http://localhost:3030/",
     url_websockets: "https://api-whatsapp-dev.mibot.cl:8080/",
 
     aim: {

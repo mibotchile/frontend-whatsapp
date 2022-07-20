@@ -247,7 +247,6 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
             .afterClosed()
             .subscribe((didUserConfirm) => {
                 if (didUserConfirm) {
-                    console.log(didUserConfirm);
                     const PAYLOAD = {
                         conversationId: this.selectedConversation.id,
                         manager: "user",
@@ -266,7 +265,6 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
 
     ngOnDestroy() {
         this.removeChatScrollActions();
-        this.conversationsService.disconnect();
         this.websocketService.disconnect();
     }
     addChatScrollActions() {

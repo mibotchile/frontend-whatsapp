@@ -1,10 +1,18 @@
-<h1 mat-dialog-title class="text-sm">
+<div fxLayout="column" fxLayoutGap="10px">
     <strong>{{ data.title }}</strong>
-</h1>
-<div mat-dialog-content class="text-sm">
-    {{ data.body }}
-</div>
-<div fxLayoutAlign="end center" class="mt-2" mat-dialog-actions>
-    <button mat-button (click)="closeDialog(false)" mat-dialog-close>No</button>
-    <button mat-raised-button color="primary" mat-dialog-close (click)="closeDialog(true)" cdkFocusInitial>Sí</button>
+    <div mat-dialog-content class="text-sm">
+        {{ data.body }}
+    </div>
+    <div fxLayoutAlign="end center" class="mt-2" mat-dialog-actions>
+        <button mat-button (click)="closeDialog(false)" mat-dialog-close>No</button>
+        <button
+            mat-raised-button
+            [color]="data.btnColor || 'primary'"
+            mat-dialog-close
+            (click)="closeDialog(true)"
+            cdkFocusInitial
+        >
+            Sí
+        </button>
+    </div>
 </div>
