@@ -1,42 +1,69 @@
-<div style="width: 500px; font-size: 14px;">
-    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" cdkDropList (cdkDropListDropped)="drop($event)">
-        <mat-tree-node
-            *matTreeNodeDef="let node"
-            matTreeNodeToggle
-            matTreeNodePadding
-            cdkDrag
-            [cdkDragData]="node"
-            (mouseenter)="dragHover(node)"
-            (mouseleave)="dragHoverEnd()"
-            (cdkDragStarted)="dragStart()"
-            (cdkDragReleased)="dragEnd()"
-        >
-            <button mat-icon-button disabled></button>
-            {{ node.filename }} : {{ node.type }}
-        </mat-tree-node>
-    
-        <mat-tree-node
-            *matTreeNodeDef="let node; when: hasChild"
-            matTreeNodePadding
-            cdkDrag
-            [cdkDragData]="node"
-            (mouseenter)="dragHover(node)"
-            (mouseleave)="dragHoverEnd()"
-            (cdkDragStarted)="dragStart()"
-            (cdkDragReleased)="dragEnd()"
-        >
-            <button
-                mat-icon-button
-                matTreeNodeToggle
-                (click)="expansionModel.toggle(node.id)"
-                [attr.aria-label]="'toggle ' + node.filename"
+<form>
+    <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+        <h2 class="headline m-0" fxFlex="auto">Guía de <br />Respuestas y Transferencias</h2>
+
+        <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+            <mat-icon [icIcon]="icClose"></mat-icon>
+        </button>
+    </div>
+
+    <mat-divider class="-mx-6 text-border"></mat-divider>
+
+    <mat-dialog-content fxLayout="column">
+        <div class="flex">
+            <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+                <div class="example-box" *ngFor="let movie of movies" cdkDrag>{{ movie }}</div>
+            </div>
+            <mat-tree
+                [dataSource]="dataSource"
+                [treeControl]="treeControl"
+                cdkDropList
+                (cdkDropListDropped)="drop($event)"
             >
-                <mat-icon class="mat-icon-rtl-mirror">
-                    {{ treeControl.isExpanded(node) ? "expand_more" : "chevron_right" }}
-                </mat-icon>
-            </button>
-            {{ node.filename }} : {{ node.type }}
-        </mat-tree-node>
-    </mat-tree>
-    
-</div>
+                <mat-tree-node
+                    *matTreeNodeDef="let node"
+                    matTreeNodeToggle
+                    matTreeNodePadding
+                    cdkDrag
+                    [cdkDragData]="node"
+                    (mouseenter)="dragHover(node)"
+                    (mouseleave)="dragHoverEnd()"
+                    (cdkDragStarted)="dragStart()"
+                    (cdkDragReleased)="dragEnd()"
+                >
+                    <button mat-icon-button disabled></button>
+                    {{ node.filename }} : {{ node.type }}
+                </mat-tree-node>
+
+                <mat-tree-node
+                    *matTreeNodeDef="let node; when: hasChild"
+                    matTreeNodePadding
+                    cdkDrag
+                    [cdkDragData]="node"
+                    (mouseenter)="dragHover(node)"
+                    (mouseleave)="dragHoverEnd()"
+                    (cdkDragStarted)="dragStart()"
+                    (cdkDragReleased)="dragEnd()"
+                >
+                    <button
+                        mat-icon-button
+                        matTreeNodeToggle
+                        (click)="expansionModel.toggle(node.id)"
+                        [attr.aria-label]="'toggle ' + node.filename"
+                    >
+                        <mat-icon class="mat-icon-rtl-mirror">
+                            {{ treeControl.isExpanded(node) ? "expand_more" : "chevron_right" }}
+                        </mat-icon>
+                    </button>
+                    {{ node.filename }} : {{ node.type }}
+                </mat-tree-node>
+            </mat-tree>
+        </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close type="button">CANCELAR</button>
+        <button *ngIf="isCreateMode()" color="primary" mat-button type="submit">CREAR GUÍA</button>
+        <button *ngIf="isUpdateMode()" color="primary" mat-button type="submit">ACTUALIZAR GUÍA</button>
+    </mat-dialog-actions>
+</form>

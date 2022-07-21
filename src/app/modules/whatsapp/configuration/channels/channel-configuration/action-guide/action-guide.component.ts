@@ -4,8 +4,11 @@ import { BehaviorSubject, Observable, of as observableOf } from "rxjs";
 import { FlatTreeControl } from "@angular/cdk/tree";
 import { MatTreeFlatDataSource, MatTreeFlattener } from "@angular/material/tree";
 import { SelectionModel } from "@angular/cdk/collections";
-import { CdkDragDrop } from "@angular/cdk/drag-drop";
+import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { MatCheckboxChange } from "@angular/material/checkbox";
+import icClose from "@iconify/icons-ic/twotone-close";
+import { Menu } from "../../channel-view/pretty-config.interface";
+import flat from "flat";
 /**
  * File node data with nested structure.
  * Each node has a filename, and a type or a list of children.
@@ -31,39 +34,24 @@ export class FileFlatNode {
 /**
  * The file structure tree data in string. The data could be parsed into a Json object
  */
+
 const TREE_DATA = JSON.stringify({
     Menu1: {
         Option1: "Transferencia",
         Option2: "Transferencia",
-        Option3: "Transferencia",
-    },
-    Menu2: {
-        Option1: {
-            SubMenu1: {
-                Option1: "Transferencia",
-                Option2: "Transferencia",
-            },
-        },
-        Option2: {
-            SubMenu1: {
+        Menu2: {
+            Option1: "Transferencia",
+            Option2: "Transferencia",
+            Menu3: {
                 Option1: "Transferencia",
                 Option2: "Transferencia",
                 Option3: "Transferencia",
             },
         },
-    },
-    Menu3: {
-        Option1: "Transferencia",
-        Option2: "Transferencia",
-        Option3: "Transferencia",
-    },
-    Menu4: {
-        "SubMenu 1": {
+        Menu4: {
             Option1: "Transferencia",
             Option2: "Transferencia",
         },
-        Option1: "Transferencia",
-        Option2: "Transferencia",
     },
 });
 
@@ -134,6 +122,30 @@ export class FileDatabase {
     providers: [FileDatabase],
 })
 export class ActionGuideComponent implements OnInit, OnDestroy {
+    icClose = icClose;
+
+    state: number;
+
+    data: any = {
+        Menu1: {
+            Option1: "redirect.0",
+            Option2: "redirect.1",
+            Menu2: {
+                Option1: "redirect.2",
+                Option2: "redirect.3",
+                Menu3: {
+                    Option1: "redirect.4",
+                    Option2: "redirect.5",
+                    Option3: "redirect.6",
+                },
+            },
+            Menu4: {
+                Option1: "redirect.7",
+                Option2: "redirect.8",
+            },
+        },
+    };
+
     //----
 
     treeControl: FlatTreeControl<FileFlatNode>;
@@ -147,6 +159,12 @@ export class ActionGuideComponent implements OnInit, OnDestroy {
     validateDrop = false;
 
     //----
+
+    movies = ["Nivel", "Transferencia"];
+
+    drop1(event: CdkDragDrop<string[]>) {
+        moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
+    }
 
     mode: "create" | "update" = "create";
     action: string;
@@ -170,6 +188,15 @@ export class ActionGuideComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.action = "noaction";
+        this.state = 0;
+        console.log(this.changeToSendFormat(this.data));
+    }
+
+    changeToSendFormat(data: any): any {
+        let pointers = Object.entries(flat(data)).map(([key,value])=>({pointer: key,action: value}));
+
+        return pointers;
+
     }
 
     save() {
@@ -353,4 +380,3 @@ export class ActionGuideComponent implements OnInit, OnDestroy {
         return null;
     }
 }
-
