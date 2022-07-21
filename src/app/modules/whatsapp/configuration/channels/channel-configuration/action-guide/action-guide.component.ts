@@ -1,10 +1,10 @@
-import { Component, Inject, Injectable, OnDestroy, OnInit } from "@angular/core";
+import { Component, ElementRef, Inject, Injectable, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { BehaviorSubject, Observable, of as observableOf } from "rxjs";
 import { FlatTreeControl } from "@angular/cdk/tree";
 import { MatTreeFlatDataSource, MatTreeFlattener } from "@angular/material/tree";
 import { SelectionModel } from "@angular/cdk/collections";
-import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
+import { CdkDragDrop, CdkDragMove, CdkDragStart, moveItemInArray, transferArrayItem } from "@angular/cdk/drag-drop";
 import { MatCheckboxChange } from "@angular/material/checkbox";
 import icClose from "@iconify/icons-ic/twotone-close";
 import { Menu } from "../../channel-view/pretty-config.interface";
@@ -124,6 +124,11 @@ export class FileDatabase {
 export class ActionGuideComponent implements OnInit, OnDestroy {
     icClose = icClose;
 
+    @ViewChild("guideItems", { read: ElementRef }) child: ElementRef;
+
+    _currentIndex;
+    _currentField;
+
     state: number;
 
     data: any = {
@@ -160,7 +165,10 @@ export class ActionGuideComponent implements OnInit, OnDestroy {
 
     //----
 
-    movies = ["Nivel", "Transferencia"];
+    movies = [
+        { id: 1, type: "Nivel" },
+        { id: 2, type: "Transferencia" },
+    ];
 
     drop1(event: CdkDragDrop<string[]>) {
         moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
@@ -172,7 +180,7 @@ export class ActionGuideComponent implements OnInit, OnDestroy {
     constructor(
         @Inject(MAT_DIALOG_DATA) public defaults: any,
         private dialogRef: MatDialogRef<ActionGuideComponent>,
-        database: FileDatabase
+        private database: FileDatabase
     ) {
         this.treeFlattener = new MatTreeFlattener(
             this.transformer,
@@ -183,7 +191,7 @@ export class ActionGuideComponent implements OnInit, OnDestroy {
         this.treeControl = new FlatTreeControl<FileFlatNode>(this._getLevel, this._isExpandable);
         this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-        database.dataChange.subscribe((data) => this.rebuildTreeForData(data));
+        this.database.dataChange.subscribe((data) => this.rebuildTreeForData(data));
     }
 
     ngOnInit(): void {
@@ -193,10 +201,9 @@ export class ActionGuideComponent implements OnInit, OnDestroy {
     }
 
     changeToSendFormat(data: any): any {
-        let pointers = Object.entries(flat(data)).map(([key,value])=>({pointer: key,action: value}));
+        let pointers = Object.entries(flat(data)).map(([key, value]) => ({ pointer: key, action: value }));
 
         return pointers;
-
     }
 
     save() {
@@ -250,14 +257,12 @@ export class ActionGuideComponent implements OnInit, OnDestroy {
         });
         return result;
     }
-
     /**
      * Handle the drop - here we rearrange the data based on the drop event,
      * then rebuild the tree.
      * */
     drop(event: CdkDragDrop<string[]>) {
         // console.log('origin/destination', event.previousIndex, event.currentIndex);
-
         // ignore drops outside of the tree
         if (!event.isPointerOverContainer) return;
 
@@ -288,21 +293,32 @@ export class ActionGuideComponent implements OnInit, OnDestroy {
         const newSiblings = findNodeSiblings(changedData, nodeAtDest.id);
         if (!newSiblings) return;
         const insertIndex = newSiblings.findIndex((s) => s.id === nodeAtDest.id);
-
+        console.log(insertIndex, newSiblings);
         // remove the node from its old place
-        const node = event.item.data;
-        const siblings = findNodeSiblings(changedData, node.id);
-        const siblingIndex = siblings.findIndex((n) => n.id === node.id);
-        const nodeToInsert: FileNode = siblings.splice(siblingIndex, 1)[0];
-        if (nodeAtDest.id === nodeToInsert.id) return;
+        let node, nodeToInsert: FileNode;
+        node = event.item.data;
+        let siblings: any = findNodeSiblings(changedData, node.id);
+        let movieIndexToRemove;
+        if (siblings) {
+            const siblingIndex = siblings.findIndex((n) => n.id === node.id);
+            nodeToInsert = siblings.splice(siblingIndex, 1)[0];
+            if (nodeAtDest.id === nodeToInsert.id) return;
 
-        // ensure validity of drop - must be same level
-        const nodeAtDestFlatNode = this.treeControl.dataNodes.find((n) => nodeAtDest.id === n.id);
-        if (this.validateDrop && nodeAtDestFlatNode.level !== node.level) {
-            alert("Items can only be moved within the same level.");
-            return;
+            // ensure validity of drop - must be same level
+            const nodeAtDestFlatNode = this.treeControl.dataNodes.find((n) => nodeAtDest.id === n.id);
+            if (this.validateDrop && nodeAtDestFlatNode.level !== node.level) {
+                alert("Items can only be moved within the same level.");
+                return;
+            }
+        } else {
+            const MOVIE_TO_INSERT = this.movies.find((movie) => movie === event.item.data);
+            console.log(MOVIE_TO_INSERT);
+            nodeToInsert = new FileNode();
+            nodeToInsert.id = MOVIE_TO_INSERT.id.toString();
+            nodeToInsert.filename = "option";
+            nodeToInsert.type = MOVIE_TO_INSERT.type;
+            console.log(this.movies);
         }
-
         // insert node
         newSiblings.splice(insertIndex, 0, nodeToInsert);
 
@@ -313,9 +329,30 @@ export class ActionGuideComponent implements OnInit, OnDestroy {
     /**
      * Experimental - opening tree nodes as you drag over them
      */
-    dragStart() {
+
+    dragStart(event?: CdkDragStart) {
+        console.log("start");
+        if (event) {
+            this._currentIndex = this.movies.indexOf(event.source.data); // Get index of dragged type
+            this._currentField = this.child.nativeElement.children[this._currentIndex]; // Store HTML field
+        }
         this.dragging = true;
     }
+
+    // moved(event: CdkDragMove) {
+    //     // Check if stored HTML field is as same as current field
+    //     if (this.child.nativeElement.children[this._currentIndex] !== this._currentField) {
+    //         // Replace current field, basically replaces placeholder with old HTML content
+    //         const ARRAY_OF_GUIDE_ITEMS = Array.from(this.child.nativeElement.children);
+    //         ARRAY_OF_GUIDE_ITEMS.push(this._currentField);
+    //         console.log(this.child.nativeElement.children, this.child.nativeElement.children[this._currentIndex]);
+    //         this.child.nativeElement.replaceChild(
+    //             this._currentField,
+    //             this.child.nativeElement.children[this._currentIndex]
+    //         );
+    //     }
+    // }
+
     dragEnd() {
         this.dragging = false;
     }

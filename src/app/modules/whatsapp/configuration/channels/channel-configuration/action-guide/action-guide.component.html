@@ -10,9 +10,23 @@
     <mat-divider class="-mx-6 text-border"></mat-divider>
 
     <mat-dialog-content fxLayout="column">
-        <div class="flex">
-            <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-                <div class="example-box" *ngFor="let movie of movies" cdkDrag>{{ movie }}</div>
+        <div class="flex" cdkDropListGroup>
+            <div
+                #guideItems
+                [ngStyle]="{ maxHeight: movies.length * 60 + 'px' }"
+                cdkDropList
+                class="example-list"
+                (cdkDropListDropped)="drop($event)"
+            >
+                <div
+                    class="example-box"
+                    *ngFor="let movie of movies"
+                    [cdkDragData]="movie"
+                    cdkDrag
+                    (cdkDragStarted)="dragStart($event)"
+                >
+                    {{ movie.type }}
+                </div>
             </div>
             <mat-tree
                 [dataSource]="dataSource"

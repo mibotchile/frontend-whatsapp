@@ -89,7 +89,7 @@ export class ConversationsChatComponent implements AfterViewInit, OnDestroy {
             this.selectedGroup = group;
         });
         this.setupWebSockets();
-        this.setupConversationsSockets();
+        // this.setupConversationsSockets();
         this.route.queryParams.subscribe((params) =>
             params.fullscreenChat === "enabled" ? (this.isFullscreenEnabled = true) : (this.isFullscreenEnabled = false)
         );

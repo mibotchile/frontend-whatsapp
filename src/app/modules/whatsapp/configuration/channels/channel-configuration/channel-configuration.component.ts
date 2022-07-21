@@ -12,8 +12,8 @@ import { ActionOptionsComponent } from "./action-options/action-options.componen
 import { ActionGuideComponent } from "./action-guide/action-guide.component";
 
 export interface ActionConfig {
-    config: ChannelConfiguration,
-    action: string
+    config: ChannelConfiguration;
+    action: string;
 }
 
 @Component({
@@ -25,7 +25,7 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
     items: Item[] = [
         { action: "message", value: "Mensaje" },
         { action: "quiz", value: "Petición de Datos" },
-        //{ action: "menu", value: "Guía de Respuestas y Transferencias" },
+        { action: "menu", value: "uía de Respuestas y Transferencias" },
         { action: "redirect", value: "Redirección" },
         // { action: "attention", value: "Valoración de la Atención" },
     ];
@@ -123,7 +123,7 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                         messages: [],
                         quizes: [],
                         steps: [],
-                        redirects: []
+                        redirects: [],
                     };
                     this.status = "create";
                 }
@@ -135,13 +135,28 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
         } else {
             let lastAction = event.previousContainer.data[event.previousIndex].action;
-            if (lastAction.includes('redirect') || lastAction.includes('menu')) {
+            if (lastAction.includes("redirect") || lastAction.includes("menu")) {
                 this.isDisabled = true;
-                copyArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, this.basket.length);
+                copyArrayItem(
+                    event.previousContainer.data,
+                    event.container.data,
+                    event.previousIndex,
+                    this.basket.length
+                );
                 this.updateConfig(this.basket.length - 1);
-            }else {
-                console.log(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex)
-                copyArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+            } else {
+                console.log(
+                    event.previousContainer.data,
+                    event.container.data,
+                    event.previousIndex,
+                    event.currentIndex
+                );
+                copyArrayItem(
+                    event.previousContainer.data,
+                    event.container.data,
+                    event.previousIndex,
+                    event.currentIndex
+                );
                 this.updateConfig(event.currentIndex);
             }
         }
@@ -187,7 +202,6 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
     }
 
     updateConfig(index: number) {
-
         let value: any;
 
         let action = this.basket[index].action;
@@ -219,17 +233,17 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                     messageId: this.messageId,
                     dataRequestId: this.dataRequestId,
                     optionsMenuId: this.optionsMenuId,
-                    redirectId: this.redirectId
+                    redirectId: this.redirectId,
                 },
             })
             .afterClosed()
             .subscribe((config: ActionConfig) => {
-                if (config[1] === 'noaction') {
+                if (config[1] === "noaction") {
                     this.basket.splice(this.basket.length - 1, 1);
-                    if (actionAndId[0]==='redirect') {
+                    if (actionAndId[0] === "redirect") {
                         this.isDisabled = false;
                     }
-                    if (actionAndId[0]==='menu') {
+                    if (actionAndId[0] === "menu") {
                         this.isDisabled = false;
                     }
                 } else {
@@ -283,15 +297,15 @@ export class ChannelConfigurationComponent implements OnInit, OnDestroy {
                 break;
         }
 
-        console.log(this.config.messages)
+        console.log(this.config.messages);
 
         this.basket.splice(i, 1);
 
-        console.log(this.basket)
+        console.log(this.basket);
 
         this.steps.splice(i, 1);
 
-        console.log(this.steps)
+        console.log(this.steps);
         this.steps.forEach((e, i) => {
             e.step = i + 1;
         });
